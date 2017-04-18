@@ -5,5 +5,7 @@ package gameObjects.Projectiles;
  */
 public class LightBullet extends TankBullet {
 
-
+  public int damage(){
+    return 1;
+  }
 }
