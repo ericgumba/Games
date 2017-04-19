@@ -57,7 +57,7 @@ public class TankWorld extends JApplet implements Runnable {
 //
 //    tankKinds.put("red light tank", new RedTankLight() );
 //    tankKinds.put("blue light tank", new BlueTankLight() );
-//
+///
 //
 //    tankOne = tankKinds.get("red light tank");
 //    tankTwo = tankKinds.get("blue light tank");

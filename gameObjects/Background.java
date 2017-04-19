@@ -13,4 +13,4 @@ public class Background extends TankWorld {
     graphics.drawImage(map, 0, 0, obs);
 
   }
-}
+}//

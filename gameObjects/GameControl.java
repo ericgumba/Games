@@ -7,7 +7,7 @@ import java.awt.event.KeyEvent;
  * Created by ericgumba on 4/18/17.
  */
 public class GameControl extends KeyAdapter{
-
+//
   GameEvents gE;
 
   public GameControl(GameEvents gE) {
