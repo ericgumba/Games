@@ -1,7 +1,6 @@
 package gameObjects;
 
-import java.awt.Graphics;
-import java.awt.Image;
+import java.awt.*;
 import java.awt.image.ImageObserver;
 /**
  * Created by ericgumba on 4/14/17.

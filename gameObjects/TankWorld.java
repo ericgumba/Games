@@ -65,9 +65,8 @@ public class TankWorld extends JApplet implements Runnable {
     this.setFocusable(true);
     observer = this;
     events = new GameEvents();
-    events.addObserver(tankOne);
-    events.addObserver(tankTwo);
-    events.addObserver(ObjectManager);
+//    events.addObserver(tankOne);
+//    events.addObserver(tankTwo);
 
     control = new GameControl(events);
     addKeyListener(control);
