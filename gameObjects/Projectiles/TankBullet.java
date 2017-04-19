@@ -20,7 +20,6 @@ public abstract class TankBullet extends TankWorld {
   public boolean collide(int x, int y, int w, int h){
     if((y+h > this.y) && (y < this.y + ySize)) {
       if (( x + w > this.x ) && ( x < this.x + xSize)){
-        this.x = 2 * borderX;
       }
     }
   }

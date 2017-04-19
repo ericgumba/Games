@@ -1,4 +1,7 @@
 package gameObjects;
+import gameObjects.Projectiles.TankBullet;
+import gameObjects.Tanks.BlueTankLight;
+import gameObjects.Tanks.RedTankLight;
 import gameObjects.Tanks.Tank;
 
 import javax.swing.*;
@@ -15,6 +18,7 @@ import java.util.HashMap;
 public class TankWorld extends JApplet implements Runnable {
 
 
+  static  HashMap<String, Tank> tankKinds = new HashMap<>();
   static HashMap<Integer, String> controls = new HashMap<>();
   static int borderX = 1475, borderY = 115;
   private Thread gameThread;
@@ -23,7 +27,9 @@ public class TankWorld extends JApplet implements Runnable {
   BufferedImage imageOne, imageTwo;
   static Tank tankOne, tankTwo;
   static Image[] health;
-  static ArrayList<Bullets> tankOneBullets, tankTwoBullets;
+  static ArrayList<TankBullet> tankOneBullets, tankTwoBullets;
+  GameEvents events;
+  GameControl control;
   //
 
 
@@ -43,11 +49,29 @@ public class TankWorld extends JApplet implements Runnable {
 
   public void initializeGame() {
     gameBoard = new Background();
-    controls.put(KeyEvent.VK_LEFT, "left");
-    controls.put(KeyEvent.VK_UP, "up");
-    controls.put(KeyEvent.VK_DOWN, "down");
-    controls.put(KeyEvent.VK_RIGHT, "right");
-    
+
+//    controls.put(KeyEvent.VK_LEFT, "left");
+//    controls.put(KeyEvent.VK_UP, "up");
+//    controls.put(KeyEvent.VK_DOWN, "down");
+//    controls.put(KeyEvent.VK_RIGHT, "right");
+//
+//    tankKinds.put("red light tank", new RedTankLight() );
+//    tankKinds.put("blue light tank", new BlueTankLight() );
+//
+//
+//    tankOne = tankKinds.get("red light tank");
+//    tankTwo = tankKinds.get("blue light tank");
+    setBackground(Color.black);
+    this.setFocusable(true);
+    observer = this;
+    events = new GameEvents();
+    events.addObserver(tankOne);
+    events.addObserver(tankTwo);
+    events.addObserver(ObjectManager);
+
+    control = new GameControl(events);
+    addKeyListener(control);
+
 
 
   }
