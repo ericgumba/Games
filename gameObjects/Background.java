@@ -7,10 +7,10 @@ import java.awt.image.ImageObserver;
  */
 public class Background extends TankWorld {
 
-  Image map = getSprite("Images/Background.png");
+  private Image gameBoard = getImage("Images/Background.png");
 
   public void draw(Graphics2D graphics, ImageObserver observer) {
-    graphics.drawImage(map, 0, 0, obs);
+    graphics.drawImage(gameBoard, 0, 0, observer);
 
   }
 }//
