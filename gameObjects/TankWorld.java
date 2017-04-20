@@ -7,7 +7,7 @@ import java.awt.image.ImageObserver;
 /**
  * Created by ericgumba on 4/20/17.
  */
-public class TankWorld extends JApplet implements Runnable{
+public class TankWorld extends JApplet {
     Background gameBoard;
     ImageObserver observer;
 
@@ -18,14 +18,7 @@ public class TankWorld extends JApplet implements Runnable{
     observer = this;
   }
 
-  public void start(){
 
-  }
-
-  public void run() {
-
-  }
- 
   public void paint(Graphics graphics){
     graphics.drawOval(0,0,100,100);
 
