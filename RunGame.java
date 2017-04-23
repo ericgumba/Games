@@ -13,7 +13,7 @@ public class RunGame {
     int screenWidth = 1280;
     int screenHeight = 1280;
     final TankWorld game = new TankWorld();
-    game.initializeGame();
+    game.init();
     JFrame f = new JFrame("TankWarz");
     f.addWindowListener(new WindowAdapter() {
     });
@@ -21,7 +21,7 @@ public class RunGame {
     f.pack();
     f.setSize(new Dimension(screenWidth, screenHeight));
     f.setVisible(true);
-    f.setResizable(false);
+    f.setResizable(true);
     game.start();
 //
   }
