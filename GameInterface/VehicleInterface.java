@@ -9,6 +9,6 @@ import java.util.Observer;
  */
 public interface VehicleInterface extends Observer {
   void update(Observable object, Object argument);
-  void drawVehicle(Graphics graphics, ImageObserver observer);
+  void draw(Graphics graphics, ImageObserver observer);
   void move();
 }

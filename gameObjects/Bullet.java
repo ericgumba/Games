@@ -7,41 +7,42 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.ImageObserver;
 public class Bullet extends TankWorld {
-  Image imageOfBullet;
-  int xLocationOfBullet, yLocationOfBullet, widthOfBullet, heightOfBullet, xVelocityOfBullet, yVelocityOfBullet;
 
-  Bullet(Image imageOfBullet, int xSpawnPoint, int ySpawnPoint, int xVelocity, int yVelocity){
+  Image imageOfBullet; //the caller, whether enemy or user must provide the bullet
+  int x, y, sizeX, sizeY, xSpeed, ySpeed;
 
-    this.imageOfBullet = imageOfBullet;
-    xLocationOfBullet = xSpawnPoint;
-    yLocationOfBullet = ySpawnPoint;
-    xVelocityOfBullet = xVelocity;
-    yVelocityOfBullet = yVelocity;
 
-    widthOfBullet = imageOfBullet.getWidth(null);
-    heightOfBullet = imageOfBullet.getHeight(null);
+
+  Bullet(Image imageOfBullet, int x, int y, int xSpeed, int ySpeed) {
+    this.imageOfBullet = imageOfBullet;//recieve different bullet image when power-up is picked up
+    this.x = x;
+    this.y = y;
+    this.xSpeed = xSpeed;
+    this.ySpeed = ySpeed;
+    sizeX = imageOfBullet.getWidth(null);
+    sizeY = imageOfBullet.getHeight(null);
+    System.out.println("w:" + sizeX + " y:" + sizeY);
   }
 
-  public boolean hasCollided(int xLocationOfObject, int yLocationOfObject, int widthOfObject, int heightOfObject) {
-
-    if(yLocationOfObject + heightOfObject > yLocationOfBullet
-        && yLocationOfObject < yLocationOfBullet + heightOfBullet
-        && xLocationOfObject + widthOfObject > xLocationOfBullet
-        && xLocationOfObject < xLocationOfBullet + widthOfBullet) {
-
-      xLocationOfBullet = 0;
-      yLocationOfBullet = 0;
+  public boolean collision(int x, int y, int w, int h) {
+    if ( y + h > this.y && y < this.y + sizeY
+        && x + w > this.x
+        && x < this.x+sizeX
+        )
+    {
+      this.x = 0;
+      this.y = 0; // When it reaches here. it must be removed.
       return true;
-    } else {
-      return false;
     }
-  }
-  public void moveBullet() {
-    yLocationOfBullet += yVelocityOfBullet;
-    xLocationOfBullet += xVelocityOfBullet;
+    return false;
   }
 
-  public void drawBullet(Graphics graphics, ImageObserver imageObserver){
-    graphics.drawImage(imageOfBullet, xVelocityOfBullet, yVelocityOfBullet, imageObserver);
+  public void move() {
+    y += ySpeed;
+    x += xSpeed;
+  }
+
+  public void draw(Graphics g, ImageObserver obs) {
+    g.drawImage(imageOfBullet, x, y, obs);
   }
 }

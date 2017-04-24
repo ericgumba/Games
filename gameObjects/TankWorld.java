@@ -1,179 +1,210 @@
 package gameObjects;
 
-import javax.swing.*;
-import java.awt.*;
+import java.applet.AudioClip;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
-import java.util.HashMap;
-import java.applet.AudioClip;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
+import javax.swing.JApplet;
 /**
- * Created by ericgumba on 4/20/17.
+ * Created by ericgumba and Leo Wang on 4/20/17.
  */
 public class TankWorld extends JApplet {
 
-  final int GAME_BOARD_WIDTH = 1500, GAME_BOARD_HEIGHT = 1200;
-  final static int APPLET_WIDTH = 840, APPLET_HEIGHT = 880;
   static ImageGenerator imageGenerator;
-  static HashMap<Integer, String> playerOneAndPlayerTwoControls;
-  Background gameBoard; // It's necessary to initialize this in the initializeGame method.
+  static HashMap<Integer, String> controls = new HashMap<>();
+  final int borderX = 1500, borderY = 1200; //objects need to know the border
+  static int screenWidth = 840, screenHeight = 880, displayX1, displayY1, displayX2, displayY2;
   ImageObserver observer;
-  BufferedImage bufferedImage, bufferedImage2;
-  Graphics2D graphics2D;
-  static Tank playerOneTank, playerTwoTank;
+  BufferedImage bufferedImg, bufferedImg2;
+  TankWorldEvents tankWorldEvents;
+  PlayerControls gC;
+  Graphics2D g2;
+  //Game Objects
+  Background theBackground;
+  static Tank tankL, tankR;
+//  static RandomObjectGenerator ObjectManager;
   static Tank[] player = new Tank[3];
   static Image[] explosionFrames;
-  static ArrayList<Bullet> playerOneBullets, playerTwoBullets;
-  static AudioClip fire, death;
-  TankWorldEvents tankWorldEvents;
-  PlayerControls playerControls;
-  static int playerOneXDisplay, playerOneYDisplay, playerTwoXDisplay, playerTwoYDisplay;
+  static ArrayList<Bullet> tankLBullets, tankRBullets;
+  static AudioClip explosionSound_1, explosionSound_2;
+  static WallGenerator wallGenerator;
 
-  public void init(){
 
-    setSize(APPLET_WIDTH, APPLET_HEIGHT);
-    playerOneAndPlayerTwoControls = new HashMap<>();
-    imageGenerator = new ImageGenerator();
-    gameBoard = new Background();
+  public static void main(String[] args) { final TankWorld preAlpha = new TankWorld();}
 
+  public void init() {
+
+    setSize(screenWidth,screenHeight); // check
+
+    imageGenerator = new ImageGenerator(); //check
+
+    wallGenerator = new WallGenerator();
+
+    initializePlayerOneAndPlayerTwoControls(); // check
+
+
+    Image bullets = imageGenerator.getImage("Images/bullet.png") ;
+
+    // health info images
+    explosionFrames = new Image[]{
+        imageGenerator.getImage("Images/explosion1_1.png"),
+        imageGenerator.getImage("Images/explosion1_2.png"),
+        imageGenerator.getImage("Images/explosion1_3.png"),
+        imageGenerator.getImage("Images/explosion1_4.png"),
+        imageGenerator.getImage("Images/explosion1_5.png"),
+        imageGenerator.getImage("Images/explosion1_6.png"),
+        imageGenerator.getImage("Images/explosion1_6.png")
+    };
+
+    //Game Objects:
+    theBackground = new Background();
+
+
+    tankLBullets = new ArrayList();
+    tankRBullets = new ArrayList();
+
+    tankL = new Tank("Images/Tank_blue_heavy_strip60.png", tankRBullets, tankLBullets, bullets, 1);
+    tankR = new Tank("Images/Tank_blue_heavy_strip60.png", tankLBullets, tankRBullets, bullets, 2);
+
+    // index 0 won't be used.
+    player[1] = tankR;
+    player[2] = tankL;
+
+//    ObjectManager = new RandomObjectGenerator();
     this.setFocusable(true);
     observer = this;
-
-    // initialize player one and player two controls.
-    playerOneAndPlayerTwoControls.put(KeyEvent.VK_LEFT, "left2");
-    playerOneAndPlayerTwoControls.put(KeyEvent.VK_RIGHT, "right2");
-    playerOneAndPlayerTwoControls.put(KeyEvent.VK_DOWN, "down2");
-    playerOneAndPlayerTwoControls.put(KeyEvent.VK_UP, "up2");
-    playerOneAndPlayerTwoControls.put(KeyEvent.VK_A, "left1");
-    playerOneAndPlayerTwoControls.put(KeyEvent.VK_S, "down1");
-    playerOneAndPlayerTwoControls.put(KeyEvent.VK_D, "right1");
-    playerOneAndPlayerTwoControls.put(KeyEvent.VK_W, "up1");
-
-    explosionFrames = new Image[]{
-      imageGenerator.getImage("Images/explosion1_1.png"),
-      imageGenerator.getImage("Images/explosion1_2.png"),
-      imageGenerator.getImage("Images/explosion1_3.png"),
-      imageGenerator.getImage("Images/explosion1_4.png"),
-      imageGenerator.getImage("Images/explosion1_5.png"),
-      imageGenerator.getImage("Images/explosion1_6.png")
-    };
-    Image bullet = imageGenerator.getImage("Images/bullet.png");
-
-    playerOneBullets = new ArrayList();
-    playerTwoBullets = new ArrayList();
-    playerOneTank = new Tank("Images/Tank_blue_heavy_strip60.png", playerTwoBullets, playerOneBullets, bullet, 1);
-    playerTwoTank = new Tank("Images/Tank_blue_heavy_strip60.png", playerOneBullets, playerTwoBullets, bullet, 2);
-
-
-    player[1] = playerOneTank;
-    player[2] = playerTwoTank;
-
     tankWorldEvents = new TankWorldEvents();
 
-    tankWorldEvents.addObserver(playerOneTank);
-    tankWorldEvents.addObserver(playerTwoTank);
+    // adds the controls.... - Eric
+    tankWorldEvents.addObserver(tankL);
+    tankWorldEvents.addObserver(tankR);
 
-    playerControls = new PlayerControls(tankWorldEvents);
+    gC = new PlayerControls(tankWorldEvents);
+    addKeyListener(gC);
 
-    addKeyListener(playerControls);
+//    explosionSound_1 = getAudioFile("Resources/Explosion_large.wav");
+//    explosionSound_2 = getAudioFile("Resources/Explosion_small.wav");
+  }
+
+  private AudioClip getAudioFile(String fileName) {
+    URL url = TankWorld.class.getResource(fileName);
+    return newAudioClip(url);
   }
 
 
-  public void paint(Graphics graphics){
+  public void paint(Graphics g) {
 
-    Dimension dimension = getSize();
-    updateDisplay();
+    Dimension d = getSize();
+
+    updateAndDisplay();
     updatePlayerOneDisplay();
     updatePlayerTwoDisplay();
 
 
-    bufferedImage2 = ( BufferedImage ) createImage(GAME_BOARD_WIDTH, GAME_BOARD_HEIGHT );
-    Graphics2D g3 = bufferedImage2.createGraphics();
+    bufferedImg2 = (BufferedImage) createImage( borderX, borderY);
+    Graphics2D g3 = bufferedImg2.createGraphics();
     g3.setBackground(getBackground());
     g3.setRenderingHint(RenderingHints.KEY_RENDERING,
-                        RenderingHints.VALUE_RENDER_QUALITY);
-
-    g3.clearRect(0, 0, GAME_BOARD_WIDTH, GAME_BOARD_HEIGHT);
-
+        RenderingHints.VALUE_RENDER_QUALITY);
 
     // draws player 1's screen.
-    g3.drawImage(bufferedImage.getSubimage(playerOneXDisplay, playerOneYDisplay, APPLET_WIDTH / 2, APPLET_HEIGHT), 0, 0, this);
+    g3.drawImage(bufferedImg.getSubimage(displayX1, displayY1, screenWidth / 2, screenHeight), 0, 0, this);
 
     // draw player 2's screen.
-    g3.drawImage(bufferedImage.getSubimage(playerTwoXDisplay, playerTwoYDisplay, APPLET_WIDTH / 2, APPLET_HEIGHT), APPLET_WIDTH / 2, 0, this);
+    g3.drawImage(bufferedImg.getSubimage(displayX2, displayY2, screenWidth / 2, screenHeight), screenWidth / 2, 0, this);
 
     // draw minimap.
-    g3.drawImage(bufferedImage.getScaledInstance(dimension.width / 5, dimension.height / 5, 1), dimension.width / 2 - (dimension.width / 5) / 2, dimension.height * 3 / 4, this);
+    g3.drawImage(bufferedImg.getScaledInstance(d.width / 5, d.height / 5, 1), d.width / 2 - (d.width / 5) / 2, d.height * 3 / 4, this);
 
     // draw the mini map dividing the two players. UNECESSARY!?
-    g3.drawLine(dimension.width / 2 + 2, 0, dimension.width / 2 + 2, dimension.height);
+    g3.drawLine(d.width / 2 + 2, 0, d.width / 2 + 2, d.height);
 
     g3.dispose();
+    g.drawImage(bufferedImg2, 0, 0, this); // x = 0, y = 0 means the image is at the top left.
 
-    graphics.drawImage(bufferedImage2,0,0,this);
+
   }
+  public void updateAndDisplay( ) {
+    bufferedImg = (BufferedImage) createImage(borderX, borderY); // create image that is x by y
+    g2 = bufferedImg.createGraphics();
+    g2.setBackground(getBackground());
+    g2.setRenderingHint(RenderingHints.KEY_RENDERING,
+        RenderingHints.VALUE_RENDER_QUALITY);
+    g2.clearRect(0, 0, borderX, borderY);
 
+    theBackground.draw(g2, this);
 
+    tankL.move();
+    tankL.draw(g2, this);
+    tankR.move();
+    tankR.draw(g2, this);
+
+    wallGenerator.draw(g2, this);
+
+    for (int i = 0; i < tankLBullets.size(); i++) {
+      tankLBullets.get(i).move();
+      tankLBullets.get(i).draw(g2, this);
+    }
+
+    for (int i = 0; i < tankRBullets.size(); i++) {
+      tankRBullets.get(i).move();
+      tankRBullets.get(i).draw(g2, this);
+
+    }
+
+  }
   private void updatePlayerOneDisplay(){
-    playerOneXDisplay = playerOneTank.x + 30 - APPLET_WIDTH / 4;
-    if (playerOneXDisplay < 0) {
-      playerOneXDisplay = 0;
-    } else if (playerOneXDisplay + APPLET_WIDTH / 2 > GAME_BOARD_WIDTH) {
-      playerOneXDisplay = GAME_BOARD_WIDTH - APPLET_WIDTH / 2;
+
+    displayX1 = tankL.x + 30 - screenWidth / 4;
+    if (displayX1 < 0) {
+      displayX1 = 0;
+    } else if (displayX1 + screenWidth / 2 > borderX) {
+      displayX1 = borderX - screenWidth / 2;
     }
-    playerOneYDisplay = playerOneTank.y + 30 - APPLET_HEIGHT / 2;
-    if (playerOneYDisplay < 0) {
-      playerOneYDisplay = 0;
-    } else if (playerOneYDisplay + APPLET_HEIGHT > GAME_BOARD_HEIGHT) {
-      playerOneYDisplay = GAME_BOARD_HEIGHT - APPLET_HEIGHT;
+    displayY1 = tankL.y + 30 - screenHeight / 2;
+    if (displayY1 < 0) {
+      displayY1 = 0;
+    } else if (displayY1 + screenHeight > borderY) {
+      displayY1 = borderY - screenHeight;
     }
   }
-
 
   private void updatePlayerTwoDisplay(){
-    playerTwoXDisplay = playerTwoTank.x + 30 - APPLET_WIDTH / 4;
-    if (playerTwoXDisplay < 0) {
-      playerTwoXDisplay = 0;
-    } else if (playerTwoXDisplay + APPLET_WIDTH / 2 > GAME_BOARD_WIDTH) {
-      playerTwoXDisplay = GAME_BOARD_WIDTH - APPLET_WIDTH / 2;
+
+    displayX2 = tankR.x + 30 - screenWidth / 4;
+    if (displayX2 < 0) {
+      displayX2 = 0;
+    } else if (displayX2 + screenWidth / 2 > borderX) {
+      displayX2 = borderX - screenWidth / 2;
     }
-    playerTwoYDisplay = playerTwoTank.y + 30 - APPLET_HEIGHT / 2;
-    if (playerTwoYDisplay < 0) {
-      playerTwoYDisplay = 0;
-    } else if (playerTwoYDisplay + APPLET_HEIGHT > GAME_BOARD_HEIGHT) {
-      playerTwoYDisplay = GAME_BOARD_HEIGHT - APPLET_HEIGHT;
-    }
-
-  }
-
-  public void updateDisplay(){
-    bufferedImage = (BufferedImage) createImage( GAME_BOARD_WIDTH, GAME_BOARD_HEIGHT );
-    graphics2D = bufferedImage.createGraphics();
-    graphics2D.setBackground(getBackground());
-    graphics2D.setRenderingHint(RenderingHints.KEY_RENDERING,
-                                RenderingHints.VALUE_RENDER_QUALITY);
-    graphics2D.clearRect(0,0,GAME_BOARD_WIDTH,GAME_BOARD_HEIGHT);
-
-    gameBoard.draw(graphics2D, this);
-
-    playerOneTank.move();
-    playerOneTank.drawVehicle(graphics2D, this);
-    playerTwoTank.move();
-    playerTwoTank.drawVehicle(graphics2D, this);
-
-
-
-    for (int i = 0; i < playerOneBullets.size(); i++) {
-      playerOneBullets.get(i).moveBullet();
-      playerTwoBullets.get(i).drawBullet(graphics2D, this);
-    }
-
-    for (int i = 0; i < playerTwoBullets.size(); i++) {
-      playerTwoBullets.get(i).moveBullet();
-      playerTwoBullets.get(i).drawBullet(graphics2D, this);
-
+    displayY2 = tankR.y + 30 - screenHeight / 2;
+    if (displayY2 < 0) {
+      displayY2 = 0;
+    } else if (displayY2 + screenHeight > borderY) {
+      displayY2 = borderY - screenHeight;
     }
 
   }
+  private void initializePlayerOneAndPlayerTwoControls(){
+
+    controls.put(KeyEvent.VK_LEFT, "left2");
+    controls.put(KeyEvent.VK_UP, "up2");
+    controls.put(KeyEvent.VK_DOWN, "down2");
+    controls.put(KeyEvent.VK_RIGHT, "right2");
+    controls.put(KeyEvent.VK_ENTER, "shoot2");
+    controls.put(KeyEvent.VK_A, "left1");
+    controls.put(KeyEvent.VK_W, "up1");
+    controls.put(KeyEvent.VK_S, "down1");
+    controls.put(KeyEvent.VK_D, "right1");
+    controls.put(KeyEvent.VK_SPACE, "shoot1");
+  }
+
 }
