@@ -1,7 +1,6 @@
 package gameObjects;
 
-import java.awt.*;
-import java.awt.image.ImageObserver;
+import java.awt.*; 
 import java.util.ArrayList;
 
 /**

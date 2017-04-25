@@ -12,7 +12,14 @@ public class Bullet extends TankWorld {
   private int x, y, sizeX, sizeY, xSpeed, ySpeed;
 
 
-
+  /**
+   * Bullet constructor.
+   * @param imageOfBullet
+   * @param x
+   * @param y
+   * @param xSpeed
+   * @param ySpeed
+   */
   Bullet( Image imageOfBullet, int x, int y, int xSpeed, int ySpeed ) {
     this.imageOfBullet = imageOfBullet;
     this.x = x;
@@ -23,6 +30,16 @@ public class Bullet extends TankWorld {
     sizeY = imageOfBullet.getHeight(null);
   }
 
+  /**
+   * If the bullet position <= position of object and position of object >= bullet position then the bullet has collided
+   * with another object. The bullet then teleports to the edge of the map.
+   * @param x
+   * @param y
+   * @param w
+   * @param h
+   * @return
+   */
+
   public boolean collision(int x, int y, int w, int h) {
     if ( y + h > this.y && y < this.y + sizeY
         && x + w > this.x
@@ -30,12 +47,15 @@ public class Bullet extends TankWorld {
         )
     {
       this.x = 0;
-      this.y = 0;  
+      this.y = 0;
       return true;
     }
     return false;
   }
 
+  /**
+   * updates position of bullet based off of its velocity.
+   */
   public void move() {
     y += ySpeed;
     x += xSpeed;

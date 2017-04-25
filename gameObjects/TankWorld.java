@@ -25,7 +25,6 @@ public class TankWorld extends JApplet {
   private final int SCREEN_WIDTH = 840, SCREEN_HEIGHT = 880;
   ImageObserver observer;
   private BufferedImage bufferedImg;
-  //Game Objects
   private Background rockBackground;
   private static Tank tankOne, tankTwo;
   static Tank[] player = new Tank[3];
@@ -57,7 +56,6 @@ public class TankWorld extends JApplet {
         imageGenerator.getImage("Images/explosion2_7.png")
     };
 
-    //Game Objects:
     rockBackground = new Background();
 
 
@@ -83,7 +81,7 @@ public class TankWorld extends JApplet {
 
 //    explosionSound_1 = getAudioFile("Resources/Explosion_large.wav");
 //    explosionSound_2 = getAudioFile("Resources/Explosion_small.wav");
-  } 
+  }
 
 
   /**
@@ -110,7 +108,7 @@ public class TankWorld extends JApplet {
     // draw player 2's screen.
     g3.drawImage(bufferedImg.getSubimage( playerTwoXDisplay, playerTwoYDisplay, SCREEN_WIDTH / 2, SCREEN_HEIGHT), SCREEN_WIDTH / 2, 0, this  );
 
-    // draw minimap.
+    // draw mini map.
     g3.drawImage( bufferedImg.getScaledInstance( d.width / 5, d.height / 5, 1 ), d.width / 2 - ( d.width / 5 ) / 2, d.height * 3 / 4, this );
 
     // draw the mini map dividing the two players.
@@ -141,16 +139,16 @@ public class TankWorld extends JApplet {
     tankTwo.move();
     tankTwo.draw( gameGraphics, this );
 
-    wallGenerator.draw( gameGraphics, this );
+    wallGenerator.draw( gameGraphics );
 
-    for (int i = 0; i < tankOneBullets.size(); i++ ) {
-      tankOneBullets.get( i ).draw( gameGraphics, this );
-      tankOneBullets.get( i ).move();
+    for (Bullet bullet : tankOneBullets ) {
+      bullet.draw( gameGraphics, this );
+      bullet.move();
     }
 
-    for ( int i = 0; i < tankTwoBullets.size(); i++ ) {
-      tankTwoBullets.get( i ).draw(gameGraphics, this);
-      tankTwoBullets.get( i ).move();
+    for ( Bullet bullet : tankTwoBullets ) {
+      bullet.draw(gameGraphics, this);
+      bullet.move();
 
     }
   }

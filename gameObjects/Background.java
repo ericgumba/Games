@@ -11,7 +11,5 @@ public class Background extends TankWorld {
 
   public void draw(Graphics2D graphics, ImageObserver observer) {
     graphics.drawImage(gameBoard, 0, 0, observer);
-
-
   }
-}//
+}

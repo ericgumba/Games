@@ -1,6 +1,6 @@
 package gameObjects;
 
-import java.awt.*; 
+import java.awt.*;
 
 /**
  * Created by ericgumba and Leo Wang on 4/23/17.
