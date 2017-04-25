@@ -1,19 +1,19 @@
 package gameObjects;
 
 /**
- * Created by ericgumba on 4/22/17.
+ * Created by ericgumba and Leo Wang on 4/22/17.
  */
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.ImageObserver;
 public class Bullet extends TankWorld {
 
-  Image imageOfBullet; //the caller, whether enemy or user must provide the bullet
-  int x, y, sizeX, sizeY, xSpeed, ySpeed;
+  private Image imageOfBullet; //the caller, whether enemy or user must provide the bullet
+  private int x, y, sizeX, sizeY, xSpeed, ySpeed;
 
 
 
-  Bullet(Image imageOfBullet, int x, int y, int xSpeed, int ySpeed) {
+  Bullet( Image imageOfBullet, int x, int y, int xSpeed, int ySpeed ) {
     this.imageOfBullet = imageOfBullet;//recieve different bullet image when power-up is picked up
     this.x = x;
     this.y = y;
@@ -21,7 +21,6 @@ public class Bullet extends TankWorld {
     this.ySpeed = ySpeed;
     sizeX = imageOfBullet.getWidth(null);
     sizeY = imageOfBullet.getHeight(null);
-    System.out.println("w:" + sizeX + " y:" + sizeY);
   }
 
   public boolean collision(int x, int y, int w, int h) {
