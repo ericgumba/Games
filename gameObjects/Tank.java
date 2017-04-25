@@ -24,12 +24,11 @@ public class Tank extends TankWorld implements VehicleInterface {
   final int MAX_HP = 4;
   int hp, score = 0;
   int speed = 10, direction = 0, directionRate = 0, playerNumber, explodeStage = 5;
-  ImageObserver obs;
   int xSpeed = 0, ySpeed = 0;
   private String healthPoints[] = {"HP: 4", "HP: 3", "HP: 2", "HP: 1", "HP: 0"};
   private String controlSet;
-
   Tank(String tankImages, ArrayList EnemyBullets, ArrayList myBullets, Image bulletImages, int playerNumber) {
+
     this.bulletImages = bulletImages;
     try {
       this.tankImages = imageGenerator.getBufferedImage(tankImages);
@@ -40,8 +39,10 @@ public class Tank extends TankWorld implements VehicleInterface {
     this.myBullets = myBullets;
     tankWidth = this.tankImages.getWidth() / 60;
     tankHeight = this.tankImages.getHeight();
-    x = playerNumber * borderX / 3;
-    y = borderY / 2;
+
+    setXSpawnPoint(playerNumber);
+    setYSpawnPoint(playerNumber);
+
     hp = MAX_HP;
     this.playerNumber = playerNumber;
     this.controlSet = playerNumber + "";
@@ -50,8 +51,6 @@ public class Tank extends TankWorld implements VehicleInterface {
   }
 
   public void draw(Graphics g, ImageObserver obs) {
-
-
     if (hp > 0) {
       BufferedImage currentImage = tankImages.getSubimage(tankWidth * (direction / 6), 0, tankWidth, tankHeight);
       g.drawImage(currentImage, x, y, obs);
@@ -62,11 +61,20 @@ public class Tank extends TankWorld implements VehicleInterface {
       if (explodeStage == 7) {
         explodeStage = 0;
         hp = MAX_HP;
-        x = playerNumber * borderX / 3;
-        y = playerNumber * borderY / 3;
+
+        setXSpawnPoint( playerNumber );
+        setYSpawnPoint( playerNumber );
+
         player[playerNumber].score += 5;
-        player[playerNumber].x = (player[playerNumber].playerNumber) * borderX / 3;
-        player[playerNumber].y = (player[playerNumber].playerNumber) * borderY / 3;
+        int otherPlayer = 2;
+
+        if ( playerNumber == 1 ){
+          otherPlayer = 2;
+        } else {
+          otherPlayer = 1;
+        }
+        player[playerNumber].setXSpawnPoint( otherPlayer );
+        player[playerNumber].setYSpawnPoint( otherPlayer );
 //        explosionSound_1.play();
       }
     }
@@ -93,13 +101,13 @@ public class Tank extends TankWorld implements VehicleInterface {
     } else if (direction == 360) {
       direction = 0;
     }
-    if ((x + xSpeed < borderX - 70) && (x + xSpeed > 0)
+    if ((x + xSpeed < BACKGROUND_WIDTH - 70) && (x + xSpeed > 0)
         && (!(player[playerNumber].collision(x + xSpeed, y, tankWidth, tankHeight)))
         && (!(wallGenerator.collision(x + xSpeed, y, tankWidth, tankHeight)))
         ) {
       x += xSpeed;
     }
-    if ((y + ySpeed < borderY - 88) && (y + ySpeed > 0)
+    if ((y + ySpeed < BACKGROUND_HEIGHT - 88) && (y + ySpeed > 0)
         && (!(player[playerNumber].collision(x, y + ySpeed, tankWidth, tankHeight)))
         && (!(wallGenerator.collision(x, y + ySpeed, tankWidth, tankHeight)))
         ) {
@@ -114,9 +122,27 @@ public class Tank extends TankWorld implements VehicleInterface {
         }
       }
     }
-
   }
 
+  private void setXSpawnPoint(int playerNumber){
+
+
+    if (playerNumber == 1) {
+      x = playerNumber * 60 + BACKGROUND_WIDTH / 3;
+    } else {
+      x = playerNumber + 400 + BACKGROUND_WIDTH / 3;
+    }
+
+  }
+  private void setYSpawnPoint(int playerNumber){
+
+    if ( playerNumber == 2 ) {
+      y = 460 + BACKGROUND_HEIGHT / 2;
+    }
+    else {
+      y = -500 + BACKGROUND_HEIGHT / 2;
+    }
+  }
   public void update(Observable obj, Object event) {
     TankWorldEvents gameE = (TankWorldEvents) event;
 

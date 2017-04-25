@@ -23,7 +23,7 @@ public class RunGame {
     f.setVisible(true);
     f.setResizable(true);
     game.start();
-//
+
   }
 
 }

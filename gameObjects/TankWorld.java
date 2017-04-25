@@ -20,7 +20,7 @@ public class TankWorld extends JApplet {
 
   static ImageGenerator imageGenerator;
   static HashMap<Integer, String> controls = new HashMap<>();
-  final int borderX = 1500, borderY = 1200; //objects need to know the border
+  final int BACKGROUND_WIDTH = 1475, BACKGROUND_HEIGHT = 1155;
   static int screenWidth = 840, screenHeight = 880, displayX1, displayY1, displayX2, displayY2;
   ImageObserver observer;
   BufferedImage bufferedImg, bufferedImg2;
@@ -34,26 +34,26 @@ public class TankWorld extends JApplet {
   static Tank[] player = new Tank[3];
   static Image[] explosionFrames;
   static ArrayList<Bullet> tankLBullets, tankRBullets;
-  static AudioClip explosionSound_1, explosionSound_2;
+  static AudioClip fire, death;
   static WallGenerator wallGenerator;
 
 
-  public static void main(String[] args) { final TankWorld preAlpha = new TankWorld();}
-
+  /**
+   * Initializes various objects within the game, such as the tanks,
+   * bullets, image generators, and wall generators.
+   */
   public void init() {
 
-    setSize(screenWidth,screenHeight); // check
-
-    imageGenerator = new ImageGenerator(); //check
-
+    setSize(screenWidth,screenHeight);
+    imageGenerator = new ImageGenerator();
     wallGenerator = new WallGenerator();
 
-    initializePlayerOneAndPlayerTwoControls(); // check
+    initializePlayerOneAndPlayerTwoControls();
 
 
     Image bullets = imageGenerator.getImage("Images/bullet.png") ;
 
-    // health info images
+    // Initializes the explosion frames used when a tank dies.
     explosionFrames = new Image[]{
         imageGenerator.getImage("Images/explosion1_1.png"),
         imageGenerator.getImage("Images/explosion1_2.png"),
@@ -78,12 +78,11 @@ public class TankWorld extends JApplet {
     player[1] = tankR;
     player[2] = tankL;
 
-//    ObjectManager = new RandomObjectGenerator();
     this.setFocusable(true);
     observer = this;
     tankWorldEvents = new TankWorldEvents();
 
-    // adds the controls.... - Eric
+
     tankWorldEvents.addObserver(tankL);
     tankWorldEvents.addObserver(tankR);
 
@@ -109,7 +108,7 @@ public class TankWorld extends JApplet {
     updatePlayerTwoDisplay();
 
 
-    bufferedImg2 = (BufferedImage) createImage( borderX, borderY);
+    bufferedImg2 = (BufferedImage) createImage(BACKGROUND_WIDTH, BACKGROUND_HEIGHT);
     Graphics2D g3 = bufferedImg2.createGraphics();
     g3.setBackground(getBackground());
     g3.setRenderingHint(RenderingHints.KEY_RENDERING,
@@ -133,14 +132,15 @@ public class TankWorld extends JApplet {
 
   }
   public void updateAndDisplay( ) {
-    bufferedImg = (BufferedImage) createImage(borderX, borderY); // create image that is x by y
+    bufferedImg = (BufferedImage) createImage(BACKGROUND_WIDTH, BACKGROUND_HEIGHT); // create image that is x by y
     g2 = bufferedImg.createGraphics();
     g2.setBackground(getBackground());
     g2.setRenderingHint(RenderingHints.KEY_RENDERING,
         RenderingHints.VALUE_RENDER_QUALITY);
-    g2.clearRect(0, 0, borderX, borderY);
+    g2.clearRect(0, 0, BACKGROUND_WIDTH, BACKGROUND_HEIGHT);
 
     theBackground.draw(g2, this);
+
 
     tankL.move();
     tankL.draw(g2, this);
@@ -150,13 +150,13 @@ public class TankWorld extends JApplet {
     wallGenerator.draw(g2, this);
 
     for (int i = 0; i < tankLBullets.size(); i++) {
-      tankLBullets.get(i).move();
       tankLBullets.get(i).draw(g2, this);
+      tankLBullets.get(i).move();
     }
 
     for (int i = 0; i < tankRBullets.size(); i++) {
-      tankRBullets.get(i).move();
       tankRBullets.get(i).draw(g2, this);
+      tankRBullets.get(i).move();
 
     }
 
@@ -166,14 +166,14 @@ public class TankWorld extends JApplet {
     displayX1 = tankL.x + 30 - screenWidth / 4;
     if (displayX1 < 0) {
       displayX1 = 0;
-    } else if (displayX1 + screenWidth / 2 > borderX) {
-      displayX1 = borderX - screenWidth / 2;
+    } else if (displayX1 + screenWidth / 2 > BACKGROUND_WIDTH) {
+      displayX1 = BACKGROUND_WIDTH - screenWidth / 2;
     }
     displayY1 = tankL.y + 30 - screenHeight / 2;
     if (displayY1 < 0) {
       displayY1 = 0;
-    } else if (displayY1 + screenHeight > borderY) {
-      displayY1 = borderY - screenHeight;
+    } else if (displayY1 + screenHeight > BACKGROUND_HEIGHT) {
+      displayY1 = BACKGROUND_HEIGHT - screenHeight;
     }
   }
 
@@ -182,14 +182,14 @@ public class TankWorld extends JApplet {
     displayX2 = tankR.x + 30 - screenWidth / 4;
     if (displayX2 < 0) {
       displayX2 = 0;
-    } else if (displayX2 + screenWidth / 2 > borderX) {
-      displayX2 = borderX - screenWidth / 2;
+    } else if (displayX2 + screenWidth / 2 > BACKGROUND_WIDTH) {
+      displayX2 = BACKGROUND_WIDTH - screenWidth / 2;
     }
     displayY2 = tankR.y + 30 - screenHeight / 2;
     if (displayY2 < 0) {
       displayY2 = 0;
-    } else if (displayY2 + screenHeight > borderY) {
-      displayY2 = borderY - screenHeight;
+    } else if (displayY2 + screenHeight > BACKGROUND_HEIGHT) {
+      displayY2 = BACKGROUND_HEIGHT - screenHeight;
     }
 
   }

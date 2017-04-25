@@ -15,54 +15,53 @@ public class WallGenerator extends TankWorld {
 
 
   WallGenerator() {
+
+
+    // Draws the top and bottom walls.
+    for(int i = 0; i < BACKGROUND_WIDTH / 32; i++){
+      invincibleWalls.add( new IndestructibleWall( i * BACKGROUND_WIDTH / 32 , 10 ));
+      invincibleWalls.add( new IndestructibleWall( i * BACKGROUND_WIDTH / 32, BACKGROUND_HEIGHT -20 ));
+    }
+
+    // Draws to left and right walls.
+    for (int i = 0; i < BACKGROUND_HEIGHT / 32; i++) {
+      invincibleWalls.add(new IndestructibleWall(BACKGROUND_WIDTH - 20, i * (BACKGROUND_HEIGHT / 32)));
+      invincibleWalls.add( new IndestructibleWall( 10, i * ( BACKGROUND_HEIGHT / 32 )));
+    }
+
     int checkPoint = 0;
+    // draws the top players spawn point
     for (int i = 0; i < 5 ; i++) {
-      invincibleWalls.add(new IndestructibleWall(borderX/2, i * (borderY / 32)));
-      checkPoint = i * borderY / 32;
+      invincibleWalls.add(new IndestructibleWall(BACKGROUND_WIDTH /2, i * (BACKGROUND_HEIGHT / 32)));
+      checkPoint = i * BACKGROUND_HEIGHT / 32;
     }
     for (int i = 0; i < 6; i++){
-      invincibleWalls.add(new IndestructibleWall(borderX/2 - i * wallWidth, checkPoint));
+      invincibleWalls.add(new IndestructibleWall(BACKGROUND_WIDTH /2 - i * wallWidth, checkPoint));
     }
 
     for (int i = 0; i < 5; i++){
-      invincibleWalls.add(new IndestructibleWall(borderX /2, borderY - 38 * i ));
-      checkPoint = borderY - 38 * i;
+      invincibleWalls.add(new IndestructibleWall(BACKGROUND_WIDTH /2, BACKGROUND_HEIGHT - 38 * i ));
+      checkPoint = BACKGROUND_HEIGHT - 38 * i;
     }
 
     for ( int i = 0; i < 5; i++){
-      invincibleWalls.add(new IndestructibleWall(borderX/2 + i * wallWidth, checkPoint));
+      invincibleWalls.add(new IndestructibleWall(BACKGROUND_WIDTH /2 + i * wallWidth, checkPoint));
     }
     for ( int i = 0; i < 5; i++){
-      invincibleWalls.add(new IndestructibleWall(38 + 38 * i, borderY/2 - 38 * 2));
+      invincibleWalls.add(new IndestructibleWall(38 + 38 * i, BACKGROUND_HEIGHT /2 - 38 * 2));
     }
     checkPoint = 300;
     for (int i = 0 ; i < 13; i++){
-      regularWalls.add(new DestructibleWall(borderX / 2, 300 + i * 38));
-      regularWalls.add(new DestructibleWall(borderX / 2 - 38, 300 + i * 38 ));
-      regularWalls.add(new DestructibleWall( borderX / 2 + 38 + 38 * i, 300));
-      regularWalls.add(new DestructibleWall(borderX / 2 + 38 - 38 * i, 300 + 13 * 38) );
+      regularWalls.add(new DestructibleWall(BACKGROUND_WIDTH / 2, 300 + i * 38));
+      regularWalls.add(new DestructibleWall(BACKGROUND_WIDTH / 2 - 38, 300 + i * 38 ));
+      regularWalls.add(new DestructibleWall( BACKGROUND_WIDTH / 2 + 38 + 38 * i, 300));
+      regularWalls.add(new DestructibleWall(BACKGROUND_WIDTH / 2 + 38 - 38 * i, 300 + 13 * 38) );
     }
 
   }
 
   public void draw(Graphics g, ImageObserver obs) {
 
-    for (int i = 0; i < borderY / 32; i++) {
-      IndestructibleWall outerXWall = new IndestructibleWall(borderX - 20, i * (borderY / 32));
-      outerXWall.update();
-      outerXWall.draw(g, obs);
-      IndestructibleWall outerXWall2 = new IndestructibleWall(10, i * (borderY / 32));
-      outerXWall2.update();
-      outerXWall2.draw(g, obs);
-    }
-    for(int i = 0; i < borderX / 32; i++){
-      IndestructibleWall outerYWallTop = new IndestructibleWall(i * borderX / 32 , 10);
-      outerYWallTop.update();
-      outerYWallTop.draw(g, obs);
-      IndestructibleWall outerYWall2 = new IndestructibleWall(i * borderX / 32, borderY-20);
-      outerYWall2.update();
-      outerYWall2.draw(g, obs);
-    }
 
     for (int i = 0; i < regularWalls.size(); i++) {
       regularWalls.get(i).update();
