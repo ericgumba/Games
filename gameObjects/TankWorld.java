@@ -21,11 +21,12 @@ public class TankWorld extends JApplet {
   static ImageGenerator imageGenerator;
   static HashMap<Integer, String> controls = new HashMap<>();
   final int BACKGROUND_WIDTH = 1475, BACKGROUND_HEIGHT = 1155;
-  static int screenWidth = 840, screenHeight = 880, displayX1, displayY1, displayX2, displayY2;
+  private static int displayX1, displayY1, displayX2, displayY2;
+  private final int SCREEN_WIDTH = 840, SCREEN_HEIGHT = 880;
   ImageObserver observer;
-  BufferedImage bufferedImg, bufferedImg2;
+  private BufferedImage bufferedImg;
   TankWorldEvents tankWorldEvents;
-  PlayerControls gC;
+  private PlayerControls gameControls;
   Graphics2D g2;
   //Game Objects
   Background theBackground;
@@ -44,7 +45,7 @@ public class TankWorld extends JApplet {
    */
   public void init() {
 
-    setSize(screenWidth,screenHeight);
+    setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
     imageGenerator = new ImageGenerator();
     wallGenerator = new WallGenerator();
 
@@ -86,8 +87,8 @@ public class TankWorld extends JApplet {
     tankWorldEvents.addObserver(tankL);
     tankWorldEvents.addObserver(tankR);
 
-    gC = new PlayerControls(tankWorldEvents);
-    addKeyListener(gC);
+    gameControls = new PlayerControls(tankWorldEvents);
+    addKeyListener(gameControls);
 
 //    explosionSound_1 = getAudioFile("Resources/Explosion_large.wav");
 //    explosionSound_2 = getAudioFile("Resources/Explosion_small.wav");
@@ -108,17 +109,17 @@ public class TankWorld extends JApplet {
     updatePlayerTwoDisplay();
 
 
-    bufferedImg2 = (BufferedImage) createImage(BACKGROUND_WIDTH, BACKGROUND_HEIGHT);
+    BufferedImage bufferedImg2 = (BufferedImage) createImage(BACKGROUND_WIDTH, BACKGROUND_HEIGHT);
     Graphics2D g3 = bufferedImg2.createGraphics();
     g3.setBackground(getBackground());
     g3.setRenderingHint(RenderingHints.KEY_RENDERING,
         RenderingHints.VALUE_RENDER_QUALITY);
 
     // draws player 1's screen.
-    g3.drawImage(bufferedImg.getSubimage(displayX1, displayY1, screenWidth / 2, screenHeight), 0, 0, this);
+    g3.drawImage(bufferedImg.getSubimage(displayX1, displayY1, SCREEN_WIDTH / 2, SCREEN_HEIGHT), 0, 0, this);
 
     // draw player 2's screen.
-    g3.drawImage(bufferedImg.getSubimage(displayX2, displayY2, screenWidth / 2, screenHeight), screenWidth / 2, 0, this);
+    g3.drawImage(bufferedImg.getSubimage(displayX2, displayY2, SCREEN_WIDTH / 2, SCREEN_HEIGHT), SCREEN_WIDTH / 2, 0, this);
 
     // draw minimap.
     g3.drawImage(bufferedImg.getScaledInstance(d.width / 5, d.height / 5, 1), d.width / 2 - (d.width / 5) / 2, d.height * 3 / 4, this);
@@ -163,33 +164,33 @@ public class TankWorld extends JApplet {
   }
   private void updatePlayerOneDisplay(){
 
-    displayX1 = tankL.x + 30 - screenWidth / 4;
+    displayX1 = tankL.x + 30 - SCREEN_WIDTH / 4;
     if (displayX1 < 0) {
       displayX1 = 0;
-    } else if (displayX1 + screenWidth / 2 > BACKGROUND_WIDTH) {
-      displayX1 = BACKGROUND_WIDTH - screenWidth / 2;
+    } else if (displayX1 + SCREEN_WIDTH / 2 > BACKGROUND_WIDTH) {
+      displayX1 = BACKGROUND_WIDTH - SCREEN_WIDTH / 2;
     }
-    displayY1 = tankL.y + 30 - screenHeight / 2;
+    displayY1 = tankL.y + 30 - SCREEN_HEIGHT / 2;
     if (displayY1 < 0) {
       displayY1 = 0;
-    } else if (displayY1 + screenHeight > BACKGROUND_HEIGHT) {
-      displayY1 = BACKGROUND_HEIGHT - screenHeight;
+    } else if (displayY1 + SCREEN_HEIGHT > BACKGROUND_HEIGHT) {
+      displayY1 = BACKGROUND_HEIGHT - SCREEN_HEIGHT;
     }
   }
 
   private void updatePlayerTwoDisplay(){
 
-    displayX2 = tankR.x + 30 - screenWidth / 4;
+    displayX2 = tankR.x + 30 - SCREEN_WIDTH / 4;
     if (displayX2 < 0) {
       displayX2 = 0;
-    } else if (displayX2 + screenWidth / 2 > BACKGROUND_WIDTH) {
-      displayX2 = BACKGROUND_WIDTH - screenWidth / 2;
+    } else if (displayX2 + SCREEN_WIDTH / 2 > BACKGROUND_WIDTH) {
+      displayX2 = BACKGROUND_WIDTH - SCREEN_WIDTH / 2;
     }
-    displayY2 = tankR.y + 30 - screenHeight / 2;
+    displayY2 = tankR.y + 30 - SCREEN_HEIGHT / 2;
     if (displayY2 < 0) {
       displayY2 = 0;
-    } else if (displayY2 + screenHeight > BACKGROUND_HEIGHT) {
-      displayY2 = BACKGROUND_HEIGHT - screenHeight;
+    } else if (displayY2 + SCREEN_HEIGHT > BACKGROUND_HEIGHT) {
+      displayY2 = BACKGROUND_HEIGHT - SCREEN_HEIGHT;
     }
 
   }

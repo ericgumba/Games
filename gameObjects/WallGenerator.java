@@ -30,28 +30,28 @@ public class WallGenerator extends TankWorld {
     }
 
     int checkPoint = 0;
+
     // draws the top players spawn point
-    for (int i = 0; i < 5 ; i++) {
-      invincibleWalls.add(new IndestructibleWall(BACKGROUND_WIDTH /2, i * (BACKGROUND_HEIGHT / 32)));
+    for ( int i = 0; i < 5 ; i++ ) {
+      invincibleWalls.add( new IndestructibleWall( BACKGROUND_WIDTH /2, i * ( BACKGROUND_HEIGHT / 32 )));
       checkPoint = i * BACKGROUND_HEIGHT / 32;
     }
-    for (int i = 0; i < 6; i++){
+    for ( int i = 0; i < 6; i++ ){
       invincibleWalls.add(new IndestructibleWall(BACKGROUND_WIDTH /2 - i * wallWidth, checkPoint));
     }
 
-    for (int i = 0; i < 5; i++){
+    for ( int i = 0; i < 5; i++ ){
       invincibleWalls.add(new IndestructibleWall(BACKGROUND_WIDTH /2, BACKGROUND_HEIGHT - 38 * i ));
       checkPoint = BACKGROUND_HEIGHT - 38 * i;
     }
 
-    for ( int i = 0; i < 5; i++){
+    for ( int i = 0; i < 5; i++ ){
       invincibleWalls.add(new IndestructibleWall(BACKGROUND_WIDTH /2 + i * wallWidth, checkPoint));
     }
-    for ( int i = 0; i < 5; i++){
+    for ( int i = 0; i < 5; i++ ){
       invincibleWalls.add(new IndestructibleWall(38 + 38 * i, BACKGROUND_HEIGHT /2 - 38 * 2));
     }
-    checkPoint = 300;
-    for (int i = 0 ; i < 13; i++){
+    for ( int i = 0 ; i < 13; i++ ){
       regularWalls.add(new DestructibleWall(BACKGROUND_WIDTH / 2, 300 + i * 38));
       regularWalls.add(new DestructibleWall(BACKGROUND_WIDTH / 2 - 38, 300 + i * 38 ));
       regularWalls.add(new DestructibleWall( BACKGROUND_WIDTH / 2 + 38 + 38 * i, 300));
