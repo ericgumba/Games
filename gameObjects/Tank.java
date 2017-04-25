@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Observable;
 
 /**
- * Created by ericgumba on 4/22/17.
+ * Created by Eric Gumba and Leo Wang on 4/22/17.
  */
 public class Tank extends TankWorld implements VehicleInterface {
 
@@ -121,18 +121,18 @@ public class Tank extends TankWorld implements VehicleInterface {
       }
   }
 
+  /**
+   * Sets spawn point depending on the player number
+   * @param playerNumber
+   */
   private void setXSpawnPoint(int playerNumber){
-
-
     if ( playerNumber == 1 ) {
       x = playerNumber * 60 + BACKGROUND_WIDTH / 3;
     } else {
       x = playerNumber + 400 + BACKGROUND_WIDTH / 3;
     }
-
   }
   private void setYSpawnPoint(int playerNumber){
-
     if ( playerNumber == 2 ) {
       y = 460 + BACKGROUND_HEIGHT / 2;
     }
@@ -140,9 +140,16 @@ public class Tank extends TankWorld implements VehicleInterface {
       y = -500 + BACKGROUND_HEIGHT / 2;
     }
   }
+
+  /**
+   *  controlset is either 1 or 2
+   *  if the controlset is 1 then it moves player 1's tank
+   *  if it's 2 then it moves player 2's tank.
+   * @param obj
+   * @param event
+   */
   public void update( Observable obj, Object event ) {
     TankWorldEvents gameE = ( TankWorldEvents ) event;
-
     if ( gameE.eventType <= 1 ) {
       KeyEvent e = ( KeyEvent ) gameE.event;
       String action = controls.get(e.getKeyCode());
@@ -168,6 +175,4 @@ public class Tank extends TankWorld implements VehicleInterface {
       }
     }
   }
-
-
 }
