@@ -1,10 +1,9 @@
 package gameObjects;
 
-import java.awt.*;
-import java.awt.image.ImageObserver;
+import java.awt.*; 
 
 /**
- * Created by ericgumba on 4/23/17.
+ * Created by ericgumba and Leo Wang on 4/23/17.
  */
 public class IndestructibleWall extends TankWorld {
 
@@ -24,7 +23,7 @@ public class IndestructibleWall extends TankWorld {
         // add sound generation later.
       }
     for ( Bullet bullet : tankTwoBullets ) {
-      if (bullet.collision( x + 20, y, width - 20, height )) {
+      if ( bullet.collision( x + 20, y, width - 20, height )) {
         // add sound generation later.
       }
     }
