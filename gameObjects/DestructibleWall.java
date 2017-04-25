@@ -35,18 +35,18 @@ public class DestructibleWall extends TankWorld {
     }
   }
 
-  public void draw(Graphics g) {
+  public void draw( Graphics g ) {
     if ( hp == 1 )
     {
-      g.drawImage(wallImage, xSpawnPoint, ySpawnPoint, observer);
+      g.drawImage( wallImage, xSpawnPoint, ySpawnPoint, observer );
     }
   }
 
-  public boolean collision(int oX, int oY, int oW, int oH) {
+  public boolean collision( int xPositionOfObject, int yPositionOfObject, int widthOfObject, int heightOfObject ) {
     if ( hp == 1 )
     {
-      if ((oY + oH > this.ySpawnPoint) && (oY < this.ySpawnPoint + wallHeight)) {
-        if ((oX + oW > this.xSpawnPoint) && (oX < this.xSpawnPoint + wallWidth)) {
+      if ((yPositionOfObject + heightOfObject > this.ySpawnPoint) && (yPositionOfObject < this.ySpawnPoint + wallHeight)) {
+        if ((xPositionOfObject + widthOfObject > this.xSpawnPoint) && (xPositionOfObject < this.xSpawnPoint + wallWidth)) {
           return true;
         }
       }
