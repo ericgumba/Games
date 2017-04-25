@@ -60,7 +60,7 @@ public class WallGenerator extends TankWorld {
 
   }
 
-  public void draw(Graphics g, ImageObserver obs) {
+  public void draw( Graphics g ) {
 
 
     for ( DestructibleWall wall : regularWalls ) {
