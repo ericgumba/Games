@@ -51,6 +51,12 @@ public class Tank extends TankWorld implements VehicleInterface {
     centerY = y + tankHeight / 4;
   }
 
+  /**
+   * Draws the tank at the position indicated by the move() method. If it dies then it draws both tanks
+   * at their spawn point.
+   * @param g
+   * @param obs
+   */
   public void draw(Graphics g, ImageObserver obs) {
     if (hp > 0) {
       BufferedImage currentImage = tankImages.getSubimage(tankWidth * (direction / 6), 0, tankWidth, tankHeight);
@@ -80,6 +86,15 @@ public class Tank extends TankWorld implements VehicleInterface {
     }
   }
 
+  /**
+   * If the tank position <= position of object and position of object >= tank position then the tank has collided
+   * with another object.
+   * @param xPositionOfObject
+   * @param yPositionOfObject
+   * @param widthOfObject
+   * @param heightOfObject
+   * @return
+   */
   private boolean collision(int xPositionOfObject, int yPositionOfObject, int widthOfObject, int heightOfObject) {
 
     if ( this.y < yPositionOfObject + heightOfObject
@@ -171,7 +186,6 @@ public class Tank extends TankWorld implements VehicleInterface {
           centerY = y + tankHeight / 4 + bulletYSpeed * 2;
           myBullets.add( new Bullet( bulletImages, centerX, centerY, bulletXSpeed, bulletYSpeed ));
         }
-
       }
     }
   }
