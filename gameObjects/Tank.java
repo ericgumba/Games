@@ -19,12 +19,13 @@ public class Tank extends TankWorld implements VehicleInterface {
   private BufferedImage tankImages;
   private ArrayList<Bullet> EnemyBullets, myBullets;
   private Image bulletImages;
-  int centerX, centerY, bulletType = 0, bulletXSpeed = 0, bulletYSpeed = 0;
-  int tankWidth, tankHeight, x, y;
-  final int MAX_HP = 4;
-  int hp, score = 0;
-  int speed = 10, direction = 0, directionRate = 0, playerNumber, explodeStage = 5;
-  int xSpeed = 0, ySpeed = 0;
+  private int centerX, centerY;
+  private int tankWidth, tankHeight;
+  int x, y;
+  private final int MAX_HP = 4;
+  private int hp;
+  private int direction = 0, directionRate = 0, playerNumber, explodeStage = 0;
+  private int xSpeed = 0, ySpeed = 0;
   private String healthPoints[] = {"HP: 4", "HP: 3", "HP: 2", "HP: 1", "HP: 0"};
   private String controlSet;
   Tank(String tankImages, ArrayList EnemyBullets, ArrayList myBullets, Image bulletImages, int playerNumber) {
@@ -65,7 +66,6 @@ public class Tank extends TankWorld implements VehicleInterface {
         setXSpawnPoint( playerNumber );
         setYSpawnPoint( playerNumber );
 
-        player[playerNumber].score += 5;
         int otherPlayer = 2;
 
         if ( playerNumber == 1 ){
@@ -117,7 +117,7 @@ public class Tank extends TankWorld implements VehicleInterface {
     for (int i = 0; i < EnemyBullets.size(); i++) {
       if (EnemyBullets.get(i).collision(x + 20, y, tankWidth - 20, tankHeight)) {
         if (hp >= 1) {
-          hp -= (player[playerNumber].bulletType + 1);
+          hp -=  1;
 //          explosionSound_2.play();
         }
       }
@@ -154,15 +154,15 @@ public class Tank extends TankWorld implements VehicleInterface {
       } else if (action.equals("right" + controlSet)) {
         directionRate = -6 * gameE.eventType;
       } else if (action.equals("up" + controlSet)) {
-        ySpeed = (int) (-1 * speed * Math.sin(Math.toRadians(direction))) * gameE.eventType;
-        xSpeed = (int) (speed * Math.cos(Math.toRadians(direction))) * gameE.eventType;
+        ySpeed = (int) (-1 * 5 * Math.sin(Math.toRadians(direction))) * gameE.eventType;
+        xSpeed = (int) (5 * Math.cos(Math.toRadians(direction))) * gameE.eventType;
       } else if (action.equals("down" + controlSet)) {
-        ySpeed = (int) (speed * Math.sin(Math.toRadians(direction))) * gameE.eventType;
-        xSpeed = (int) (-1 * speed * Math.cos(Math.toRadians(direction))) * gameE.eventType;
+        ySpeed = (int) (5 * Math.sin(Math.toRadians(direction))) * gameE.eventType;
+        xSpeed = (int) (-1 * 5 * Math.cos(Math.toRadians(direction))) * gameE.eventType;
       } else if (action.equals("shoot" + controlSet)) {
         if (gameE.eventType == 0) {
-          bulletXSpeed = (int) (15 * Math.cos(Math.toRadians(direction)));
-          bulletYSpeed = (int) (-15 * Math.sin(Math.toRadians(direction)));
+          int bulletXSpeed = (int) (15 * Math.cos(Math.toRadians(direction)));
+          int bulletYSpeed = (int) (-15 * Math.sin(Math.toRadians(direction)));
           centerX = x + tankWidth / 4 + bulletXSpeed * 2;
           centerY = y + tankHeight / 4 + bulletYSpeed * 2;
           myBullets.add(new Bullet(bulletImages, centerX, centerY, bulletXSpeed, bulletYSpeed));
