@@ -34,15 +34,15 @@ public class Tank extends TankWorld implements VehicleInterface {
     try {
       this.tankImages = imageGenerator.getBufferedImage(tankImages);
     } catch ( IOException e ) {
-      System.out.println(e);
+      System.out.println( e );
     }
     this.EnemyBullets = EnemyBullets;
     this.myBullets = myBullets;
     tankWidth = this.tankImages.getWidth() / 60;
     tankHeight = this.tankImages.getHeight();
 
-    setXSpawnPoint(playerNumber);
-    setYSpawnPoint(playerNumber);
+    setXSpawnPoint( playerNumber );
+    setYSpawnPoint( playerNumber );
 
     hp = MAX_HP;
     this.playerNumber = playerNumber;
@@ -112,15 +112,13 @@ public class Tank extends TankWorld implements VehicleInterface {
         ) {
       y += ySpeed;
     }
-
-    for ( int i = 0; i < EnemyBullets.size(); i++ ) {
-      if ( EnemyBullets.get(i).collision(x + 20, y, tankWidth - 20, tankHeight )) {
-        if ( hp >= 1 ) {
-          hp -=  1;
-//          explosionSound_2.play();
+      for ( Bullet bullet: EnemyBullets ){
+        if ( bullet.collision( x + 20, y, tankWidth - 20, tankHeight )) {
+          if ( hp >= 1 ){
+            hp -= 1;
+          }
         }
       }
-    }
   }
 
   private void setXSpawnPoint(int playerNumber){
