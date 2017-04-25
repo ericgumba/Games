@@ -21,12 +21,12 @@ public class IndestructibleWall extends TankWorld {
   }
 
   public void update() {
-    for (int i = 0; i < tankLBullets.size(); i++) {
-      if (tankLBullets.get(i).collision(x + 20, y, width - 20, height)) {
+    for (int i = 0; i < tankOneBullets.size(); i++) {
+      if (tankOneBullets.get(i).collision(x + 20, y, width - 20, height)) {
       }
     }
-    for (int i = 0; i < tankRBullets.size(); i++) {
-      if (tankRBullets.get(i).collision(x + 20, y, width - 20, height)) {
+    for (int i = 0; i < tankTwoBullets.size(); i++) {
+      if (tankTwoBullets.get(i).collision(x + 20, y, width - 20, height)) {
       }
     }
   }

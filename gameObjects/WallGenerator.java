@@ -65,7 +65,7 @@ public class WallGenerator extends TankWorld {
 
     for (int i = 0; i < regularWalls.size(); i++) {
       regularWalls.get(i).update();
-      regularWalls.get(i).draw(g, obs);
+      regularWalls.get(i).draw(g);
     }
     for ( int i = 0; i < invincibleWalls.size(); i++){
       invincibleWalls.get(i).update();

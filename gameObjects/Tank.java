@@ -33,7 +33,7 @@ public class Tank extends TankWorld implements VehicleInterface {
     this.bulletImages = bulletImages;
     try {
       this.tankImages = imageGenerator.getBufferedImage(tankImages);
-    } catch (IOException e) {
+    } catch ( IOException e ) {
       System.out.println(e);
     }
     this.EnemyBullets = EnemyBullets;
@@ -80,15 +80,14 @@ public class Tank extends TankWorld implements VehicleInterface {
     }
   }
 
-  public boolean collision(int x, int y, int w, int h) {
-    x += 5;
-    y += 5;
-    w -= 10;
-    h -= 15;
-    if ((y + h > this.y) && (y < this.y + tankHeight)) {
-      if ((x + w > this.x) && (x < this.x + tankWidth)) {
-        return true;
-      }
+  private boolean collision(int xPositionOfObject, int yPositionOfObject, int widthOfObject, int heightOfObject) {
+
+    if ( this.y < yPositionOfObject + heightOfObject
+       && this.y + tankHeight > yPositionOfObject )
+        if ( this.x < xPositionOfObject + widthOfObject
+            && this.x + tankWidth > xPositionOfObject ) {
+            return true;
+
     }
     return false;
   }
@@ -101,22 +100,22 @@ public class Tank extends TankWorld implements VehicleInterface {
     } else if (direction == 360) {
       direction = 0;
     }
-    if ((x + xSpeed < BACKGROUND_WIDTH - 70) && (x + xSpeed > 0)
-        && (!(player[playerNumber].collision(x + xSpeed, y, tankWidth, tankHeight)))
-        && (!(wallGenerator.collision(x + xSpeed, y, tankWidth, tankHeight)))
+    if (( x + xSpeed < BACKGROUND_WIDTH - 70 ) && ( x + xSpeed > 0 )
+        && ( !(player[playerNumber].collision(x + xSpeed, y, tankWidth, tankHeight )))
+        && ( !( wallGenerator.collision( x + xSpeed, y, tankWidth, tankHeight )))
         ) {
       x += xSpeed;
     }
-    if ((y + ySpeed < BACKGROUND_HEIGHT - 88) && (y + ySpeed > 0)
-        && (!(player[playerNumber].collision(x, y + ySpeed, tankWidth, tankHeight)))
-        && (!(wallGenerator.collision(x, y + ySpeed, tankWidth, tankHeight)))
+    if (( y + ySpeed < BACKGROUND_HEIGHT - 88 ) && ( y + ySpeed > 0 )
+        && ( !( player[ playerNumber ].collision( x, y + ySpeed, tankWidth, tankHeight )))
+        && ( !( wallGenerator.collision( x, y + ySpeed, tankWidth, tankHeight )))
         ) {
       y += ySpeed;
     }
 
-    for (int i = 0; i < EnemyBullets.size(); i++) {
-      if (EnemyBullets.get(i).collision(x + 20, y, tankWidth - 20, tankHeight)) {
-        if (hp >= 1) {
+    for ( int i = 0; i < EnemyBullets.size(); i++ ) {
+      if ( EnemyBullets.get(i).collision(x + 20, y, tankWidth - 20, tankHeight )) {
+        if ( hp >= 1 ) {
           hp -=  1;
 //          explosionSound_2.play();
         }
@@ -127,7 +126,7 @@ public class Tank extends TankWorld implements VehicleInterface {
   private void setXSpawnPoint(int playerNumber){
 
 
-    if (playerNumber == 1) {
+    if ( playerNumber == 1 ) {
       x = playerNumber * 60 + BACKGROUND_WIDTH / 3;
     } else {
       x = playerNumber + 400 + BACKGROUND_WIDTH / 3;
@@ -143,29 +142,29 @@ public class Tank extends TankWorld implements VehicleInterface {
       y = -500 + BACKGROUND_HEIGHT / 2;
     }
   }
-  public void update(Observable obj, Object event) {
-    TankWorldEvents gameE = (TankWorldEvents) event;
+  public void update( Observable obj, Object event ) {
+    TankWorldEvents gameE = ( TankWorldEvents ) event;
 
-    if (gameE.eventType <= 1) {
-      KeyEvent e = (KeyEvent) gameE.event;
+    if ( gameE.eventType <= 1 ) {
+      KeyEvent e = ( KeyEvent ) gameE.event;
       String action = controls.get(e.getKeyCode());
-      if (action.equals("left" + controlSet)) {
+      if ( action.equals( "left" + controlSet )) {
         directionRate = 6 * gameE.eventType;
-      } else if (action.equals("right" + controlSet)) {
+      } else if ( action.equals( "right" + controlSet )) {
         directionRate = -6 * gameE.eventType;
-      } else if (action.equals("up" + controlSet)) {
-        ySpeed = (int) (-1 * 5 * Math.sin(Math.toRadians(direction))) * gameE.eventType;
-        xSpeed = (int) (5 * Math.cos(Math.toRadians(direction))) * gameE.eventType;
-      } else if (action.equals("down" + controlSet)) {
-        ySpeed = (int) (5 * Math.sin(Math.toRadians(direction))) * gameE.eventType;
-        xSpeed = (int) (-1 * 5 * Math.cos(Math.toRadians(direction))) * gameE.eventType;
-      } else if (action.equals("shoot" + controlSet)) {
-        if (gameE.eventType == 0) {
-          int bulletXSpeed = (int) (15 * Math.cos(Math.toRadians(direction)));
-          int bulletYSpeed = (int) (-15 * Math.sin(Math.toRadians(direction)));
+      } else if ( action.equals( "up" + controlSet )) {
+        ySpeed = ( int ) ( -1 * 5 * Math.sin( Math.toRadians( direction ))) * gameE.eventType;
+        xSpeed = ( int ) ( 5 * Math.cos( Math.toRadians( direction ))) * gameE.eventType;
+      } else if ( action.equals( "down" + controlSet )) {
+        ySpeed = ( int ) ( 5 * Math.sin( Math.toRadians( direction ))) * gameE.eventType;
+        xSpeed = ( int ) ( -1 * 5 * Math.cos( Math.toRadians( direction ))) * gameE.eventType;
+      } else if ( action.equals( "shoot" + controlSet )) {
+        if ( gameE.eventType == 0 ) {
+          int bulletXSpeed = ( int) ( 15 * Math.cos(Math.toRadians( direction )));
+          int bulletYSpeed = ( int ) ( -15 * Math.sin( Math.toRadians( direction )));
           centerX = x + tankWidth / 4 + bulletXSpeed * 2;
           centerY = y + tankHeight / 4 + bulletYSpeed * 2;
-          myBullets.add(new Bullet(bulletImages, centerX, centerY, bulletXSpeed, bulletYSpeed));
+          myBullets.add( new Bullet( bulletImages, centerX, centerY, bulletXSpeed, bulletYSpeed ));
         }
 
       }
