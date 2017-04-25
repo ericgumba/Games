@@ -8,9 +8,8 @@ import java.awt.image.ImageObserver;
  */
 public class IndestructibleWall extends TankWorld {
 
-  Image wallImage = imageGenerator.getImage("Images/Blue_wall1.png");
-  int x, y, width, height;
-  boolean isVisible;
+  private Image wallImage = imageGenerator.getImage("Images/Blue_wall1.png");
+  private int x, y, width, height;
 
   IndestructibleWall(int x, int y) {
     this.x = x;
@@ -25,19 +24,19 @@ public class IndestructibleWall extends TankWorld {
         // add sound generation later.
       }
     for ( Bullet bullet : tankTwoBullets ) {
-      if (bullet.collision(x + 20, y, width - 20, height)) {
+      if (bullet.collision( x + 20, y, width - 20, height )) {
         // add sound generation later.
       }
     }
   }
 
   public void draw( Graphics g ) {
-      g.drawImage(wallImage, x, y, observer);
+      g.drawImage( wallImage, x, y, observer );
   }
 
-  public boolean collision(int oX, int oY, int oW, int oH) {
-      if ((oY + oH > this.y) && (oY < this.y + height)) {
-        if ((oX + oW > this.x) && (oX < this.x + width)) {
+  public boolean collision( int oX, int oY, int oW, int oH ) {
+      if (( oY + oH > this.y ) && ( oY < this.y + height)) {
+        if (( oX + oW > this.x ) && ( oX < this.x + width )) {
           return true;
         }
       }
