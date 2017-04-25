@@ -8,13 +8,13 @@ import java.awt.Image;
 import java.awt.image.ImageObserver;
 public class Bullet extends TankWorld {
 
-  private Image imageOfBullet; //the caller, whether enemy or user must provide the bullet
+  private Image imageOfBullet;
   private int x, y, sizeX, sizeY, xSpeed, ySpeed;
 
 
 
   Bullet( Image imageOfBullet, int x, int y, int xSpeed, int ySpeed ) {
-    this.imageOfBullet = imageOfBullet;//recieve different bullet image when power-up is picked up
+    this.imageOfBullet = imageOfBullet;
     this.x = x;
     this.y = y;
     this.xSpeed = xSpeed;
@@ -30,7 +30,7 @@ public class Bullet extends TankWorld {
         )
     {
       this.x = 0;
-      this.y = 0; // When it reaches here. it must be removed.
+      this.y = 0;  
       return true;
     }
     return false;
