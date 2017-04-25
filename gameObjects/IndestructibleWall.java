@@ -17,7 +17,6 @@ public class IndestructibleWall extends TankWorld {
     this.y = y;
     width = wallImage.getWidth(null);
     height = wallImage.getHeight(null);
-    isVisible = true;
   }
 
   public void update() {
@@ -32,21 +31,16 @@ public class IndestructibleWall extends TankWorld {
     }
   }
 
-  public void draw(Graphics g, ImageObserver obs) {
-    if (isVisible) {
+  public void draw( Graphics g ) {
       g.drawImage(wallImage, x, y, observer);
-    }
   }
 
   public boolean collision(int oX, int oY, int oW, int oH) {
-    if (isVisible) {
       if ((oY + oH > this.y) && (oY < this.y + height)) {
         if ((oX + oW > this.x) && (oX < this.x + width)) {
           return true;
         }
       }
-      return false;
-    }
     return false;
   }
 }
