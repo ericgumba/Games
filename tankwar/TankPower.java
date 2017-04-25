@@ -1,6 +1,7 @@
-package src.tankwar;
+package tankwar;
 
 import game.WallObjectInterface;
+
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.ImageObserver;
@@ -10,7 +11,7 @@ import java.awt.image.ImageObserver;
  */
 
 
-public class TankPower extends TankWar {
+public class TankPower extends  TankWar {
     Image icon;
     int x, y, width, height;
     

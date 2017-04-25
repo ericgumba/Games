@@ -1,7 +1,8 @@
-package src.tankwar;
+package tankwar;
 
 import game.GameEvents;
 import game.MobileObjectInterface;
+
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.ImageObserver;
@@ -15,10 +16,10 @@ import java.util.logging.Logger;
  *  @ SFSU Spring 2017  CSC413 assignment 44/18/2017
  */
 
-public class MobileObject extends TankWar implements MobileObjectInterface {
+public class MobileObject extends  TankWar implements MobileObjectInterface {
     
     ArrayList<TankPower> powers = new ArrayList();
-    ArrayList<Wall> allWalls = new ArrayList();
+    ArrayList< Wall> allWalls = new ArrayList();
 
      MobileObject() {}
 

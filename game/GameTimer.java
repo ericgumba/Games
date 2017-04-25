@@ -1,4 +1,4 @@
-package src.game;
+package game;
 
 /**
  * @ SFSU Spring 2017 CSC413 assignment 4 4/18/2017

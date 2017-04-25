@@ -1,7 +1,10 @@
-package src.tankwar;
+package tankwar;
 
 import game.GameEvents;
 import game.MobileObjectInterface;
+import tankwar.*;
+import tankwar.Bullet;
+
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
@@ -18,7 +21,7 @@ import java.util.Observable;
 public class UserTank extends TankWar implements MobileObjectInterface {
 
     private BufferedImage tankImages, currentImage;
-    private ArrayList<Bullet> EnemyBullets, myBullets;
+    private ArrayList< Bullet> EnemyBullets, myBullets;
     private Image[] bulletImages;
     int startX, startY, centerX, centerY, bulletType = 0, bulletXSpeed = 0, bulletYSpeed = 0;
     int tankWidth, tankHeight, x, y;

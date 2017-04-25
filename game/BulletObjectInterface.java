@@ -1,6 +1,6 @@
-package src.game;
+package game;
 
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.image.ImageObserver;
 
 /**

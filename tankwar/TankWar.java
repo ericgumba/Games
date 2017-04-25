@@ -1,9 +1,10 @@
-package src.tankwar;
+package tankwar;
 
 import game.GameControl;
 import game.GameControlNetwork;
 import game.GameEvents;
 import game.GameTimer;
+
 import static java.applet.Applet.newAudioClip;
 import java.applet.AudioClip;
 import java.awt.Color;

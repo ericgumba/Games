@@ -1,4 +1,4 @@
-package src.game;
+package game;
 
 import java.awt.event.KeyEvent;
 import java.util.Observable;

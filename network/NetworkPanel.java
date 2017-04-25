@@ -1,20 +1,10 @@
-package src.network;
+package network;
 
 //import examples.network.ObservableKeyEntry;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.util.Observable;
-import java.util.Observer;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *  @ SFSU CSC413 assignment 4 4/25/2017
@@ -31,7 +21,7 @@ public class NetworkPanel {
     //keyListener = new ObservableKeyEntry();
     //this.addKeyListener( keyListener );
     
-    public NetworkPanel (Integer port) {
+    public NetworkPanel(Integer port) {
             super();
             try {
                 ServerSocket server = new ServerSocket( port );
@@ -52,7 +42,7 @@ public class NetworkPanel {
             }
     }
     
-        public NetworkPanel (String ipAddress, Integer port) {
+        public NetworkPanel(String ipAddress, Integer port) {
             super();
             try {
                 Socket connection = new Socket(ipAddress, port);
