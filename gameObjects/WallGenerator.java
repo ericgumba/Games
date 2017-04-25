@@ -9,9 +9,9 @@ import java.util.ArrayList;
  */
 public class WallGenerator extends TankWorld {
 
-  ArrayList<IndestructibleWall> invincibleWalls = new ArrayList();
-  ArrayList<DestructibleWall> regularWalls = new ArrayList();
-  int wallWidth = 38;
+  private ArrayList<IndestructibleWall> invincibleWalls = new ArrayList();
+  private ArrayList<DestructibleWall> regularWalls = new ArrayList();
+  private int wallWidth = 38;
 
 
   WallGenerator() {
@@ -52,10 +52,10 @@ public class WallGenerator extends TankWorld {
       invincibleWalls.add(new IndestructibleWall(38 + 38 * i, BACKGROUND_HEIGHT /2 - 38 * 2));
     }
     for ( int i = 0 ; i < 13; i++ ){
-      regularWalls.add(new DestructibleWall(BACKGROUND_WIDTH / 2, 300 + i * 38));
-      regularWalls.add(new DestructibleWall(BACKGROUND_WIDTH / 2 - 38, 300 + i * 38 ));
-      regularWalls.add(new DestructibleWall( BACKGROUND_WIDTH / 2 + 38 + 38 * i, 300));
-      regularWalls.add(new DestructibleWall(BACKGROUND_WIDTH / 2 + 38 - 38 * i, 300 + 13 * 38) );
+      regularWalls.add( new DestructibleWall( BACKGROUND_WIDTH / 2, 300 + i * 38 ));
+      regularWalls.add( new DestructibleWall( BACKGROUND_WIDTH / 2 - 38, 300 + i * 38 ));
+      regularWalls.add( new DestructibleWall( BACKGROUND_WIDTH / 2 + 38 + 38 * i, 300));
+      regularWalls.add( new DestructibleWall( BACKGROUND_WIDTH / 2 + 38 - 38 * i, 300 + 13 * 38 ));
     }
 
   }
@@ -63,24 +63,24 @@ public class WallGenerator extends TankWorld {
   public void draw(Graphics g, ImageObserver obs) {
 
 
-    for (int i = 0; i < regularWalls.size(); i++) {
-      regularWalls.get(i).update();
-      regularWalls.get(i).draw(g);
+    for ( DestructibleWall wall : regularWalls ) {
+      wall.update();
+      wall.draw(g);
     }
-    for ( int i = 0; i < invincibleWalls.size(); i++){
-      invincibleWalls.get(i).update();
-      invincibleWalls.get(i).draw(g, obs);
+    for ( IndestructibleWall wall : invincibleWalls ){
+      wall.update();
+      wall.draw( g );
     }
   }
 
-  public boolean collision(int oX, int oY, int oW, int oH) {
-    for (int i = 0; i < regularWalls.size(); i++) {
-      if (regularWalls.get(i).collision(oX, oY, oW, oH)) {
+  public boolean collision( int oX, int oY, int oW, int oH ) {
+    for ( DestructibleWall wall : regularWalls ) {
+      if ( wall.collision( oX, oY, oW, oH )) {
         return true;
       }
     }
-    for(int i = 0; i < invincibleWalls.size(); i++) {
-      if (invincibleWalls.get(i).collision(oX, oY, oW, oH)) {
+    for( IndestructibleWall wall : invincibleWalls ) {
+      if ( wall.collision( oX, oY, oW, oH )) {
         return true;
       }
     }
