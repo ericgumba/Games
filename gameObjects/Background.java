@@ -3,11 +3,11 @@ package gameObjects;
 import java.awt.*;
 import java.awt.image.ImageObserver;
 /**
- * Created by ericgumba on 4/14/17.
+ * Created by Eric Gumba and Leo Wang on 4/14/17.
  */
 public class Background extends TankWorld {
 
-  Image gameBoard = imageGenerator.getImage("Images/Background.png");
+  private Image gameBoard = imageGenerator.getImage("Images/Background.png");
 
   public void draw(Graphics2D graphics, ImageObserver observer) {
     graphics.drawImage(gameBoard, 0, 0, observer);
