@@ -7,43 +7,46 @@ import java.awt.image.ImageObserver;
  * Created by ericgumba on 4/23/17.
  */
 public class DestructibleWall extends TankWorld {
-  Image wallImage = imageGenerator.getImage("Images/Blue_wall2.png");
-  int x, y, width, height;
-  boolean isVisible;
+  private Image wallImage = imageGenerator.getImage("Images/Blue_wall2.png");
+  private int xSpawnPoint, ySpawnPoint, wallWidth, wallHeight;
+  private int hp = 1;
 
-  DestructibleWall(int x, int y) {
-    this.x = x;
-    this.y = y;
-    width = wallImage.getWidth(null);
-    height = wallImage.getHeight(null);
-    isVisible = true;
+
+  DestructibleWall(int xSpawnPoint, int y) {
+    this.xSpawnPoint = xSpawnPoint;
+    this.ySpawnPoint = y;
+    wallWidth = wallImage.getWidth(null);
+    wallHeight = wallImage.getHeight(null);
   }
 
   public void update() {
-    if (isVisible) {
-      for (int i = 0; i < tankLBullets.size(); i++) {
-        if (tankLBullets.get(i).collision(x + 20, y, width - 20, height)) {
-          isVisible = false;
+    if ( hp == 1 ) // isVisible
+    {
+      for (Bullet bullet : tankOneBullets){
+        if (bullet.collision(xSpawnPoint + 20, ySpawnPoint, wallWidth - 20, wallHeight)) {
+          hp -= 1;
         }
       }
-      for (int i = 0; i < tankRBullets.size(); i++) {
-        if (tankRBullets.get(i).collision(x + 20, y, width - 20, height)) {
-          isVisible = false;
+      for ( Bullet bullet : tankTwoBullets ){
+        if ( bullet.collision( xSpawnPoint + 20, ySpawnPoint, wallWidth - 20, wallHeight )) {
+          hp -= 1;
         }
       }
     }
   }
 
-  public void draw(Graphics g, ImageObserver obs) {
-    if (isVisible) {
-      g.drawImage(wallImage, x, y, observer);
+  public void draw(Graphics g) {
+    if ( hp == 1 )
+    {
+      g.drawImage(wallImage, xSpawnPoint, ySpawnPoint, observer);
     }
   }
 
   public boolean collision(int oX, int oY, int oW, int oH) {
-    if (isVisible) {
-      if ((oY + oH > this.y) && (oY < this.y + height)) {
-        if ((oX + oW > this.x) && (oX < this.x + width)) {
+    if ( hp == 1 )
+    {
+      if ((oY + oH > this.ySpawnPoint) && (oY < this.ySpawnPoint + wallHeight)) {
+        if ((oX + oW > this.xSpawnPoint) && (oX < this.xSpawnPoint + wallWidth)) {
           return true;
         }
       }
