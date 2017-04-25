@@ -7,11 +7,11 @@ import java.io.IOException;
 import java.net.URL;
 
 /**
- * Created by ericgumba on 4/21/17.
+ * Created by Eric Gumba and Leo Wang on 4/21/17.
  */
 public class ImageGenerator extends TankWorld{
 
-    public Image getImage(String name) {
+    public Image getImage( String name ) {
       try {
         URL url = TankWorld.class.getResource(name);
         Image img = getToolkit().getImage(url);
@@ -25,9 +25,9 @@ public class ImageGenerator extends TankWorld{
       }
     }
 
-    public BufferedImage getBufferedImage(String name) throws IOException {
-      URL url = TankWorld.class.getResource(name);
-      BufferedImage img = ImageIO.read(url);
+    public BufferedImage getBufferedImage( String name ) throws IOException {
+      URL url = TankWorld.class.getResource( name );
+      BufferedImage img = ImageIO.read( url );
       try {
         MediaTracker tracker = new MediaTracker(this);
         tracker.addImage(img, 0);
