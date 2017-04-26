@@ -11,10 +11,9 @@ import java.util.ArrayList;
 import java.util.Observable;
 
 /**
- * Created by Eric Gumba and Leo Wang on 4/22/17.
+ * Created by Eric Gumba and Leo Wang on 4/22/17. d
  */
 public class Tank extends TankWorld implements VehicleInterface {
-
 
   private BufferedImage tankImages;
   private ArrayList<Bullet> EnemyBullets, myBullets;
@@ -28,8 +27,8 @@ public class Tank extends TankWorld implements VehicleInterface {
   private int xSpeed = 0, ySpeed = 0;
   private String healthPoints[] = {"HP: 4", "HP: 3", "HP: 2", "HP: 1", "HP: 0"};
   private String controlSet;
-  Tank(String tankImages, ArrayList EnemyBullets, ArrayList myBullets, Image bulletImages, int playerNumber) {
 
+  Tank(String tankImages, ArrayList EnemyBullets, ArrayList myBullets, Image bulletImages, int playerNumber) {
     this.bulletImages = bulletImages;
     try {
       this.tankImages = imageGenerator.getBufferedImage(tankImages);

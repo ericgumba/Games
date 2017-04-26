@@ -4,7 +4,7 @@ import java.util.Observable;
 import java.awt.event.KeyEvent;
 
 /**
- * Created by ericgumba on 4/22/17.
+ * Created by eric gumba and leo wang on 4/22/17.
  */
 public class TankWorldEvents extends Observable {
   public int eventType;

@@ -3,7 +3,7 @@ package gameObjects;
 import java.awt.*;
 
 /**
- * Created by ericgumba on 4/23/17.
+ * Created by ericgumba and leo wang on 4/23/17. d
  */
 public class DestructibleWall extends TankWorld {
   private Image wallImage = imageGenerator.getImage("Images/Blue_wall2.png");
@@ -44,11 +44,15 @@ public class DestructibleWall extends TankWorld {
   public boolean collision( int xPositionOfObject, int yPositionOfObject, int widthOfObject, int heightOfObject ) {
     if ( hp == 1 )
     {
-      if (( yPositionOfObject + heightOfObject > this.yLocationOfWall) && ( yPositionOfObject < this.yLocationOfWall + wallHeight )) {
-        if (( xPositionOfObject + widthOfObject > this.xLocationOfWall) && ( xPositionOfObject < this.xLocationOfWall + wallWidth )) {
+      if (
+          yPositionOfObject + heightOfObject > this.yLocationOfWall
+          && yPositionOfObject < this.yLocationOfWall + wallHeight
+              && xPositionOfObject + widthOfObject > this.xLocationOfWall
+              &&  xPositionOfObject < this.xLocationOfWall + wallWidth
+          ) {
           return true;
         }
-      }
+
       return false;
     }
     return false;

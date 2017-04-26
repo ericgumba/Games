@@ -4,11 +4,11 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 /**
- * Created by ericgumba on 4/22/17.
+ * Created by ericgumba and leo wang on 4/22/17.
  */
 public class PlayerControls extends KeyAdapter {
 
-  TankWorldEvents tankWorldEvents;
+  private TankWorldEvents tankWorldEvents;
 
   public PlayerControls( TankWorldEvents tankWorldEvents ) {
     this.tankWorldEvents = tankWorldEvents;

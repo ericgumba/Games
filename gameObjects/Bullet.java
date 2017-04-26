@@ -1,7 +1,7 @@
 package gameObjects;
 
 /**
- * Created by ericgumba and Leo Wang on 4/22/17.
+ * Created by ericgumba and Leo Wang on 4/22/17. .
  */
 import java.awt.Graphics;
 import java.awt.Image;

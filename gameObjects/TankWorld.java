@@ -1,5 +1,7 @@
 package gameObjects;
 
+import GameInterface.VehicleInterface;
+
 import java.applet.AudioClip;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -9,14 +11,20 @@ import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
-import java.net.URL;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import javax.swing.JApplet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.*;
+
 /**
- * Created by ericgumba and Leo Wang on 4/20/17.
+ * Created by ericgumba and Leo Wang on 4/20/17. d
  */
-public class TankWorld extends JApplet {
+public class TankWorld extends JPanel {
 
   static ImageGenerator imageGenerator;
   static HashMap<Integer, String> controls = new HashMap<>();
@@ -28,11 +36,12 @@ public class TankWorld extends JApplet {
   private Background rockBackground;
   private static Tank tankOne, tankTwo;
   static Tank[] player = new Tank[3];
+  final int levelSize = 40;
   static Image[] explosionFrames;
   static ArrayList<Bullet> tankOneBullets, tankTwoBullets;
   static AudioClip fire, death;
   static WallGenerator wallGenerator;
-
+  int startLX, startLY, startRX, startRY;
 
   /**
    * Initializes various objects within the game, such as the tanks,
@@ -58,7 +67,7 @@ public class TankWorld extends JApplet {
 
     rockBackground = new Background();
 
-
+    constructWallPattern();
     tankOneBullets = new ArrayList();
     tankTwoBullets = new ArrayList();
 
@@ -159,6 +168,8 @@ public class TankWorld extends JApplet {
   private void updatePlayerOneDisplay(){
 
     playerOneXDisplay = tankOne.x + 30 - SCREEN_WIDTH / 4;
+
+
     if (playerOneXDisplay < 0) {
       playerOneXDisplay = 0;
     } else if ( playerOneXDisplay + SCREEN_WIDTH / 2 > BACKGROUND_WIDTH ) {
@@ -201,6 +212,51 @@ public class TankWorld extends JApplet {
     controls.put( KeyEvent.VK_S, "down1" );
     controls.put( KeyEvent.VK_D, "right1" );
     controls.put( KeyEvent.VK_SPACE, "shoot1" );
+  }
+
+  @SuppressWarnings("null")
+  public void constructWallPattern() {
+    BufferedReader source = null;
+    char ch;
+    String nextLine;
+
+
+
+    try {
+      source = new BufferedReader( new FileReader("gameObjects/level.txt"));
+    } catch (FileNotFoundException ex) {
+      Logger.getLogger(WallGenerator.class.getName()).log(Level.SEVERE, null, ex);
+    }
+    try {
+      for (int i = 1; i<levelSize; i++) {
+        nextLine = source.readLine();
+        for (int j=1; j<levelSize; j++) {
+          ch = nextLine.charAt(j);
+          //System.out.println( "Char: " + ch + "("+i+","+j+")"+ j*(borderX/40)+" "+i*(borderY/40));
+          if (ch=='1'){
+            wallGenerator.addWall(j*(BACKGROUND_WIDTH/40),i*(BACKGROUND_HEIGHT/40),ch);
+          } else if (ch=='2') {
+            wallGenerator.addWall(j*(BACKGROUND_WIDTH/40),i*(BACKGROUND_HEIGHT/40),ch);
+          } else if (ch=='3') {
+            startLX=j*(BACKGROUND_WIDTH/40);
+            startLY=i*(BACKGROUND_HEIGHT/40);
+          } else if (ch=='4') {
+            startRX=j*(BACKGROUND_WIDTH/40);
+            startRY=i*(BACKGROUND_HEIGHT/40);
+          } else if (ch=='5') {
+            // not yet defined in assignment.
+          }
+        }
+      }
+    } catch (IOException ex) {
+//      Logger.getLogger(MobileObject.class.getName()).log(Level.SEVERE, null, ex);
+    }
+
+    if( source != null ) {
+      try {
+        source.close();
+      } catch( IOException e ) {}
+    }
   }
 
 }

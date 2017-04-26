@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.net.URL;
 
 /**
- * Created by Eric Gumba and Leo Wang on 4/21/17.
+ * Created by Eric Gumba and Leo Wang on 4/21/17. d
  */
 public class ImageGenerator extends TankWorld{
 

@@ -3,7 +3,7 @@ package gameObjects;
 import java.awt.*;
 
 /**
- * Created by ericgumba and Leo Wang on 4/23/17.
+ * Created by ericgumba and Leo Wang on 4/23/17. d
  */
 public class IndestructibleWall extends TankWorld {
 

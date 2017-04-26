@@ -3,7 +3,7 @@ package gameObjects;
 import java.awt.*;
 import java.awt.image.ImageObserver;
 /**
- * Created by Eric Gumba and Leo Wang on 4/14/17.
+ * Created by Eric Gumba and Leo Wang on 4/14/17. .
  */
 public class Background extends TankWorld {
 
