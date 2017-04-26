@@ -21,6 +21,7 @@ public class RunGame {
     f.setSize(new Dimension(screenWidth, screenHeight));
     f.setVisible(true);
     f.setResizable(true);
+    f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
   }
 
