@@ -53,7 +53,6 @@ public class TankWorld extends JPanel {
 
   public void init() {
 
-    setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
     imageGenerator = new ImageGenerator();
     wallGenerator = new WallGenerator();
 
