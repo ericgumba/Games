@@ -8,7 +8,6 @@ public class RunGame {
   public static void main(String[] args) {
 
     /* Correct
-
      */
     int screenWidth = 840;
     int screenHeight = 880;
@@ -22,7 +21,6 @@ public class RunGame {
     f.setSize(new Dimension(screenWidth, screenHeight));
     f.setVisible(true);
     f.setResizable(true);
-    game.start();
 
   }
 

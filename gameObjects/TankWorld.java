@@ -1,7 +1,5 @@
 package gameObjects;
 
-import GameInterface.VehicleInterface;
-
 import java.applet.AudioClip;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -21,8 +19,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
 
-/**
- * Created by ericgumba and Leo Wang on 4/20/17. d
+/** a
+ * Created by ericgumba and Leo Wang on 4/20/17. da a
  */
 public class TankWorld extends JPanel {
 
@@ -56,13 +54,13 @@ public class TankWorld extends JPanel {
     initializePlayerOneAndPlayerTwoControls();
 
     explosionFrames = new Image[]{
-        imageGenerator.getImage("Images/explosion2_1.png"),
-        imageGenerator.getImage("Images/explosion2_2.png"),
-        imageGenerator.getImage("Images/explosion2_3.png"),
-        imageGenerator.getImage("Images/explosion2_4.png"),
-        imageGenerator.getImage("Images/explosion2_5.png"),
-        imageGenerator.getImage("Images/explosion2_6.png"),
-        imageGenerator.getImage("Images/explosion2_7.png")
+        imageGenerator.getImage("Resources/explosion1.png"),
+        imageGenerator.getImage("Resources/explosion2.png"),
+        imageGenerator.getImage("Resources/explosion3.png"),
+        imageGenerator.getImage("Resources/explosion4.png"),
+        imageGenerator.getImage("Resources/explosion5.png"),
+        imageGenerator.getImage("Resources/explosion6.png"),
+        imageGenerator.getImage("Resources/explosion7.png")
     };
 
     rockBackground = new Background();
@@ -71,8 +69,8 @@ public class TankWorld extends JPanel {
     tankOneBullets = new ArrayList();
     tankTwoBullets = new ArrayList();
 
-    tankOne = new Tank("Images/Tank_blue_heavy_strip60.png", tankTwoBullets, tankOneBullets, imageGenerator.getImage("Images/bullet.png"), 1);
-    tankTwo = new Tank("Images/Tank_blue_heavy_strip60.png", tankOneBullets, tankTwoBullets, imageGenerator.getImage("Images/bullet.png"), 2);
+    tankOne = new Tank("Resources/Tank_blue_light_strip60.png", tankTwoBullets, tankOneBullets, imageGenerator.getImage("Resources/enemybullet3.png"), 1);
+    tankTwo = new Tank("Resources/Tank_blue_light_strip60.png", tankOneBullets, tankTwoBullets, imageGenerator.getImage("Resources/enemybullet3.png"), 2);
 
     player[1] = tankTwo;
     player[2] = tankOne;
@@ -223,7 +221,7 @@ public class TankWorld extends JPanel {
 
 
     try {
-      source = new BufferedReader( new FileReader("gameObjects/level.txt"));
+      source = new BufferedReader( new FileReader("gameObjects/Resources/level.txt"));
     } catch (FileNotFoundException ex) {
       Logger.getLogger(WallGenerator.class.getName()).log(Level.SEVERE, null, ex);
     }
@@ -249,7 +247,7 @@ public class TankWorld extends JPanel {
         }
       }
     } catch (IOException ex) {
-//      Logger.getLogger(MobileObject.class.getName()).log(Level.SEVERE, null, ex);
+      Logger.getLogger(WallGenerator.class.getName()).log(Level.SEVERE, null, ex);
     }
 
     if( source != null ) {

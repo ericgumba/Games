@@ -4,11 +4,11 @@ import java.awt.Graphics;
 import java.awt.image.ImageObserver;
 import java.util.Observable;
 import java.util.Observer;
-/**
- * Created by ericgumba on 4/22/17.
+
+/** a
+ * Created by ericgumba on 4/25/17.
  */
 public interface VehicleInterface extends Observer {
-  void update(Observable object, Object argument);
-  void draw(Graphics graphics, ImageObserver observer);
+  void draw(Graphics g, ImageObserver obs);
   void move();
 }

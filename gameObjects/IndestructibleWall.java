@@ -2,12 +2,12 @@ package gameObjects;
 
 import java.awt.*;
 
-/**
+/** a
  * Created by ericgumba and Leo Wang on 4/23/17. d
  */
 public class IndestructibleWall extends TankWorld {
 
-  private Image wallImage = imageGenerator.getImage("Images/Blue_wall1.png");
+  private Image wallImage = imageGenerator.getImage("Resources/Blue_wall1.png");
   private int x, y, width, height;
 
   IndestructibleWall(int x, int y) {
