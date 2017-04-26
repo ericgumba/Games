@@ -12,7 +12,7 @@ public class Bullet extends TankWorld {
   private int x, y, sizeX, sizeY, xSpeed, ySpeed;
 
 
-  /**
+  /** a
    * Bullet constructor.
    * @param imageOfBullet
    * @param x

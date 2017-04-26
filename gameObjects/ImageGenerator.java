@@ -6,7 +6,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
 
-/**
+/** a
  * Created by Eric Gumba and Leo Wang on 4/21/17. d
  */
 public class ImageGenerator extends TankWorld{
