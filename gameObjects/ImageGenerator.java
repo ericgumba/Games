@@ -37,5 +37,4 @@ public class ImageGenerator extends TankWorld{
       }
       return img;
     }
-
 }
