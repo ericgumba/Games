@@ -20,11 +20,9 @@ public class IndestructibleWall extends TankWorld {
   public void update() {
     for ( Bullet bullet : tankOneBullets )
       if ( bullet.collision( x + 20, y, width - 20, height )){
-        // add sound generation later.
       }
     for ( Bullet bullet : tankTwoBullets ) {
       if ( bullet.collision( x + 20, y, width - 20, height )) {
-        // add sound generation later.
       }
     }
   }

@@ -1,5 +1,6 @@
 package gameObjects;
 
+import static java.applet.Applet.newAudioClip;
 import java.applet.AudioClip;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -18,6 +19,7 @@ import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
+import java.net.URL;
 
 /** a
  * Created by ericgumba and Leo Wang on 4/20/17. da a
@@ -34,17 +36,21 @@ public class TankWorld extends JPanel {
   private Background rockBackground;
   private static Tank tankOne, tankTwo;
   static Tank[] player = new Tank[3];
-  final int levelSize = 40;
+  private final int levelSize = 40;
   static Image[] explosionFrames;
   static ArrayList<Bullet> tankOneBullets, tankTwoBullets;
   static AudioClip fire, death;
   static WallGenerator wallGenerator;
   int startLX, startLY, startRX, startRY;
+  TankWorldEvents tnkWorldEvents;
+  PlayerControls gameControls;
 
   /**
    * Initializes various objects within the game, such as the tanks,
    * bullets, image generators, and wall generators.
    */
+
+
   public void init() {
 
     setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -77,17 +83,16 @@ public class TankWorld extends JPanel {
 
     this.setFocusable(true);
     observer = this;
-    TankWorldEvents tnkWorldEvents = new TankWorldEvents();
+    tnkWorldEvents = new TankWorldEvents();
 
 
     tnkWorldEvents.addObserver(tankOne);
     tnkWorldEvents.addObserver(tankTwo);
 
-    PlayerControls gameControls = new PlayerControls(tnkWorldEvents);
-    addKeyListener(gameControls);
-
-//    explosionSound_1 = getAudioFile("Resources/Explosion_large.wav");
-//    explosionSound_2 = getAudioFile("Resources/Explosion_small.wav");
+    gameControls = new PlayerControls(tnkWorldEvents);
+    addKeyListener( gameControls );
+    death = newAudioClip(TankWorld.class.getResource("Resources/Explosion_Large.wav"));
+    fire = newAudioClip(TankWorld.class.getResource("Resources/Explosion_small.wav"));
   }
 
 
@@ -226,15 +231,15 @@ public class TankWorld extends JPanel {
       Logger.getLogger(WallGenerator.class.getName()).log(Level.SEVERE, null, ex);
     }
     try {
-      for (int i = 1; i<levelSize; i++) {
+      for (int i = 0; i<levelSize; i++) {
         nextLine = source.readLine();
-        for (int j=1; j<levelSize; j++) {
+        for (int j= 0; j<levelSize; j++) {
           ch = nextLine.charAt(j);
           //System.out.println( "Char: " + ch + "("+i+","+j+")"+ j*(borderX/40)+" "+i*(borderY/40));
           if (ch=='1'){
-            wallGenerator.addWall(j*(BACKGROUND_WIDTH/40),i*(BACKGROUND_HEIGHT/40),ch);
+            wallGenerator.addWall(j*(BACKGROUND_WIDTH/40) + 12,i*(BACKGROUND_HEIGHT/40),ch);
           } else if (ch=='2') {
-            wallGenerator.addWall(j*(BACKGROUND_WIDTH/40),i*(BACKGROUND_HEIGHT/40),ch);
+            wallGenerator.addWall(j*(BACKGROUND_WIDTH/40) + 12,i*(BACKGROUND_HEIGHT/40),ch);
           } else if (ch=='3') {
             startLX=j*(BACKGROUND_WIDTH/40);
             startLY=i*(BACKGROUND_HEIGHT/40);

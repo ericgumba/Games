@@ -80,7 +80,7 @@ public class Tank extends TankWorld implements VehicleInterface {
         }
         player[playerNumber].setXSpawnPoint( otherPlayer );
         player[playerNumber].setYSpawnPoint( otherPlayer );
-//        explosionSound_1.play();
+        death.play();
       }
     }
   }
@@ -151,7 +151,7 @@ public class Tank extends TankWorld implements VehicleInterface {
       y = 460 + BACKGROUND_HEIGHT / 2;
     }
     else {
-      y = -500 + BACKGROUND_HEIGHT / 2;
+      y = -530 + BACKGROUND_HEIGHT / 2;
     }
   }
 
@@ -172,17 +172,18 @@ public class Tank extends TankWorld implements VehicleInterface {
       } else if ( action.equals( "right" + controlSet )) {
         directionRate = -6 * gameE.eventType;
       } else if ( action.equals( "up" + controlSet )) {
-        ySpeed = ( int ) ( -1 * 5 * Math.sin( Math.toRadians( direction ))) * gameE.eventType;
-        xSpeed = ( int ) ( 5 * Math.cos( Math.toRadians( direction ))) * gameE.eventType;
+        ySpeed = ( int ) ( -1 * 10 * Math.sin( Math.toRadians( direction ))) * gameE.eventType;
+        xSpeed = ( int ) ( 10 * Math.cos( Math.toRadians( direction ))) * gameE.eventType;
       } else if ( action.equals( "down" + controlSet )) {
-        ySpeed = ( int ) ( 5 * Math.sin( Math.toRadians( direction ))) * gameE.eventType;
-        xSpeed = ( int ) ( -1 * 5 * Math.cos( Math.toRadians( direction ))) * gameE.eventType;
+        ySpeed = ( int ) ( 10 * Math.sin( Math.toRadians( direction ))) * gameE.eventType;
+        xSpeed = ( int ) ( -1 * 10 * Math.cos( Math.toRadians( direction ))) * gameE.eventType;
       } else if ( action.equals( "shoot" + controlSet )) {
         if ( gameE.eventType == 0 ) {
           int bulletXSpeed = ( int) ( 15 * Math.cos(Math.toRadians( direction )));
           int bulletYSpeed = ( int ) ( -15 * Math.sin( Math.toRadians( direction )));
           centerX = x + tankWidth / 4 + bulletXSpeed * 2;
           centerY = y + tankHeight / 4 + bulletYSpeed * 2;
+          fire.play();
           myBullets.add( new Bullet( bulletImages, centerX, centerY, bulletXSpeed, bulletYSpeed ));
         }
       }

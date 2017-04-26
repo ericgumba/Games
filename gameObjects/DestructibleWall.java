@@ -24,11 +24,13 @@ public class DestructibleWall extends TankWorld {
       for (Bullet bullet : tankOneBullets){
         if (bullet.collision(xLocationOfWall + 20, yLocationOfWall, wallWidth - 20, wallHeight)) {
           hp -= 1;
+          fire.play();
         }
       }
       for ( Bullet bullet : tankTwoBullets ){
         if ( bullet.collision( xLocationOfWall + 20, yLocationOfWall, wallWidth - 20, wallHeight )) {
           hp -= 1;
+          fire.play();
         }
       }
     }
