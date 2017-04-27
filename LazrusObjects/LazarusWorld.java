@@ -1,13 +1,13 @@
-package LazarusView;
+package LazrusObjects;
 
-import LazarusModel.Lazarus;
 import LazarusModel.WoodCrate;
-import gameObjects.Background;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
+import java.util.HashMap;
 
 /**
  * Created by ericgumba on 4/26/17.
@@ -16,23 +16,29 @@ public class LazarusWorld extends JPanel {
   private BufferedImage bufferedImg;
   static ImageGenerator imgGen;
   LazarusBackground lazBackground;
-  ImageObserver observer;
+  public ImageObserver observer;
   final int GAMEBOARD_WIDTH = 640, GAMEBOARD_HEIGHT = 480;
 
+  static MainCharacter mc;
+  static HashMap<Integer, String> controls = new HashMap<>();
 
   public void init(){
     imgGen = new ImageGenerator();
 
-    WoodCrate woodCrate = new WoodCrate(imgGen.getImage("Lazarus/CardBox.png"),0,0);
+    mc = new MainCharacter();
+    controls.put( KeyEvent.VK_LEFT, "left" );
+    controls.put( KeyEvent.VK_RIGHT, "right" );
+    controls.put( KeyEvent.VK_SPACE, "space" );
+    WoodCrate woodCrate = new WoodCrate( imgGen.getImage( "Lazarus/CardBox.png" ),0,0 );
 
     lazBackground = new LazarusBackground();
-    this.setFocusable(true);
+    this.setFocusable( true );
 
 
     observer = this;
 
   }
-  public void paint(Graphics g){
+  public void paint( Graphics g ){
 
     Dimension d = getSize();
 
@@ -40,13 +46,20 @@ public class LazarusWorld extends JPanel {
     updateAndDisplay();
 
     BufferedImage bufferedImg2 = ( BufferedImage ) createImage( GAMEBOARD_WIDTH, GAMEBOARD_HEIGHT );
+
     Graphics2D g3 = bufferedImg2.createGraphics();
     g3.setBackground( getBackground() );
     g3.setRenderingHint( RenderingHints.KEY_RENDERING,
         RenderingHints.VALUE_RENDER_QUALITY );
 
     g3.dispose();
+    /**
+     * To be redacted? Probably. =(
+     */
     g.drawImage( imgGen.getImage("Lazarus/Background.png"), 0, 0, this ); // x = 0, y = 0 means the image is at the top left.
+    mc.draw(g, this);
+    mc.move();
+
 
 
   }
@@ -57,6 +70,8 @@ public class LazarusWorld extends JPanel {
     gameGraphics.setBackground( getBackground() );
     gameGraphics.setRenderingHint( RenderingHints.KEY_RENDERING,
         RenderingHints.VALUE_RENDER_QUALITY );
+
+    mc.draw(gameGraphics, this);
   }
 
 }

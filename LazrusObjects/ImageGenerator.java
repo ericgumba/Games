@@ -1,6 +1,4 @@
-package LazarusView;
-
-import gameObjects.TankWorld;
+package LazrusObjects;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
