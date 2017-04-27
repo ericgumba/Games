@@ -46,6 +46,8 @@ public class Bullet extends TankWorld {
         && x < this.x+sizeX
         )
     {
+
+      fire.play();
       this.x = 5*BACKGROUND_HEIGHT;
       this.y = 5*BACKGROUND_WIDTH;
       return true;

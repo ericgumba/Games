@@ -52,6 +52,7 @@ public class DestructibleWall extends TankWorld {
               && xPositionOfObject + widthOfObject > this.xLocationOfWall
               &&  xPositionOfObject < this.xLocationOfWall + wallWidth
           ) {
+
           return true;
         }
 

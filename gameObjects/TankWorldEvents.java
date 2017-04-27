@@ -15,10 +15,6 @@ public class TankWorldEvents extends Observable {
     eventType = keyEventType;
     event = k;
     setChanged();
-    try {
       notifyObservers(this);
-    } catch (Exception e){
-      System.out.println("Wrong button was pressed.");
-    }
   }
 }

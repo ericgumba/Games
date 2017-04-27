@@ -183,7 +183,6 @@ public class Tank extends TankWorld implements VehicleInterface {
           int bulletYSpeed = ( int ) ( -15 * Math.sin( Math.toRadians( direction )));
           centerX = x + tankWidth / 4 + bulletXSpeed * 2;
           centerY = y + tankHeight / 4 + bulletYSpeed * 2;
-          fire.play();
           myBullets.add( new Bullet( bulletImages, centerX, centerY, bulletXSpeed, bulletYSpeed ));
         }
       }
