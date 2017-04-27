@@ -46,8 +46,8 @@ public class Bullet extends TankWorld {
         && x < this.x+sizeX
         )
     {
-      this.x = 0;
-      this.y = 0;
+      this.x = 5*BACKGROUND_HEIGHT;
+      this.y = 5*BACKGROUND_WIDTH;
       return true;
     }
     return false;
@@ -56,9 +56,14 @@ public class Bullet extends TankWorld {
   /**
    * updates position of bullet based off of its velocity.
    */
-  public void move() {
+  public boolean move() {
     y += ySpeed;
     x += xSpeed;
+    if ((x > BACKGROUND_WIDTH + sizeX || x < -1 * sizeX) || (y > BACKGROUND_HEIGHT + sizeY || y < -1 * sizeY)) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   public void draw(Graphics g, ImageObserver obs) {
