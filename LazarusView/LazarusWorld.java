@@ -1,6 +1,7 @@
 package LazarusView;
 
 import LazarusModel.Lazarus;
+import LazarusModel.WoodCrate;
 import gameObjects.Background;
 
 import javax.swing.*;
@@ -21,6 +22,9 @@ public class LazarusWorld extends JPanel {
 
   public void init(){
     imgGen = new ImageGenerator();
+
+    WoodCrate woodCrate = new WoodCrate(imgGen.getImage("Lazarus/CardBox.png"),0,0);
+
     lazBackground = new LazarusBackground();
     this.setFocusable(true);
 
@@ -52,7 +56,7 @@ public class LazarusWorld extends JPanel {
     Graphics2D gameGraphics = bufferedImg.createGraphics();
     gameGraphics.setBackground( getBackground() );
     gameGraphics.setRenderingHint( RenderingHints.KEY_RENDERING,
-        RenderingHints.VALUE_RENDER_QUALITY ); 
+        RenderingHints.VALUE_RENDER_QUALITY );
   }
 
 }
