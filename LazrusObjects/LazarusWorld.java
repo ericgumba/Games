@@ -12,17 +12,38 @@ import java.util.HashMap;
 /**
  * Created by ericgumba on 4/26/17.
  */
-public class LazarusWorld extends JPanel {
-  private BufferedImage bufferedImg;
+public class LazarusWorld extends JPanel implements Runnable {
+  private BufferedImage bufferedImg, bufferedImg2;
   static ImageGenerator imgGen;
   LazarusBackground lazBackground;
   public ImageObserver observer;
   final int GAMEBOARD_WIDTH = 640, GAMEBOARD_HEIGHT = 480;
-
+  LazarusEvents lazEvents;
+  LazarusControls lazControls;
   static MainCharacter mc;
   static HashMap<Integer, String> controls = new HashMap<>();
+  Thread thread;
+  final int BOX_SPAWN_TIMER = 100;
+
+  @Override
+  public void run() {
+    Thread me = Thread.currentThread();
+    while (thread == me) {
+      repaint();
+      try {
+        thread.sleep(20);
+      } catch (InterruptedException e) {
+        break;
+      }
+    }
+  }
 
   public void init(){
+
+    thread = new Thread(this);
+    thread.setPriority(Thread.MIN_PRIORITY);
+    thread.start();
+
     imgGen = new ImageGenerator();
 
     mc = new MainCharacter();
@@ -33,35 +54,31 @@ public class LazarusWorld extends JPanel {
 
     lazBackground = new LazarusBackground();
     this.setFocusable( true );
-
-
     observer = this;
+
+
+    lazEvents = new LazarusEvents();
+    lazEvents.addObserver( mc );
+    lazControls = new LazarusControls( lazEvents );
+    addKeyListener( lazControls );
 
   }
   public void paint( Graphics g ){
 
     Dimension d = getSize();
-
-
     updateAndDisplay();
-
-    BufferedImage bufferedImg2 = ( BufferedImage ) createImage( GAMEBOARD_WIDTH, GAMEBOARD_HEIGHT );
-
+    bufferedImg2 = ( BufferedImage ) createImage( GAMEBOARD_WIDTH, GAMEBOARD_HEIGHT );
     Graphics2D g3 = bufferedImg2.createGraphics();
     g3.setBackground( getBackground() );
     g3.setRenderingHint( RenderingHints.KEY_RENDERING,
         RenderingHints.VALUE_RENDER_QUALITY );
-
+    g3.clearRect(0,0, GAMEBOARD_WIDTH, GAMEBOARD_HEIGHT);
+    g3.drawImage( bufferedImg.getSubimage(0, 0, GAMEBOARD_WIDTH, GAMEBOARD_HEIGHT),0,0,this);
     g3.dispose();
-    /**
-     * To be redacted? Probably. =(
-     */
-    g.drawImage( imgGen.getImage("Lazarus/Background.png"), 0, 0, this ); // x = 0, y = 0 means the image is at the top left.
+    g.drawImage( bufferedImg2,0,0,this);
+
     mc.draw(g, this);
     mc.move();
-
-
-
   }
   public void updateAndDisplay(){
 
@@ -70,8 +87,13 @@ public class LazarusWorld extends JPanel {
     gameGraphics.setBackground( getBackground() );
     gameGraphics.setRenderingHint( RenderingHints.KEY_RENDERING,
         RenderingHints.VALUE_RENDER_QUALITY );
+    gameGraphics.clearRect(0,0,GAMEBOARD_WIDTH, GAMEBOARD_HEIGHT);
 
-    mc.draw(gameGraphics, this);
+    lazBackground.draw(gameGraphics, this);
+
+//    mc.move();
+//    mc.draw(gameGraphics, this);
+
   }
 
 }

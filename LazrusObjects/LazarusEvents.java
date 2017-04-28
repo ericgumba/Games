@@ -4,7 +4,7 @@ import java.awt.event.KeyEvent;
 import java.util.Observable;
 
 /**
- * Created by ericgumba on 4/27/17.
+ * Created by ericgumba on 4/27/17. GOOD
  */
 public class LazarusEvents extends Observable {
   public int eventType;

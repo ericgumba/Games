@@ -14,7 +14,5 @@ public class LazarusBackground extends LazarusWorld {
   public void draw(Graphics2D g, ImageObserver obs){
     g.drawImage(gameBoard, 0, 0, obs);
   }
-  public void update(Observable obj, Event evnt){
 
-  }
 }

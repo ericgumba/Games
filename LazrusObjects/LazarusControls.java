@@ -12,15 +12,14 @@ public class LazarusControls extends KeyAdapter {
 
   private LazarusEvents lazEvents;
 
-  public LazarusControls(LazarusEvents lazEvents) {
+  public LazarusControls( LazarusEvents lazEvents ) {
     this.lazEvents = lazEvents;
   }
 
-  public void keyPressed(KeyEvent pressed) {
-    lazEvents.setValue(pressed, 1);
-  }
+  public void keyPressed( KeyEvent pressed ) { lazEvents.setValue(pressed, 1); }
 
-  public void keyReleased(KeyEvent released) {
+  public void keyReleased( KeyEvent released ) {
     lazEvents.setValue(released, 0);
   }
+
 }

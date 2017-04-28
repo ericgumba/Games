@@ -11,7 +11,7 @@ import java.util.Observable;
 public class MainCharacter extends LazarusWorld implements MainCharacterInterface {
   int xLocation, yLocation;
   Image imageOfLazarus;
-  int xMove = 10, yMove = 10;
+  int xMove = 0, yMove = 0;
   MainCharacter(){
 
     imageOfLazarus = imgGen.getImage("Lazarus/Lazarus_stand.png");
@@ -26,12 +26,10 @@ public class MainCharacter extends LazarusWorld implements MainCharacterInterfac
   public void move(){
 
     xLocation += xMove;
-    yLocation += yMove;
 
 
   }
 
-  @Override
   public void draw(Graphics g, ImageObserver obs) {
     g.drawImage(imageOfLazarus, xLocation, yLocation, obs);
   }
@@ -42,9 +40,9 @@ public class MainCharacter extends LazarusWorld implements MainCharacterInterfac
       KeyEvent keyevnt = (KeyEvent ) lazE.event;
       String lazAction = controls.get( keyevnt.getKeyCode() );
       if ( lazAction.equals("left") ){
-        xMove -= 10 * lazE.eventType;
+        xMove = -10 * lazE.eventType;
       } else if ( lazAction.equals("right") ){
-        xMove += 10*lazE.eventType;
+        xMove = 10 *lazE.eventType;
       }
     }
   }
