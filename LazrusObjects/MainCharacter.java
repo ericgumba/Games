@@ -25,8 +25,8 @@ public class MainCharacter extends LazarusWorld implements MainCharacterInterfac
   }
   public void move(){
 
-    xLocation = xMove;
-    yLocation = yMove;
+    xLocation += xMove;
+    yLocation += yMove;
 
 
   }
