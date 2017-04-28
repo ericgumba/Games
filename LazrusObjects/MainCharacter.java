@@ -11,7 +11,8 @@ import java.util.Observable;
 public class MainCharacter extends LazarusWorld implements MainCharacterInterface {
   int xLocation, yLocation;
   Image imageOfLazarus;
-  int xMove = 0, yMove = 0;
+  int xMove = 200, yMove = 0;
+  int boxPosition = 5;
   MainCharacter(){
 
     imageOfLazarus = imgGen.getImage("Lazarus/Lazarus_stand.png");
@@ -19,8 +20,8 @@ public class MainCharacter extends LazarusWorld implements MainCharacterInterfac
     /*
     TO BE REDACTED AT A LATER DATE
      */
-    xLocation = 10;
-    yLocation = GAMEBOARD_HEIGHT - 105;
+    xLocation = 40*boxPosition;
+    yLocation = GAMEBOARD_HEIGHT - 145;
 
   }
   public void move(){

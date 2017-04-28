@@ -20,20 +20,4 @@ public class CardBox  extends Box{
   public int weight(){
     return 1;
   }
-//
-//  public void draw(Graphics g){
-//    if ( !isCrushed ){
-//      g.drawImage(boxImage, xLocation, yLocation, observer);
-//    }
-//  }
-//
-//  public boolean collision(int xPositionOfObject, int yPositionOfObject, int widthOfObject, int heightOfObject){
-//
-//    return false;
-//  }
-//  public void move(){
-//
-//
-//
-//  }
 }
