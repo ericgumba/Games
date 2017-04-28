@@ -8,7 +8,7 @@ import java.util.Observable;
 /**
  * Created by ericgumba on 4/27/17.
  */
-public class MainCharacter extends LazarusWorld {
+public class MainCharacter extends LazarusWorld implements MainCharacterInterface {
   int xLocation, yLocation;
   Image imageOfLazarus;
   int xMove = 10, yMove = 10;
@@ -30,16 +30,17 @@ public class MainCharacter extends LazarusWorld {
 
 
   }
-  public void draw(Graphics g, ImageObserver imObs){
-    g.drawImage(imageOfLazarus, xLocation, yLocation, imObs);
+
+  @Override
+  public void draw(Graphics g, ImageObserver obs) {
+    g.drawImage(imageOfLazarus, xLocation, yLocation, obs);
   }
 
-
   public void update(Observable obj, Object event){
-    LazarusEvents lazE = new LazarusEvents();
+    LazarusEvents lazE = ( LazarusEvents ) event;
     if( lazE.eventType <= 1 ){
       KeyEvent keyevnt = (KeyEvent ) lazE.event;
-      String lazAction = controls.get(keyevnt.getKeyCode() );
+      String lazAction = controls.get( keyevnt.getKeyCode() );
       if ( lazAction.equals("left") ){
         xMove -= 10 * lazE.eventType;
       } else if ( lazAction.equals("right") ){
