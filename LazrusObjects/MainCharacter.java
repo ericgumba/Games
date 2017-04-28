@@ -25,7 +25,7 @@ public class MainCharacter extends LazarusWorld implements MainCharacterInterfac
   }
   public void move(){
 
-    xLocation += xMove;
+    xLocation = xMove;
 
 
   }
@@ -36,13 +36,13 @@ public class MainCharacter extends LazarusWorld implements MainCharacterInterfac
 
   public void update(Observable obj, Object event){
     LazarusEvents lazE = ( LazarusEvents ) event;
-    if( lazE.eventType <= 1 ){
+    if( lazE.eventType == 0 ){
       KeyEvent keyevnt = (KeyEvent ) lazE.event;
       String lazAction = controls.get( keyevnt.getKeyCode() );
       if ( lazAction.equals("left") ){
-        xMove = -10 * lazE.eventType;
+        xMove -= 40;
       } else if ( lazAction.equals("right") ){
-        xMove = 10 *lazE.eventType;
+        xMove += 40;
       }
     }
   }

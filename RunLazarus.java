@@ -1,4 +1,4 @@
-import LazarusView.LazarusWorld;
+import LazrusObjects.LazarusWorld;
 
 import javax.swing.*;
 import java.awt.*;

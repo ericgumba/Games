@@ -1,6 +1,5 @@
 package LazrusObjects;
 
-import LazarusModel.WoodCrate;
 
 import javax.swing.*;
 import java.awt.*;
@@ -39,7 +38,6 @@ public class LazarusWorld extends JPanel implements Runnable {
       }
     }
   }
-
   public void init(){
 
     thread = new Thread(this);
@@ -54,7 +52,6 @@ public class LazarusWorld extends JPanel implements Runnable {
     controls.put( KeyEvent.VK_LEFT, "left" );
     controls.put( KeyEvent.VK_RIGHT, "right" );
     controls.put( KeyEvent.VK_SPACE, "space" );
-    WoodCrate woodCrate = new WoodCrate( imgGen.getImage( "Lazarus/CardBox.png" ),0,0 );
 
     lazBackground = new LazarusBackground();
     this.setFocusable( true );
@@ -84,11 +81,8 @@ public class LazarusWorld extends JPanel implements Runnable {
     mc.draw(g, this);
     mc.move();
     boxGen.draw(g);
-
-
   }
   public void updateAndDisplay(){
-
     bufferedImg = ( BufferedImage ) createImage( GAMEBOARD_WIDTH, GAMEBOARD_HEIGHT ); // create image that is x by y
     Graphics2D gameGraphics = bufferedImg.createGraphics();
     gameGraphics.setBackground( getBackground() );
