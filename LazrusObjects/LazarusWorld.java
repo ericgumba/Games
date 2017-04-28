@@ -24,6 +24,8 @@ public class LazarusWorld extends JPanel implements Runnable {
   static HashMap<Integer, String> controls = new HashMap<>();
   Thread thread;
   final int BOX_SPAWN_TIMER = 100;
+  static BoxGenerator boxGen;
+
 
   @Override
   public void run() {
@@ -44,7 +46,9 @@ public class LazarusWorld extends JPanel implements Runnable {
     thread.setPriority(Thread.MIN_PRIORITY);
     thread.start();
 
+
     imgGen = new ImageGenerator();
+    boxGen = new BoxGenerator();
 
     mc = new MainCharacter();
     controls.put( KeyEvent.VK_LEFT, "left" );
@@ -79,6 +83,9 @@ public class LazarusWorld extends JPanel implements Runnable {
 
     mc.draw(g, this);
     mc.move();
+    boxGen.draw(g);
+
+
   }
   public void updateAndDisplay(){
 
@@ -91,8 +98,6 @@ public class LazarusWorld extends JPanel implements Runnable {
 
     lazBackground.draw(gameGraphics, this);
 
-//    mc.move();
-//    mc.draw(gameGraphics, this);
 
   }
 

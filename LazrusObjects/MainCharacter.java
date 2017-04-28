@@ -20,7 +20,7 @@ public class MainCharacter extends LazarusWorld implements MainCharacterInterfac
     TO BE REDACTED AT A LATER DATE
      */
     xLocation = 10;
-    yLocation = GAMEBOARD_HEIGHT - 90;
+    yLocation = GAMEBOARD_HEIGHT - 105;
 
   }
   public void move(){

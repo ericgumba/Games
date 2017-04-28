@@ -13,15 +13,11 @@ public abstract class Box extends LazarusWorld {
   int yLocation;
   boolean isCrushed = false;
 
-  public Box(){}
+  // useful information about the boxes
+  final int BOX_WIDTH = 40;
+  final int BOX_HEIGHT = 40;
 
-  public Box(int x, int y){
-    // TO BE REDACTED
-    boxImage = imgGen.getImage("Lazarus/CardBox.png");
 
-    xLocation = x;
-    yLocation = y;
-  }
   public abstract int weight();
 
   public void draw(Graphics g){
