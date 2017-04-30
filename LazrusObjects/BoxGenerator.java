@@ -36,6 +36,15 @@ public class BoxGenerator extends LazarusWorld {
     box.add( new Button( 40*15, GAMEBOARD_HEIGHT - ( 63 + wallHeight * 6 )));
 
 
+    /**
+     * The following is only used as a demo. To be redacted at a later date.
+     */
+    boxWeights.get(10).push(new Wall ( wallHeight * 10, GAMEBOARD_HEIGHT - (63 + wallHeight * 2 )));
+    boxWeights.get(11).push(new Wall ( wallHeight * 11, GAMEBOARD_HEIGHT - (63 + wallHeight * 2 )));
+    boxWeights.get(12).push(new Wall ( wallHeight * 12, GAMEBOARD_HEIGHT - (63 + wallHeight * 2 )));
+    boxWeights.get(12).push(new Wall ( wallHeight * 12, GAMEBOARD_HEIGHT - (63 + wallHeight * 3 )));
+
+
   }
   public void draw ( Graphics g ){
 
