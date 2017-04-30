@@ -10,7 +10,7 @@ public class RunGame {
     /* Correct
      */
     int screenWidth = 840;
-    int screenHeight = 880;
+    int screenHeight = 820; //880
     final TankWorld game = new TankWorld();
     game.init();
     JFrame f = new JFrame("TankWarz");

@@ -24,7 +24,8 @@ public class TankWorld extends JPanel implements Runnable{
   static HashMap<Integer, String> controls = new HashMap<>();
   final int BACKGROUND_WIDTH = 1475, BACKGROUND_HEIGHT = 1155;
   private static int playerOneXDisplay, playerOneYDisplay, playerTwoXDisplay, playerTwoYDisplay;
-  private final int SCREEN_WIDTH = 840, SCREEN_HEIGHT = 880;
+  //private final int SCREEN_WIDTH = 840, SCREEN_HEIGHT = 880;
+  private final int SCREEN_WIDTH = 840, SCREEN_HEIGHT = 820;
   ImageObserver observer;
   private BufferedImage bufferedImg;
   private Background rockBackground;
