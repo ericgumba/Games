@@ -13,6 +13,8 @@ public class MainCharacter extends LazarusWorld implements MainCharacterInterfac
   Image imageOfLazarus;
   int xMove = 200, yMove = GAMEBOARD_HEIGHT-145;
   int lazarusPosition = 5;
+  int timeCounter = 450;
+  int spawnTimer = 200;
   MainCharacter(){
 
     imageOfLazarus = imgGen.getImage( "Lazarus/Lazarus_stand.png" );
@@ -24,13 +26,24 @@ public class MainCharacter extends LazarusWorld implements MainCharacterInterfac
     yLocation = yMove;
 
 
+
+
+    timeCounter++;
+    if ( timeCounter >= 500 ){
+      timeCounter = 0;
+      boxGen.addBox(lazarusPosition*40,0);
+
+    }
+//    System.out.println(timeCounter);
   }
 
   public void draw(Graphics g, ImageObserver obs) {
     g.drawImage(imageOfLazarus, xLocation, yLocation, obs);
   }
 
+  // is called everytime an action happens.
   public void update(Observable obj, Object event){
+
     LazarusEvents lazE = ( LazarusEvents ) event;
     if( lazE.eventType == 0 ){
       KeyEvent keyevnt = ( KeyEvent ) lazE.event;
@@ -40,17 +53,19 @@ public class MainCharacter extends LazarusWorld implements MainCharacterInterfac
           xMove -= 40;
           yMove -= 40 * ( boxWeights.get( lazarusPosition - 1 ).size() - boxWeights.get( lazarusPosition ).size());
           lazarusPosition -= 1;
-          System.out.println(lazarusPosition);
+//          System.out.println(lazarusPosition);
         }
       } else if ( lazAction.equals( "right" ) ){
         if ( boxWeights.get( lazarusPosition + 1 ).size() - boxWeights.get( lazarusPosition ).size() < 2) {
           xMove += 40;
           yMove -= 40 * ( boxWeights.get( lazarusPosition + 1 ).size() - boxWeights.get( lazarusPosition ).size() );
           lazarusPosition += 1;
-          System.out.println(lazarusPosition);
+//          System.out.println(lazarusPosition);
         }
       }
     }
+
+
   }
 }
 

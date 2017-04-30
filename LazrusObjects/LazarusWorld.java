@@ -93,9 +93,6 @@ public class LazarusWorld extends JPanel implements Runnable {
     g3.dispose();
     g.drawImage( bufferedImg2,0,0,this);
 
-    mc.draw(g, this);
-    mc.move();
-    boxGen.draw(g);
   }
   public void updateAndDisplay(){
     bufferedImg = ( BufferedImage ) createImage( GAMEBOARD_WIDTH, GAMEBOARD_HEIGHT ); // create image that is x by y
@@ -106,6 +103,10 @@ public class LazarusWorld extends JPanel implements Runnable {
     gameGraphics.clearRect(0,0,GAMEBOARD_WIDTH, GAMEBOARD_HEIGHT);
 
     lazBackground.draw(gameGraphics, this);
+
+    mc.draw(gameGraphics, this);
+    mc.move();
+    boxGen.draw(gameGraphics, this);
 
 
   }

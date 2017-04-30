@@ -1,6 +1,7 @@
 package LazrusObjects;
 
 import java.awt.*;
+import java.awt.image.ImageObserver;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Stack;
@@ -46,16 +47,21 @@ public class BoxGenerator extends LazarusWorld {
 
 
   }
-  public void draw ( Graphics g ){
+
+  public void addBox(int x,int y){
+    box.add( new CardBox( x, y) );
+  }
+  public void draw (Graphics g, ImageObserver obs){
 
       for (Box b : box) {
-        b.draw(g);
+        b.draw(g, obs);
+        b.move();
       }
 
       for ( int i = 0 ; i < boxWeights.size(); i++ ){
         Iterator<Box> iter = boxWeights.get(i).iterator();
         while (iter.hasNext()){
-          iter.next().draw(g);
+          iter.next().draw(g, obs);
         }
 
       }
