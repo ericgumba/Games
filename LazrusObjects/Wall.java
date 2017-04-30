@@ -9,6 +9,7 @@ public class Wall extends Box {
     boxImage = imgGen.getImage("Lazarus/Wall.png");
     xLocation = x;
     yLocation = y;
+
   }
   @Override
   public int weight() {

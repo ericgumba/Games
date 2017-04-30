@@ -11,22 +11,17 @@ import java.util.Observable;
 public class MainCharacter extends LazarusWorld implements MainCharacterInterface {
   int xLocation, yLocation;
   Image imageOfLazarus;
-  int xMove = 200, yMove = 0;
-  int boxPosition = 5;
+  int xMove = 200, yMove = GAMEBOARD_HEIGHT-145;
+  int lazarusPosition = 5;
   MainCharacter(){
 
-    imageOfLazarus = imgGen.getImage("Lazarus/Lazarus_stand.png");
-
-    /*
-    TO BE REDACTED AT A LATER DATE
-     */
-    xLocation = 40*boxPosition;
-    yLocation = GAMEBOARD_HEIGHT - 145;
+    imageOfLazarus = imgGen.getImage( "Lazarus/Lazarus_stand.png" );
 
   }
   public void move(){
 
     xLocation = xMove;
+    yLocation = yMove;
 
 
   }
@@ -38,12 +33,22 @@ public class MainCharacter extends LazarusWorld implements MainCharacterInterfac
   public void update(Observable obj, Object event){
     LazarusEvents lazE = ( LazarusEvents ) event;
     if( lazE.eventType == 0 ){
-      KeyEvent keyevnt = (KeyEvent ) lazE.event;
+      KeyEvent keyevnt = ( KeyEvent ) lazE.event;
       String lazAction = controls.get( keyevnt.getKeyCode() );
-      if ( lazAction.equals("left") ){
-        xMove -= 40;
-      } else if ( lazAction.equals("right") ){
-        xMove += 40;
+      if ( lazAction.equals( "left" ) ){
+        if ( boxWeights.get( lazarusPosition - 1 ).size() - boxWeights.get( lazarusPosition ).size() < 2) {
+          xMove -= 40;
+          yMove -= 40 * ( boxWeights.get( lazarusPosition - 1 ).size() - boxWeights.get( lazarusPosition ).size());
+          lazarusPosition -= 1;
+          System.out.println(lazarusPosition);
+        }
+      } else if ( lazAction.equals( "right" ) ){
+        if ( boxWeights.get( lazarusPosition + 1 ).size() - boxWeights.get( lazarusPosition ).size() < 2) {
+          xMove += 40;
+          yMove -= 40 * ( boxWeights.get( lazarusPosition + 1 ).size() - boxWeights.get( lazarusPosition ).size() );
+          lazarusPosition += 1;
+          System.out.println(lazarusPosition);
+        }
       }
     }
   }

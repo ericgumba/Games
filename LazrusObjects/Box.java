@@ -11,7 +11,8 @@ public abstract class Box extends LazarusWorld {
   Image boxImage;
   int xLocation;
   int yLocation;
-  boolean isCrushed = false;
+  int ySpeed;
+  boolean isVisible = true;
 
   // useful information about the boxes
   final int BOX_WIDTH = 40;
@@ -21,18 +22,24 @@ public abstract class Box extends LazarusWorld {
   public abstract int weight();
 
   public void draw(Graphics g){
-    if ( !isCrushed ){
+    if ( isVisible ){
       g.drawImage(boxImage, xLocation, yLocation, observer);
     }
   }
 
+  public void update(){
+  }
   public boolean collision(int xPositionOfObject, int yPositionOfObject, int widthOfObject, int heightOfObject){
-
+    if ( isVisible ) {
+      if ( yPositionOfObject + heightOfObject > BOX_HEIGHT && yPositionOfObject < yLocation + BOX_HEIGHT ){
+        if ( xPositionOfObject + widthOfObject > xLocation && xPositionOfObject < xLocation + BOX_WIDTH ){
+          return true;
+        }
+      }
+    }
     return false;
   }
   public void move(){
-
-
-
+    yLocation += ySpeed;
   }
 }

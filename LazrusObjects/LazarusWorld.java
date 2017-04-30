@@ -6,12 +6,15 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
-import java.util.HashMap;
+import java.util.*;
 
 /**
  * Created by ericgumba on 4/26/17.
  */
 public class LazarusWorld extends JPanel implements Runnable {
+
+
+  static java.util.List<Stack<Box>> boxWeights = new ArrayList<Stack<Box>>();
   private BufferedImage bufferedImg, bufferedImg2;
   static ImageGenerator imgGen;
   LazarusBackground lazBackground;
@@ -24,6 +27,8 @@ public class LazarusWorld extends JPanel implements Runnable {
   Thread thread;
   final int BOX_SPAWN_TIMER = 100;
   static BoxGenerator boxGen;
+  static ArrayList<Box> lazBoxes;
+  static HashMap<Integer, Integer> boxPositions = new HashMap<>();
 
 
   @Override
@@ -45,8 +50,18 @@ public class LazarusWorld extends JPanel implements Runnable {
     thread.start();
 
 
+    for(int i = 0; i < 16; i++) {
+      boxPositions.put(i*40, i);
+    }
+
+
+    System.out.println(boxPositions);
+    for ( int i = 0; i < 16; i++){
+      boxWeights.add( new Stack< Box >());
+    }
+
     imgGen = new ImageGenerator();
-    boxGen = new BoxGenerator();
+    boxGen = new BoxGenerator( );
 
     mc = new MainCharacter();
     controls.put( KeyEvent.VK_LEFT, "left" );
