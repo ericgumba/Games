@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.ImageObserver;
 import java.util.Observable;
+import java.util.Random;
 
 /**
  * Created by ericgumba on 4/27/17.
@@ -15,6 +16,7 @@ public class MainCharacter extends LazarusWorld implements MainCharacterInterfac
   int lazarusPosition = 5;
   int timeCounter = 450;
   int spawnTimer = 200;
+  int boxDecider;
   MainCharacter(){
 
     imageOfLazarus = imgGen.getImage( "Lazarus/Lazarus_stand.png" );
@@ -26,15 +28,15 @@ public class MainCharacter extends LazarusWorld implements MainCharacterInterfac
     yLocation = yMove;
 
 
+    boxDecider = (int)(Math.random() * ((4 - 1) + 1) + 1);;
 
-
+    System.out.println(boxDecider);
     timeCounter++;
-    if ( timeCounter >= 500 ){
+    if ( timeCounter >= 200 ){
       timeCounter = 0;
-      boxGen.addBox(lazarusPosition*40,0);
+      boxGen.addBox(lazarusPosition*40,0, boxDecider);
 
     }
-//    System.out.println(timeCounter);
   }
 
   public void draw(Graphics g, ImageObserver obs) {
@@ -53,14 +55,12 @@ public class MainCharacter extends LazarusWorld implements MainCharacterInterfac
           xMove -= 40;
           yMove -= 40 * ( boxWeights.get( lazarusPosition - 1 ).size() - boxWeights.get( lazarusPosition ).size());
           lazarusPosition -= 1;
-//          System.out.println(lazarusPosition);
         }
       } else if ( lazAction.equals( "right" ) ){
         if ( boxWeights.get( lazarusPosition + 1 ).size() - boxWeights.get( lazarusPosition ).size() < 2) {
           xMove += 40;
           yMove -= 40 * ( boxWeights.get( lazarusPosition + 1 ).size() - boxWeights.get( lazarusPosition ).size() );
           lazarusPosition += 1;
-//          System.out.println(lazarusPosition);
         }
       }
     }

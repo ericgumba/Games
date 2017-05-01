@@ -48,8 +48,18 @@ public class BoxGenerator extends LazarusWorld {
 
   }
 
-  public void addBox(int x,int y){
-    box.add( new CardBox( x, y) );
+  public void addBox(int x,int y, int boxNum){
+
+    if ( boxNum == 1 ) {
+      box.add( new CardBox( x, y ));
+    } else if ( boxNum == 2 ){
+      box.add( new StoneBox( x, y ));
+    } else if ( boxNum == 3 ){
+      box.add( new WoodBox( x, y ));
+    } else if ( boxNum == 4){
+      box.add( new MetalBox( x, y ));
+    }
+
   }
   public void draw (Graphics g, ImageObserver obs){
 

@@ -16,13 +16,8 @@ public class CardBox extends Box{
     boxImage = imgGen.getImage("Lazarus/CardBox.png");
     xLocation = x;
     yLocation = y;
-    ySpeed = 1;
   }
 
-//  public void move(){
-//    if
-//      yLocation += ySpeed;
-//  }
   public int weight(){
     return 1;
   }
