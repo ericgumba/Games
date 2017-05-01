@@ -15,7 +15,7 @@ public abstract class Box extends LazarusWorld implements Observer {
   int xLocation;
   int yLocation;
   int ySpeed;
-  boolean isVisible = true;
+  boolean isVisible = true; // IsVisible might not be needed.
 
   // useful information about the boxes
   final int BOX_WIDTH = 40;
@@ -35,16 +35,21 @@ public abstract class Box extends LazarusWorld implements Observer {
 
   }
 
-  public boolean collision(int xPositionOfObject, int yPositionOfObject, int widthOfObject, int heightOfObject){
+  public boolean collision(){
     if ( isVisible ) {
-      if ( boxWeights.get(boxPositions.get(xLocation)).peek().getyLocation() - 100 == yLocation ){
+      if ( boxWeights.get(boxPositions.get(xLocation)).peek().getyLocation() - 40 == yLocation ){
+        boxWeights.get(boxPositions.get(xLocation)).push(new CardBox(xLocation,yLocation));
         return true;
       }
     }
     return false;
   }
   public void move(){
-    if (yLocation != boxWeights.get(boxPositions.get(xLocation)).peek().getyLocation() -40 ) {
+    // this method works for now,
+//    if (yLocation != boxWeights.get(boxPositions.get(xLocation)).peek().getyLocation() -40 ) {
+//      yLocation += ySpeed;
+//    }
+    if ( !collision() ){
       yLocation += ySpeed;
     }
   }
