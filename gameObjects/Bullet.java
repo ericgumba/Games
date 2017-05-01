@@ -1,16 +1,17 @@
 package gameObjects;
 
 /**
- * Created by ericgumba and Leo Wang on 4/22/17. .
+ * Created by eric gumba and Leo Wang on 4/22/17. .
  */
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.ImageObserver;
+
+
 public class Bullet extends TankWorld {
 
   private Image imageOfBullet;
   private int x, y, sizeX, sizeY, xSpeed, ySpeed;
-
 
   /** a
    * Bullet constructor.

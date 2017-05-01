@@ -7,7 +7,7 @@ import java.awt.image.ImageObserver;
  */
 public class Background extends TankWorld {
 
-  private Image gameBoard = imageGenerator.getImage("Resources/BackgroundFullBig.png");
+  private Image gameBoard = imageGenerator.getImage("Resources/BackgroundFullBig2.png");
 
   public void draw(Graphics2D graphics, ImageObserver observer) {
     graphics.drawImage(gameBoard, 0, 0, observer);

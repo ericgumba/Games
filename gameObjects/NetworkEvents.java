@@ -6,16 +6,15 @@ import java.awt.event.KeyEvent;
 /** a
  * Created by eric gumba and leo wang on 4/22/17. a
  */
-public class TankWorldEvents extends Observable {
+public class NetworkEvents extends Observable {
   public int eventType;
   public int event;
 
- 
- /**
-   *  setValue method
+  /** 
+   * setValue method
    * @param k
    * @param keyEventType
-   */   
+   */      
   public void setValue(int k, int keyEventType) {
 
     eventType = keyEventType;

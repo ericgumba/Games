@@ -1,8 +1,14 @@
 package gameObjects;
 
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.io.IOException;
+
 import static java.applet.Applet.newAudioClip;
 import java.applet.AudioClip;
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -10,33 +16,43 @@ import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
-import java.io.BufferedReader;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.*;
 
 /** a
- * Created by ericgumba and Leo Wang on 4/20/17. da a
+ * Created by eric gumba and Leo Wang on 4/20/17.
  */
 public class TankWorld extends JPanel implements Runnable{
 
+  // New for network play  
+  static int gameMode;  // 0 : single machine mode, 1: server mode, 2: client mode
+  static Socket socketConnection;
+  NetworkWriter networkWriter;
+  NetworkReader networkReader;
+  NetworkEvents networkEvents;
+  static HashMap<Integer, String> directs = new HashMap<>(); //network direct control
+  
+  // original single machine play 
   static ImageGenerator imageGenerator;
   static HashMap<Integer, String> controls = new HashMap<>();
-  final int BACKGROUND_WIDTH = 1475, BACKGROUND_HEIGHT = 1155;
+  final int BACKGROUND_WIDTH = 1280, BACKGROUND_HEIGHT = 1280; 
   private static int playerOneXDisplay, playerOneYDisplay, playerTwoXDisplay, playerTwoYDisplay;
-  //private final int SCREEN_WIDTH = 840, SCREEN_HEIGHT = 880;
-  private final int SCREEN_WIDTH = 840, SCREEN_HEIGHT = 820;
+  private final int SCREEN_WIDTH = 1280, SCREEN_HEIGHT = 800;
+  Font scoreFont = new Font("Impact", Font.PLAIN, 50);
   ImageObserver observer;
   private BufferedImage bufferedImg;
   private Background rockBackground;
-  private static Tank tankOne, tankTwo;
+  //private static Tank tankOne, tankTwo;
+  static Tank tankOne, tankTwo;
   static Tank[] player = new Tank[3];
   private final int levelSize = 40;
   static Image[] explosionFrames;
   static ArrayList<Bullet> tankOneBullets, tankTwoBullets;
   static AudioClip fire, death;
   static WallGenerator wallGenerator;
-  int startLX, startLY, startRX, startRY;
+  //int startLX, startLY, startRX, startRY;
   TankWorldEvents tnkWorldEvents;
   PlayerControls gameControls;
   Thread thread;
@@ -45,7 +61,10 @@ public class TankWorld extends JPanel implements Runnable{
    * bullets, image generators, and wall generators.
    */
 
-
+  /**
+   * run method 
+   * TankWorld extends JPanel implements Runnable
+   */  
   @Override
   public void run() {
     Thread me = Thread.currentThread();
@@ -59,6 +78,53 @@ public class TankWorld extends JPanel implements Runnable{
     }
   }
 
+ /**
+   * initNet method 
+   * initialization for network play
+   * @param args
+   *  java RunGame                 - single machine mode
+   *  java RunGame 9191            - Two machine server mode (player 1)
+   *  java RunGame IPaddress 9191  - Two machine client mode (player 2)
+   */    
+  public void initNet(String[] args) {
+    
+    Integer argumentLength = args.length;
+
+   if (argumentLength == 1) {
+        String number = args[0];
+        Integer port = Integer.valueOf(number);
+        System.out.println("Game is running in Server mode, port ="+port);
+        gameMode = 1; 
+            try {
+                ServerSocket server = new ServerSocket( port );
+                socketConnection = server.accept();
+                } catch( IOException exception ) {
+                    System.err.println( "Failed to establish connection" );
+                }
+    } else if (argumentLength == 2) {
+        String ipAddress = args[0];
+        String number = args[1];
+        Integer port = Integer.valueOf(number);
+        System.out.println("Game is running in Client mode: IPaddress "+ipAddress+" port "+port);
+        gameMode= 2;
+        try {
+                socketConnection = new Socket(ipAddress, port);
+            } catch( IOException exception ) {
+                    System.err.println( "Failed to establish connection" );
+            }  
+    } else {
+        System.out.println("Game is running in Single machine mode");
+        gameMode= 0;
+    }    
+   
+   
+  }
+
+ /**
+   * init method 
+   * initialization of the game
+   * @param args
+   */     
   public void init() {
 
     thread = new Thread(this);
@@ -69,7 +135,12 @@ public class TankWorld extends JPanel implements Runnable{
     wallGenerator = new WallGenerator();
 
     initializePlayerOneAndPlayerTwoControls();
-
+    if (gameMode == 1) {
+        initializeGameModeOneControls();        
+    } else if (gameMode == 2) {
+        initializeGameModeTwoControls();       
+    }   
+    
     explosionFrames = new Image[]{
         imageGenerator.getImage("Resources/explosion1.png"),
         imageGenerator.getImage("Resources/explosion2.png"),
@@ -89,25 +160,38 @@ public class TankWorld extends JPanel implements Runnable{
     tankOne = new Tank("Resources/Tank_blue_light_strip60.png", tankTwoBullets, tankOneBullets, imageGenerator.getImage("Resources/enemybullet3.png"), 1);
     tankTwo = new Tank("Resources/Tank_blue_light_strip60.png", tankOneBullets, tankTwoBullets, imageGenerator.getImage("Resources/enemybullet3.png"), 2);
 
-    player[1] = tankTwo;
-    player[2] = tankOne;
+    player[1] = tankTwo;  // player1 (tankOne)'s enemy player is tankTwo
+    player[2] = tankOne;  // player2 (tankTwo)'s enemy player is tankOne
 
     this.setFocusable(true);
     observer = this;
     tnkWorldEvents = new TankWorldEvents();
 
-
     tnkWorldEvents.addObserver(tankOne);
     tnkWorldEvents.addObserver(tankTwo);
+    
+    // network play setup
+    if (gameMode ==1 || gameMode==2) {  // network play
+        networkEvents = new NetworkEvents();
+        networkWriter = new NetworkWriter(socketConnection);  
+        networkEvents.addObserver(networkWriter);  
+        networkReader = new NetworkReader(socketConnection, tnkWorldEvents);   
+        thread = new Thread(networkReader);
+        thread.setPriority(Thread.MIN_PRIORITY);
+        thread.start();
+        gameControls = new PlayerControls(tnkWorldEvents, networkEvents, directs, gameMode);
+    } else {   // single machine play
+        gameControls = new PlayerControls(tnkWorldEvents, networkEvents, controls, gameMode);
+    }
 
-    gameControls = new PlayerControls(tnkWorldEvents);
     addKeyListener( gameControls );
+
     death = newAudioClip(TankWorld.class.getResource("Resources/Explosion_Large.wav"));
     fire = newAudioClip(TankWorld.class.getResource("Resources/Explosion_small.wav"));
   }
-
-
+  
   /**
+   *  paint method 
    * main paint method that controls where the x and y positions of the tanks bullets
    * and walls are. It will also update the display and draw the minimap of the game.
    */
@@ -117,7 +201,6 @@ public class TankWorld extends JPanel implements Runnable{
     updateAndDisplay();
     updatePlayerOneDisplay();
     updatePlayerTwoDisplay();
-
 
     BufferedImage bufferedImg2 = ( BufferedImage ) createImage( BACKGROUND_WIDTH, BACKGROUND_HEIGHT );
     Graphics2D g3 = bufferedImg2.createGraphics();
@@ -131,19 +214,27 @@ public class TankWorld extends JPanel implements Runnable{
     // draw player 2's screen.
     g3.drawImage(bufferedImg.getSubimage( playerTwoXDisplay, playerTwoYDisplay, SCREEN_WIDTH / 2, SCREEN_HEIGHT), SCREEN_WIDTH / 2, 0, this  );
 
-    // draw mini map.
-    g3.drawImage( bufferedImg.getScaledInstance( d.width / 5, d.height / 5, 1 ), d.width / 2 - ( d.width / 5 ) / 2, d.height * 3 / 4, this );
-
-    // draw the mini map dividing the two players.
+    // draw score on lower corners
+    g3.setFont(scoreFont);
+    g3.setColor(Color.BLUE);
+    g3.drawString(tankOne.getScore() + "", 60, d.height-30);
+    g3.setColor(Color.RED);
+    g3.drawString(tankTwo.getScore() + "", d.width -100, d.height-30);
+    
+    // draw the line dividing the two players's map.
     g3.drawLine( d.width / 2 + 2, 0, d.width / 2 + 2, d.height );
-
+    
+    // draw mini map.
+    g3.drawRect (d.width / 2 - (d.width / 5) / 2 - 1, d.height * 3 / 5 - 1, d.width / 5 + 1, d.width / 5 + 1);
+    g3.drawImage(bufferedImg.getScaledInstance(d.width / 5, d.width / 5, 1), d.width / 2 - (d.width / 5) / 2, d.height * 3 / 5, this);
+    
     g3.dispose();
     g.drawImage( bufferedImg2, 0, 0, this ); // x = 0, y = 0 means the image is at the top left.
-
 
   }
 
   /**
+   *  updateAndDisplay method 
    * Draws the tanks, bullets and walls of game, and updates them every time they move
    * or get destroyed by bullets.
    */
@@ -156,7 +247,6 @@ public class TankWorld extends JPanel implements Runnable{
 
     rockBackground.draw( gameGraphics, this );
 
-
     tankOne.move();
     tankOne.draw( gameGraphics, this );
     tankTwo.move();
@@ -164,24 +254,25 @@ public class TankWorld extends JPanel implements Runnable{
 
     wallGenerator.draw( gameGraphics );
 
-    for (Bullet bullet : tankOneBullets ) {
-      if (bullet.move()){
-        tankOneBullets.remove(bullet);
-      } else {
-        bullet.draw(gameGraphics, this);
-      }
+    for (int i = 0; i < tankOneBullets.size(); i++) {
+        if (tankOneBullets.get(i).move()) {
+            tankOneBullets.remove(i);
+        } else {
+            tankOneBullets.get(i).draw(gameGraphics, this);
+        }
     }
 
-    for ( Bullet bullet : tankTwoBullets ) {
-      if(bullet.move()){
-        tankOneBullets.remove(bullet);
-      } else {
-        bullet.draw(gameGraphics, this);
-      }
+    for (int i = 0; i < tankTwoBullets.size(); i++) {
+        if (tankTwoBullets.get(i).move()) {
+            tankTwoBullets.remove(i);
+        } else {
+            tankTwoBullets.get(i).draw(gameGraphics, this);
+        }
     }
   }
-
+  
   /**
+   *  updatePlayerOneDisplay method
    * Updates player one's display based off of the position of player one's tank.
    */
   private void updatePlayerOneDisplay(){
@@ -203,6 +294,7 @@ public class TankWorld extends JPanel implements Runnable{
   }
 
   /**
+   *  updatePlayerTwoDisplay method
    * Updates player two's display based off of the position of player two's tank.
    */
   private void updatePlayerTwoDisplay(){
@@ -220,6 +312,10 @@ public class TankWorld extends JPanel implements Runnable{
     }
   }
 
+ /**
+   *  initializePlayerOneAndPlayerTwoControls method
+   * initialization of HashMap "controls" 
+   */
   private void initializePlayerOneAndPlayerTwoControls(){
     controls.put( KeyEvent.VK_LEFT, "left2" );
     controls.put( KeyEvent.VK_UP, "up2" );
@@ -233,9 +329,36 @@ public class TankWorld extends JPanel implements Runnable{
     controls.put( KeyEvent.VK_SPACE, "shoot1" );
   }
 
+ /**
+   *  initializePlayerOneControls method
+   * initialization of HashMap "directs" for server mode 
+   */
+  private void initializeGameModeOneControls(){  // server control 
+    directs.put( KeyEvent.VK_A, "left1" );
+    directs.put( KeyEvent.VK_W, "up1"  );
+    directs.put( KeyEvent.VK_S, "down1" );
+    directs.put( KeyEvent.VK_D, "right1" );
+    directs.put( KeyEvent.VK_SPACE, "shoot1" );
+  }
+
+ /**
+   *  initializePlayerTwoControls method
+   * initialization of HashMap "directs" for client mode
+   */   
+  private void initializeGameModeTwoControls(){  // client control 
+    directs.put( KeyEvent.VK_LEFT, "left2" );
+    directs.put( KeyEvent.VK_UP, "up2"  );
+    directs.put( KeyEvent.VK_DOWN, "down2" );
+    directs.put( KeyEvent.VK_RIGHT, "right2" );
+    directs.put( KeyEvent.VK_ENTER, "shoot2" );
+  }
+
+ /**
+   *  constructWallPattern method
+   * initialization of walls in the game map
+   */  
   @SuppressWarnings("null")
   public void constructWallPattern() {
-    BufferedReader source = null;
     char ch;
     String nextLine;
 
@@ -293,41 +416,6 @@ public class TankWorld extends JPanel implements Runnable{
         }
       }
     }
-//    try {
-//      source = new BufferedReader( new FileReader("gameObjects/Resources/level.txt"));
-//    } catch (FileNotFoundException ex) {
-//      Logger.getLogger(WallGenerator.class.getName()).log(Level.SEVERE, null, ex);
-//    }
-//    try {
-//      for (int i = 0; i<levelSize; i++) {
-//        nextLine = source.readLine();
-//        for (int j= 0; j<levelSize; j++) {
-//          ch = nextLine.charAt(j);
-//          //System.out.println( "Char: " + ch + "("+i+","+j+")"+ j*(borderX/40)+" "+i*(borderY/40));
-//          if (ch=='1'){
-//            wallGenerator.addWall(j*(BACKGROUND_WIDTH/40),i*(BACKGROUND_HEIGHT/40),ch);
-//          } else if (ch=='2') {
-//            wallGenerator.addWall(j*(BACKGROUND_WIDTH/40),i*(BACKGROUND_HEIGHT/40),ch);
-//          } else if (ch=='3') {
-//            startLX=j*(BACKGROUND_WIDTH/40);
-//            startLY=i*(BACKGROUND_HEIGHT/40);
-//          } else if (ch=='4') {
-//            startRX=j*(BACKGROUND_WIDTH/40);
-//            startRY=i*(BACKGROUND_HEIGHT/40);
-//          } else if (ch=='5') {
-//            // not yet defined in assignment.
-//          }
-//        }
-//      }
-//    } catch (IOException ex) {
-//      Logger.getLogger(WallGenerator.class.getName()).log(Level.SEVERE, null, ex);
-//    }
-//
-//    if( source != null ) {
-//      try {
-//        source.close();
-//      } catch( IOException e ) {}
-//    }
   }
 
 }
