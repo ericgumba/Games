@@ -1,7 +1,4 @@
-package LazrusObjects;
-
-import gameObjects.TankWorldEvents;
-
+package LazrusObjects; 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
