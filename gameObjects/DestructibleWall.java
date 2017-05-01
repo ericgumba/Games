@@ -10,7 +10,12 @@ public class DestructibleWall extends TankWorld {
   private int xLocationOfWall, yLocationOfWall, wallWidth, wallHeight;
   private int hp = 1;
 
-
+  /** a
+   * Destructable Wall constructor.
+   * @param xSpawnPoint
+   * @param ySpawnPoint
+   * 
+   */
   DestructibleWall(int xSpawnPoint, int ySpawnPoint) {
     this.xLocationOfWall = xSpawnPoint;
     this.yLocationOfWall = ySpawnPoint;
@@ -18,6 +23,9 @@ public class DestructibleWall extends TankWorld {
     wallHeight = wallImage.getHeight(null);
   }
 
+    /** a
+   * Update method.
+   */
   public void update() {
     if ( hp == 1 ) // isVisible
     {
@@ -36,6 +44,9 @@ public class DestructibleWall extends TankWorld {
     }
   }
 
+     /** a
+   * draw method.
+   */
   public void draw( Graphics g ) {
     if ( hp == 1 )
     {
@@ -43,6 +54,14 @@ public class DestructibleWall extends TankWorld {
     }
   }
 
+  /** a
+   * collision method.
+   * @param xPositionOfObject
+   * @param yPositionOfObject  
+   * @param xPositionOfObject  
+   * @param widthOfObject
+   * @param heightOfObject
+   */
   public boolean collision( int xPositionOfObject, int yPositionOfObject, int widthOfObject, int heightOfObject ) {
     if ( hp == 1 )
     {

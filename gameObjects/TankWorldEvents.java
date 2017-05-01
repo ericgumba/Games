@@ -8,9 +8,15 @@ import java.awt.event.KeyEvent;
  */
 public class TankWorldEvents extends Observable {
   public int eventType;
-  public Object event;
+  public int event;
 
-  public void setValue(KeyEvent k, int keyEventType) {
+ 
+ /**
+   *  setValue method
+   * @param k
+   * @param keyEventType
+   */   
+  public void setValue(int k, int keyEventType) {
 
     eventType = keyEventType;
     event = k;

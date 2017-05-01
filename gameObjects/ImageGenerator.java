@@ -25,6 +25,10 @@ public class ImageGenerator extends TankWorld{
       }
     }
 
+ /** a
+   * getBufferedImage method.
+   * @param name
+   */
     public BufferedImage getBufferedImage( String name ) throws IOException {
       URL url = TankWorld.class.getResource( name );
       BufferedImage img = ImageIO.read( url );
