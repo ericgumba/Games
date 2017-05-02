@@ -22,7 +22,7 @@ public class Tank extends TankWorld implements VehicleInterface {
   private int tankWidth, tankHeight;
   int x, y;
   private final int MAX_HP = 4;
-  private int hp, score = 0; 
+  private int hp, score = 3;
   private int direction = 0, directionRate = 0, playerNumber, explodeStage = 0;
   private int xSpeed = 0, ySpeed = 0;
   private String healthPoints[] = {"HP: 4", "HP: 3", "HP: 2", "HP: 1", "HP: 0"};
@@ -83,7 +83,8 @@ public class Tank extends TankWorld implements VehicleInterface {
         } else {
           otherPlayer = 1;
         }
-        player[playerNumber].score += 1;
+
+        player[otherPlayer].score -= 1;
         player[playerNumber].setXSpawnPoint( otherPlayer );
         player[playerNumber].setYSpawnPoint( otherPlayer );
         death.play();
