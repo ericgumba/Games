@@ -13,7 +13,6 @@ import java.util.*;
  */
 public class LazarusWorld extends JPanel implements Runnable {
 
-
   static java.util.List<Stack<Box>> boxWeights = new ArrayList<Stack<Box>>();
   private BufferedImage bufferedImg, bufferedImg2;
   static ImageGenerator imgGen;
@@ -27,8 +26,8 @@ public class LazarusWorld extends JPanel implements Runnable {
   Thread thread;
   final int BOX_SPAWN_TIMER = 100;
   static BoxGenerator boxGen;
-  static ArrayList<Box> lazBoxes;
   static HashMap<Integer, Integer> boxPositions = new HashMap<>();
+  int timeCounter = 100;
 
 
   @Override
@@ -91,9 +90,39 @@ public class LazarusWorld extends JPanel implements Runnable {
     g3.clearRect(0,0, GAMEBOARD_WIDTH, GAMEBOARD_HEIGHT);
     g3.drawImage( bufferedImg.getSubimage(0, 0, GAMEBOARD_WIDTH, GAMEBOARD_HEIGHT),0,0,this);
     g3.dispose();
-    g.drawImage( bufferedImg2,0,0,this);
+    g.drawImage( bufferedImg2,0,0,this );
+
+    g.drawImage(mc.getImageOfLazarus(), mc.getxLocation(), mc.getyLocation(), this);
+
+
+
+
+    timeCounter++;
+    if ( timeCounter >= 200 ){
+
+      int boxDecider = (int)(Math.random() * ((4 - 1) + 1) + 1);
+      System.out.println("generating box: " + boxDecider);
+      timeCounter = 0;
+      boxGen.addBox(mc.getLazarusPosition() *40,0, boxDecider);
+
+    }
 
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   public void updateAndDisplay(){
     bufferedImg = ( BufferedImage ) createImage( GAMEBOARD_WIDTH, GAMEBOARD_HEIGHT ); // create image that is x by y
     Graphics2D gameGraphics = bufferedImg.createGraphics();
@@ -103,12 +132,12 @@ public class LazarusWorld extends JPanel implements Runnable {
     gameGraphics.clearRect(0,0,GAMEBOARD_WIDTH, GAMEBOARD_HEIGHT);
 
     lazBackground.draw(gameGraphics, this);
-
-    mc.draw(gameGraphics, this);
-    mc.move();
+//
+//    mc.draw(gameGraphics, this);
+//    mc.move();
     boxGen.draw(gameGraphics, this);
-
-
+//
+//
   }
 
 }

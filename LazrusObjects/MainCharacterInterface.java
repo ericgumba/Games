@@ -9,6 +9,6 @@ import java.util.Observer;
  * Created by ericgumba on 4/27/17.
  */
 public interface MainCharacterInterface extends Observer {
-  void draw(Graphics g, ImageObserver obs);
+//  void draw(Graphics g, ImageObserver obs);
   void move();
 }
