@@ -21,6 +21,7 @@ public class LazarusWorld extends JPanel implements Runnable {
   final int GAMEBOARD_WIDTH = 640, GAMEBOARD_HEIGHT = 480;
   LazarusEvents lazEvents;
   LazarusControls lazControls;
+
   static MainCharacter mc;
   static HashMap<Integer, String> controls;
   Thread thread;
@@ -74,7 +75,7 @@ public class LazarusWorld extends JPanel implements Runnable {
 
 
     imgGen = new ImageGenerator();
-    boxGen = new BoxGenerator( );
+    boxGen = new BoxGenerator();
 
     mc = new MainCharacter();
 
@@ -111,7 +112,7 @@ public class LazarusWorld extends JPanel implements Runnable {
 
       timeCounter++;
       // problem: figure out how to pop from the stack to save memory
-      if (timeCounter >= 200) {
+      if (timeCounter >= 100) {
         System.out.println("generating box: " + boxDecider);
         timeCounter = 0;
         boxGen.addBox(mc.getLazarusPosition() * 40, 0, boxDecider);
@@ -125,8 +126,31 @@ public class LazarusWorld extends JPanel implements Runnable {
           this);
 
     } else{
-      this.init();
+
+      reset();
+
     }
+
+  }
+
+  public void reset(){
+
+    boxPositions = new HashMap<>();
+    boxWeights = new ArrayList<Stack<Box>>();
+
+
+    for(int i = 0; i < 16; i++) {
+      boxPositions.put(i*40, i);
+    }
+
+    for ( int i = 0; i < 16; i++){
+      boxWeights.add( new Stack< Box >());
+    }
+    boxGen = new BoxGenerator();
+
+    mc.resetLazarusPosition();
+
+
 
   }
 

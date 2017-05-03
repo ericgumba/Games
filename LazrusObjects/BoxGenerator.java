@@ -17,10 +17,10 @@ public class BoxGenerator extends LazarusWorld {
   public BoxGenerator() {
 
 
-    boxTypes.put(1, new CardBox( 0, GAMEBOARD_HEIGHT-63 ));
-    boxTypes.put(2, new WoodBox( 0, GAMEBOARD_HEIGHT-63 ));
-    boxTypes.put(3, new MetalBox( 0, GAMEBOARD_HEIGHT-63 ));
-    boxTypes.put(4, new StoneBox( 0, GAMEBOARD_HEIGHT-63 ));
+    boxTypes.put( 1, new CardBox( 0, GAMEBOARD_HEIGHT-63 ));
+    boxTypes.put( 2, new WoodBox( 0, GAMEBOARD_HEIGHT-63 ));
+    boxTypes.put( 3, new MetalBox( 0, GAMEBOARD_HEIGHT-63 ));
+    boxTypes.put( 4, new StoneBox( 0, GAMEBOARD_HEIGHT-63 ));
 
 
     int wallHeight = 40;
