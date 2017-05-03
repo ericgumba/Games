@@ -16,6 +16,13 @@ public class BoxGenerator extends LazarusWorld {
   ArrayList<Box> box = new ArrayList();
   public BoxGenerator() {
 
+
+    boxTypes.put(1, new CardBox( 0, GAMEBOARD_HEIGHT-63 ));
+    boxTypes.put(2, new WoodBox( 0, GAMEBOARD_HEIGHT-63 ));
+    boxTypes.put(3, new MetalBox( 0, GAMEBOARD_HEIGHT-63 ));
+    boxTypes.put(4, new StoneBox( 0, GAMEBOARD_HEIGHT-63 ));
+
+
     int wallHeight = 40;
 
     for (int i = 0; i < 16; i++) {
@@ -44,11 +51,11 @@ public class BoxGenerator extends LazarusWorld {
     if ( boxNum == 1 ) {
       box.add( new CardBox( x, y ));
     } else if ( boxNum == 2 ){
-      box.add( new StoneBox( x, y ));
-    } else if ( boxNum == 3 ){
       box.add( new WoodBox( x, y ));
-    } else if ( boxNum == 4){
+    } else if ( boxNum == 3 ){
       box.add( new MetalBox( x, y ));
+    } else if ( boxNum == 4){
+      box.add( new StoneBox( x, y ));
     }
 
   }

@@ -27,9 +27,11 @@ public class LazarusWorld extends JPanel implements Runnable {
   final int BOX_SPAWN_TIMER = 100;
   static BoxGenerator boxGen;
   static HashMap<Integer, Integer> boxPositions;
-  int timeCounter = 100;
+  int timeCounter = 200;
+  static Stack<Box> nextBox = new Stack<Box>();
   static HashMap<Integer, Box> boxTypes;
 
+  int boxDecider = (int)(Math.random() * ((4 - 1) + 1) + 1);
 
   @Override
   public void run() {
@@ -44,33 +46,37 @@ public class LazarusWorld extends JPanel implements Runnable {
     }
   }
   public void init(){
+
+
+
+    // initialize thread.
+    thread = new Thread(this);
+    thread.setPriority(Thread.MIN_PRIORITY);
+    thread.start();
+
+    // Create data structures
     boxPositions = new HashMap<>();
     controls = new HashMap<>();
     boxWeights = new ArrayList<Stack<Box>>();
     boxTypes = new HashMap<>();
 
-    thread = new Thread(this);
-    thread.setPriority(Thread.MIN_PRIORITY);
-    thread.start();
-
-
+    // Initialize data structures
+    controls.put( KeyEvent.VK_LEFT, "left" );
+    controls.put( KeyEvent.VK_RIGHT, "right" );
+    controls.put( KeyEvent.VK_SPACE, "space" );
     for(int i = 0; i < 16; i++) {
       boxPositions.put(i*40, i);
     }
 
-
-    System.out.println(boxPositions);
     for ( int i = 0; i < 16; i++){
       boxWeights.add( new Stack< Box >());
     }
+
 
     imgGen = new ImageGenerator();
     boxGen = new BoxGenerator( );
 
     mc = new MainCharacter();
-    controls.put( KeyEvent.VK_LEFT, "left" );
-    controls.put( KeyEvent.VK_RIGHT, "right" );
-    controls.put( KeyEvent.VK_SPACE, "space" );
 
     lazBackground = new LazarusBackground();
     this.setFocusable( true );
@@ -86,35 +92,42 @@ public class LazarusWorld extends JPanel implements Runnable {
   public void paint( Graphics g ){
 
 
+    // problem, figure out how to reset level when lazarus "wins".
 
-    Dimension d = getSize();
-    updateAndDisplay();
-    bufferedImg2 = ( BufferedImage ) createImage( GAMEBOARD_WIDTH, GAMEBOARD_HEIGHT );
-    Graphics2D g3 = bufferedImg2.createGraphics();
-    g3.setBackground( getBackground() );
-    g3.setRenderingHint( RenderingHints.KEY_RENDERING,
-        RenderingHints.VALUE_RENDER_QUALITY );
-    g3.clearRect(0,0, GAMEBOARD_WIDTH, GAMEBOARD_HEIGHT);
-    g3.drawImage( bufferedImg.getSubimage(0, 0, GAMEBOARD_WIDTH, GAMEBOARD_HEIGHT),0,0,this);
-    g3.dispose();
-    g.drawImage( bufferedImg2,0,0,this );
+    if(mc.getLazarusPosition() != 0 && mc.getLazarusPosition() != 15) {
+      Dimension d = getSize();
+      updateAndDisplay();
+      bufferedImg2 = (BufferedImage) createImage(GAMEBOARD_WIDTH, GAMEBOARD_HEIGHT);
+      Graphics2D g3 = bufferedImg2.createGraphics();
+      g3.setBackground(getBackground());
+      g3.setRenderingHint(RenderingHints.KEY_RENDERING,
+          RenderingHints.VALUE_RENDER_QUALITY);
+      g3.clearRect(0, 0, GAMEBOARD_WIDTH, GAMEBOARD_HEIGHT);
+      g3.drawImage(bufferedImg.getSubimage(0, 0, GAMEBOARD_WIDTH, GAMEBOARD_HEIGHT), 0, 0, this);
+      g3.dispose();
+      g.drawImage(bufferedImg2, 0, 0, this);
 
-    g.drawImage(mc.getImageOfLazarus(), mc.getxLocation(), mc.getyLocation(), this);
-    timeCounter++;
+      g.drawImage(mc.getImageOfLazarus(), mc.getxLocation(), mc.getyLocation(), this);
 
-    // problem,
-    int boxDecider = (int)(Math.random() * ((4 - 1) + 1) + 1);
-    if ( timeCounter >= 200 ){
+      timeCounter++;
+      // problem: figure out how to pop from the stack to save memory
+      if (timeCounter >= 200) {
+        System.out.println("generating box: " + boxDecider);
+        timeCounter = 0;
+        boxGen.addBox(mc.getLazarusPosition() * 40, 0, boxDecider);
+        boxDecider = (int) (Math.random() * ((4 - 1) + 1) + 1);
+        nextBox.push(boxTypes.get(boxDecider));
+      }
 
-      System.out.println("generating box: " + boxDecider);
-      timeCounter = 0;
-      boxGen.addBox(mc.getLazarusPosition() *40,0, boxDecider);
+      g.drawImage(nextBox.peek().getBoxImage(),
+          nextBox.peek().getxLocation(),
+          nextBox.peek().getyLocation(),
+          this);
 
-      boxDecider = (int)(Math.random() * ((4 - 1) + 1) + 1);
-
-
-
+    } else{
+      this.init();
     }
+
   }
 
   public void updateAndDisplay(){
