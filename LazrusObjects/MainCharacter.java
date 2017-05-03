@@ -52,7 +52,7 @@ public class MainCharacter extends LazarusWorld implements MainCharacterInterfac
       KeyEvent keyevnt = ( KeyEvent ) lazE.event;
       String lazAction = controls.get( keyevnt.getKeyCode() );
       if ( lazAction.equals( "left" ) ){
-        if ( boxWeights.get( lazarusPosition - 1 ).size() - boxWeights.get( lazarusPosition ).size() < 2) {
+        if (  boxWeights.get( lazarusPosition - 1 ).size() - boxWeights.get( lazarusPosition ).size() < 2) {
           xMove -= 40;
           yMove -= 40 * ( boxWeights.get( lazarusPosition - 1 ).size() - boxWeights.get( lazarusPosition ).size());
           lazarusPosition -= 1;
@@ -67,8 +67,6 @@ public class MainCharacter extends LazarusWorld implements MainCharacterInterfac
         }
       }
     }
-
-
   }
 }
 

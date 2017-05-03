@@ -15,7 +15,6 @@ public abstract class Box extends LazarusWorld implements Observer {
   int xLocation;
   int yLocation;
   int ySpeed = 1;
-  boolean isVisible = true; // IsVisible might not be needed.
 
   // useful information about the boxes
   final int BOX_WIDTH = 40;
@@ -25,9 +24,7 @@ public abstract class Box extends LazarusWorld implements Observer {
   public abstract int weight();
 
   public void draw(Graphics g, ImageObserver observer){
-    if ( isVisible ){
       g.drawImage(boxImage, xLocation, yLocation, observer);
-    }
   }
 
   @Override
@@ -36,33 +33,26 @@ public abstract class Box extends LazarusWorld implements Observer {
   }
 
   public boolean collision(){
-    if ( isVisible ) {
-      if ( boxWeights.get(boxPositions.get(xLocation)).peek().getyLocation() - 40 == yLocation ){
-        if( weight > boxWeights.get(boxPositions.get(xLocation)).peek().weight()){
-          boxWeights.get(boxPositions.get(xLocation)).pop();
-          return false;
-        }
-
-        if ( weight == 1 ) {
-          boxWeights.get(boxPositions.get(xLocation)).push(new CardBox(xLocation, yLocation));
-        } else if ( weight == 2 ){
-          boxWeights.get( boxPositions.get(xLocation)).push(new WoodBox(xLocation, yLocation));
-        } else if ( weight == 3 ) {
-          boxWeights.get( boxPositions.get( xLocation )).push(new MetalBox(xLocation, yLocation));
-        }
-        else if ( weight == 4){
-          boxWeights.get(boxPositions.get( xLocation )).push( new StoneBox( xLocation, yLocation ));
-        }
-        return true;
+    if ( boxWeights.get(boxPositions.get(xLocation)).peek().getyLocation() - 40 == yLocation ){
+      if( weight > boxWeights.get(boxPositions.get(xLocation)).peek().weight()){
+        boxWeights.get(boxPositions.get(xLocation)).pop();
+        return false;
       }
+      if ( weight == 1 ) {
+        boxWeights.get(boxPositions.get(xLocation)).push(new CardBox(xLocation, yLocation));
+      } else if ( weight == 2 ){
+        boxWeights.get( boxPositions.get(xLocation)).push(new WoodBox(xLocation, yLocation));
+      } else if ( weight == 3 ) {
+        boxWeights.get( boxPositions.get( xLocation )).push(new MetalBox(xLocation, yLocation));
+      }
+      else if ( weight == 4){
+        boxWeights.get(boxPositions.get( xLocation )).push( new StoneBox( xLocation, yLocation ));
+      }
+      return true;
     }
     return false;
   }
   public void move(){
-    // this method works for now,
-//    if (yLocation != boxWeights.get(boxPositions.get(xLocation)).peek().getyLocation() -40 ) {
-//      yLocation += ySpeed;
-//    }
     if ( !collision() ){
       yLocation += ySpeed;
     }
@@ -76,5 +66,9 @@ public abstract class Box extends LazarusWorld implements Observer {
   }
   public int getBOX_WIDTH(){
     return BOX_WIDTH;
+  }
+
+  public Image getBoxImage() {
+    return boxImage;
   }
 }

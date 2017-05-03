@@ -58,7 +58,6 @@ public class BoxGenerator extends LazarusWorld {
   }
 
   public void draw (Graphics g, ImageObserver obs){
-
       for (Box b : box) {
         b.draw(g, obs);
         b.move();
@@ -68,10 +67,6 @@ public class BoxGenerator extends LazarusWorld {
         while (iter.hasNext()){
           iter.next().draw(g, obs);
         }
-
       }
-
-
-
   }
 }

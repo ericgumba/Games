@@ -13,7 +13,7 @@ import java.util.*;
  */
 public class LazarusWorld extends JPanel implements Runnable {
 
-  static java.util.List<Stack<Box>> boxWeights = new ArrayList<Stack<Box>>();
+  static java.util.List<Stack<Box>> boxWeights;
   private BufferedImage bufferedImg, bufferedImg2;
   static ImageGenerator imgGen;
   LazarusBackground lazBackground;
@@ -22,12 +22,13 @@ public class LazarusWorld extends JPanel implements Runnable {
   LazarusEvents lazEvents;
   LazarusControls lazControls;
   static MainCharacter mc;
-  static HashMap<Integer, String> controls = new HashMap<>();
+  static HashMap<Integer, String> controls;
   Thread thread;
   final int BOX_SPAWN_TIMER = 100;
   static BoxGenerator boxGen;
-  static HashMap<Integer, Integer> boxPositions = new HashMap<>();
+  static HashMap<Integer, Integer> boxPositions;
   int timeCounter = 100;
+  static HashMap<Integer, Box> boxTypes;
 
 
   @Override
@@ -43,6 +44,10 @@ public class LazarusWorld extends JPanel implements Runnable {
     }
   }
   public void init(){
+    boxPositions = new HashMap<>();
+    controls = new HashMap<>();
+    boxWeights = new ArrayList<Stack<Box>>();
+    boxTypes = new HashMap<>();
 
     thread = new Thread(this);
     thread.setPriority(Thread.MIN_PRIORITY);
@@ -80,6 +85,8 @@ public class LazarusWorld extends JPanel implements Runnable {
   }
   public void paint( Graphics g ){
 
+
+
     Dimension d = getSize();
     updateAndDisplay();
     bufferedImg2 = ( BufferedImage ) createImage( GAMEBOARD_WIDTH, GAMEBOARD_HEIGHT );
@@ -93,35 +100,22 @@ public class LazarusWorld extends JPanel implements Runnable {
     g.drawImage( bufferedImg2,0,0,this );
 
     g.drawImage(mc.getImageOfLazarus(), mc.getxLocation(), mc.getyLocation(), this);
-
-
-
-
     timeCounter++;
+
+    // problem,
+    int boxDecider = (int)(Math.random() * ((4 - 1) + 1) + 1);
     if ( timeCounter >= 200 ){
 
-      int boxDecider = (int)(Math.random() * ((4 - 1) + 1) + 1);
       System.out.println("generating box: " + boxDecider);
       timeCounter = 0;
       boxGen.addBox(mc.getLazarusPosition() *40,0, boxDecider);
 
+      boxDecider = (int)(Math.random() * ((4 - 1) + 1) + 1);
+
+
+
     }
-
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   public void updateAndDisplay(){
     bufferedImg = ( BufferedImage ) createImage( GAMEBOARD_WIDTH, GAMEBOARD_HEIGHT ); // create image that is x by y
@@ -132,12 +126,7 @@ public class LazarusWorld extends JPanel implements Runnable {
     gameGraphics.clearRect(0,0,GAMEBOARD_WIDTH, GAMEBOARD_HEIGHT);
 
     lazBackground.draw(gameGraphics, this);
-//
-//    mc.draw(gameGraphics, this);
-//    mc.move();
     boxGen.draw(gameGraphics, this);
-//
-//
   }
 
 }
