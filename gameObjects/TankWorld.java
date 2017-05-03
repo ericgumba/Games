@@ -1,5 +1,7 @@
 package gameObjects;
 
+import java.awt.font.FontRenderContext;
+import java.awt.geom.Rectangle2D;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.io.IOException;
@@ -239,35 +241,69 @@ public class TankWorld extends JPanel implements Runnable{
    * or get destroyed by bullets.
    */
   private void updateAndDisplay( ) {
-    bufferedImg = ( BufferedImage ) createImage( BACKGROUND_WIDTH, BACKGROUND_HEIGHT ); // create image that is x by y
+    bufferedImg = (BufferedImage) createImage(BACKGROUND_WIDTH, BACKGROUND_HEIGHT); // create image that is x by y
     Graphics2D gameGraphics = bufferedImg.createGraphics();
-    gameGraphics.setBackground( getBackground() );
-    gameGraphics.setRenderingHint( RenderingHints.KEY_RENDERING,
-        RenderingHints.VALUE_RENDER_QUALITY );
+    gameGraphics.setBackground(getBackground());
+    gameGraphics.setRenderingHint(RenderingHints.KEY_RENDERING,
+        RenderingHints.VALUE_RENDER_QUALITY);
 
-    rockBackground.draw( gameGraphics, this );
+    if ( tankOne.getScore() != 0 && tankTwo.getScore() != 0 ) {
 
-    tankOne.move();
-    tankOne.draw( gameGraphics, this );
-    tankTwo.move();
-    tankTwo.draw( gameGraphics, this );
+      rockBackground.draw(gameGraphics, this);
 
-    wallGenerator.draw( gameGraphics );
+      tankOne.move();
+      tankOne.draw(gameGraphics, this);
+      tankTwo.move();
+      tankTwo.draw(gameGraphics, this);
 
-    for (int i = 0; i < tankOneBullets.size(); i++) {
+      wallGenerator.draw(gameGraphics);
+
+      for (int i = 0; i < tankOneBullets.size(); i++) {
         if (tankOneBullets.get(i).move()) {
-            tankOneBullets.remove(i);
+          tankOneBullets.remove(i);
         } else {
-            tankOneBullets.get(i).draw(gameGraphics, this);
+          tankOneBullets.get(i).draw(gameGraphics, this);
         }
-    }
+      }
 
-    for (int i = 0; i < tankTwoBullets.size(); i++) {
+      for (int i = 0; i < tankTwoBullets.size(); i++) {
         if (tankTwoBullets.get(i).move()) {
-            tankTwoBullets.remove(i);
+          tankTwoBullets.remove(i);
         } else {
-            tankTwoBullets.get(i).draw(gameGraphics, this);
+          tankTwoBullets.get(i).draw(gameGraphics, this);
         }
+      }
+    } else{
+      rockBackground.draw(gameGraphics, this);
+      //g2.drawImage(getSprite("Resources/gameOver3.png"), (borderX / 2) - 125, (borderY / 4) - 40, observer);
+      // Drawing the Score in an aligned box:
+      //String gameOverMessage = "Game Over";
+      String scoreMessage;
+      if ( tankOne.getScore() == 0 ) {
+        scoreMessage = "Player Two Wins!";
+      } else {
+        scoreMessage = "Player One Wins!";
+      }
+      Font l = new Font("Garamond", Font.BOLD, 48);
+      gameGraphics.setFont(l);
+
+      //measure the message 'greeting'
+      FontRenderContext context = gameGraphics.getFontRenderContext(); //gets font characteristics specific to screen res.
+      Rectangle2D bounds = l.getStringBounds(scoreMessage, context);
+
+      //set (x,y) = top left corner of text rectangle
+      double x = (getWidth() - bounds.getWidth()) / 2;
+      double y = (getHeight() - bounds.getHeight()) / 2;
+
+      //add ascent to y to reach the baseline
+      double ascent = -bounds.getY();
+      double baseY = y + ascent;
+
+      gameGraphics.setPaint(Color.GREEN);
+
+      //Now, draw the centered, styled message
+      //g2.drawString(gameOverMessage, (borderX / 2) - 160, (borderY / 4) - 40);
+      gameGraphics.drawString(scoreMessage, (int) x, (int) baseY);
     }
   }
   
