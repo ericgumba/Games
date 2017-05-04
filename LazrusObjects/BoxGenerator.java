@@ -17,6 +17,8 @@ public class BoxGenerator extends LazarusWorld {
   public BoxGenerator() {
 
 
+    // problem, increase height by 2 or something.
+
     boxTypes.put( 1, new CardBox( 0, GAMEBOARD_HEIGHT-63, currentBoxSpeed ));
     boxTypes.put( 2, new WoodBox( 0, GAMEBOARD_HEIGHT-63, currentBoxSpeed ));
     boxTypes.put( 3, new MetalBox( 0, GAMEBOARD_HEIGHT-63, currentBoxSpeed ));
@@ -25,29 +27,26 @@ public class BoxGenerator extends LazarusWorld {
 
     int wallHeight = 40;
 
-    for (int i = 0; i < 16; i++) {
-      boxWeights.get(i).push( new Wall ( 40*i, GAMEBOARD_HEIGHT-63 ));
+    for ( int i = 0; i < 16; i++ ) {
+      boxWeights.get( i ).push( new Wall ( 40*i, GAMEBOARD_HEIGHT-63 ));
       boxWeights.get( i ).push( new Wall (40*i, GAMEBOARD_HEIGHT - 103 ));
     }
     for(int i = 0; i < 2; i++){
-      boxWeights.get(i).push( new Wall(wallHeight*i, GAMEBOARD_HEIGHT- ( 63 + wallHeight * 2 )));
-      boxWeights.get(i).push( new Wall( wallHeight*i, GAMEBOARD_HEIGHT - ( 63 + wallHeight * 3 )));
-      boxWeights.get(i).push( new Wall(wallHeight*i, GAMEBOARD_HEIGHT - ( 63 + wallHeight * 4 )));
-      boxWeights.get(i).push( new Wall( wallHeight*i, GAMEBOARD_HEIGHT - ( 63 + wallHeight * 5 )));
-      boxWeights.get(i+14).push( new Wall ( wallHeight * ( 14+i ), GAMEBOARD_HEIGHT - ( 63 + wallHeight * 2 )));
-      boxWeights.get(14+i).push( new Wall ( wallHeight * ( 14+i ), GAMEBOARD_HEIGHT - ( 63 + wallHeight * 3 )));
-      boxWeights.get(14+i).push( new Wall ( wallHeight * ( 14+i ), GAMEBOARD_HEIGHT - ( 63 + wallHeight * 4 )));
-      boxWeights.get(14+i).push( new Wall ( wallHeight * ( 14+i ), GAMEBOARD_HEIGHT - ( 63 + wallHeight * 5 )));
-
+      for( int j = 0; j < 3+currentLevel; j++ ){
+        boxWeights.get( i ).push(
+            new Wall(
+                wallHeight*i, GAMEBOARD_HEIGHT - (63 + wallHeight * ( 2+j ))));
+        boxWeights.get(14+i).push( new Wall(
+            wallHeight * ( 14+i ), GAMEBOARD_HEIGHT - ( 63 + wallHeight * ( 2+j ))));
+      }
     }
-    box.add( new Button ( 0, GAMEBOARD_HEIGHT - ( 63 + wallHeight * 6 ) ));
-    box.add( new Button( 40*15, GAMEBOARD_HEIGHT - ( 63 + wallHeight * 6 )));
+    box.add( new Button ( 0, GAMEBOARD_HEIGHT - ( 63 + wallHeight * ( 5+currentLevel ))));
+    box.add( new Button( 40*15, GAMEBOARD_HEIGHT - ( 63 + wallHeight * ( 5+currentLevel ))));
 
 
   }
 
   public void addBox(int x,int y, int boxNum, int boxSpeed){
-
     if ( boxNum == 1 ) {
       box.add( new CardBox( x, y, boxSpeed ));
     } else if ( boxNum == 2 ){
@@ -57,7 +56,6 @@ public class BoxGenerator extends LazarusWorld {
     } else if ( boxNum == 4){
       box.add( new StoneBox( x, y, boxSpeed ));
     }
-
   }
 
   public ArrayList<Box> getBox() {

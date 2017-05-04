@@ -23,6 +23,7 @@ public class LazarusWorld extends JPanel implements Runnable {
   LazarusEvents lazEvents;
   LazarusControls lazControls;
 
+  static int currentLevel = 1;
   static MainCharacter mc;
   static HashMap<Integer, String> controls;
   Thread thread;
@@ -49,9 +50,6 @@ public class LazarusWorld extends JPanel implements Runnable {
     }
   }
   public void init(){
-
-
-
     // initialize thread.
     thread = new Thread(this);
     thread.setPriority(Thread.MIN_PRIORITY);
@@ -94,9 +92,6 @@ public class LazarusWorld extends JPanel implements Runnable {
   }
   public void paint( Graphics g ){
 
-
-    // problem, figure out how to reset level when lazarus "wins".
-
     if(mc.getLazarusPosition() != 0 && mc.getLazarusPosition() != 15) {
       Dimension d = getSize();
       updateAndDisplay();
@@ -130,12 +125,15 @@ public class LazarusWorld extends JPanel implements Runnable {
     } else{
 
       currentBoxSpeed = currentBoxSpeed * 2;
+      currentLevel += 1;
       reset();
 
     }
 
   }
 
+  //resets the state of the data structures holding the boxes, the main character
+  // and the box generator.
   public void reset(){
 
     boxPositions = new HashMap<>();
@@ -152,9 +150,6 @@ public class LazarusWorld extends JPanel implements Runnable {
     boxGen = new BoxGenerator();
 
     mc.resetLazarusPosition();
-
-
-
 
   }
 
