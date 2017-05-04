@@ -8,6 +8,7 @@ public class Button extends Box{
     boxImage = imgGen.getImage( "Lazarus/Button.png" );
     xLocation = x;
     yLocation = y;
+    ySpeed = 0;
   }
 
   @Override

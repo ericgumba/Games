@@ -16,9 +16,6 @@ public class BoxGenerator extends LazarusWorld {
   ArrayList<Box> box = new ArrayList();
   public BoxGenerator() {
 
-
-    // problem, increase height by 2 or something.
-
     boxTypes.put( 1, new CardBox( 0, GAMEBOARD_HEIGHT-63, currentBoxSpeed ));
     boxTypes.put( 2, new WoodBox( 0, GAMEBOARD_HEIGHT-63, currentBoxSpeed ));
     boxTypes.put( 3, new MetalBox( 0, GAMEBOARD_HEIGHT-63, currentBoxSpeed ));
@@ -29,7 +26,7 @@ public class BoxGenerator extends LazarusWorld {
 
     for ( int i = 0; i < 16; i++ ) {
       boxWeights.get( i ).push( new Wall ( 40*i, GAMEBOARD_HEIGHT-63 ));
-      boxWeights.get( i ).push( new Wall (40*i, GAMEBOARD_HEIGHT - 103 ));
+      boxWeights.get( i ).push( new Wall ( 40*i, GAMEBOARD_HEIGHT - 103 ));
     }
     for(int i = 0; i < 2; i++){
       for( int j = 0; j < 3+currentLevel; j++ ){
@@ -53,7 +50,7 @@ public class BoxGenerator extends LazarusWorld {
       box.add( new WoodBox( x, y, boxSpeed ));
     } else if ( boxNum == 3 ){
       box.add( new MetalBox( x, y, boxSpeed ));
-    } else if ( boxNum == 4){
+    } else if ( boxNum == 4 ){
       box.add( new StoneBox( x, y, boxSpeed ));
     }
   }
@@ -63,14 +60,20 @@ public class BoxGenerator extends LazarusWorld {
   }
 
   public void draw (Graphics g, ImageObserver obs){
-      for (Box b : box) {
-        b.draw(g, obs);
-        b.move();
+      for ( Box b : box ) {
+        b.draw( g, obs );
+        if (! b.collision(
+            boxWeights.get(boxPositions.get( b.xLocation )).peek().getxLocation(),
+            boxWeights.get(boxPositions.get(b.xLocation )).peek().yLocation, 40)) {
+          b.move();
+        } else {
+          box.remove(b);
+        }
       }
       for ( int i = 0 ; i < boxWeights.size(); i++ ){
         Iterator<Box> iter = boxWeights.get(i).iterator();
-        while (iter.hasNext()){
-          iter.next().draw(g, obs);
+        while (iter.hasNext() ){
+          iter.next().draw( g, obs );
         }
       }
   }

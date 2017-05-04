@@ -162,7 +162,9 @@ public class LazarusWorld extends JPanel implements Runnable {
     gameGraphics.clearRect(0,0,GAMEBOARD_WIDTH, GAMEBOARD_HEIGHT);
 
     lazBackground.draw(gameGraphics, this);
-    boxGen.draw(gameGraphics, this);
+    try {
+      boxGen.draw(gameGraphics, this);
+    } catch (Exception e){boxGen.draw(gameGraphics, this);}
   }
 
 }

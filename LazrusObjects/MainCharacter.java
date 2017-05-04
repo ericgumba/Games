@@ -59,7 +59,7 @@ public class MainCharacter extends Box implements MainCharacterInterface {
   }
 
   // is called everytime an action happens.
-  public void update(Observable obj, Object event){
+  public void update( Observable obj, Object event ){
 
     LazarusEvents lazE = ( LazarusEvents ) event;
     if( lazE.eventType == 0 ){
@@ -68,9 +68,9 @@ public class MainCharacter extends Box implements MainCharacterInterface {
       if ( lazAction.equals( "left" ) ){
         if (  boxWeights.get( lazarusPosition - 1 ).size() - boxWeights.get( lazarusPosition ).size() < 2) {
           xMove -= 40;
-          yMove -= 40 * ( boxWeights.get( lazarusPosition - 1 ).size() - boxWeights.get( lazarusPosition ).size());
+          yMove -= 40 * ( boxWeights.get( lazarusPosition - 1 ).size() - boxWeights.get( lazarusPosition ).size() );
           lazarusPosition -= 1;
-          System.out.println("laz pos: " + lazarusPosition);
+          System.out.println( "laz pos: " + lazarusPosition );
           move();
         }
       } else if ( lazAction.equals( "right" ) ){

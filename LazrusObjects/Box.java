@@ -24,7 +24,7 @@ public abstract class Box extends LazarusWorld implements Observer {
   public abstract int weight();
 
   public void draw(Graphics g, ImageObserver observer){
-      g.drawImage(boxImage, xLocation, yLocation, observer);
+    g.drawImage(boxImage, xLocation, yLocation, observer);
   }
 
   @Override
@@ -36,30 +36,39 @@ public abstract class Box extends LazarusWorld implements Observer {
     this.ySpeed = ySpeed;
   }
 
-  public boolean collision(){
-    if ( boxWeights.get(boxPositions.get(xLocation)).peek().getyLocation() - 40 == yLocation ){
-      if( weight > boxWeights.get(boxPositions.get(xLocation)).peek().weight()){
-        boxWeights.get(boxPositions.get(xLocation)).pop();
+  public boolean collision(int x, int y, int height){
+
+//    if( y + height > yLocation
+//        && y < yLocation + height )
+
+    if (  y + height > yLocation
+        && y < yLocation + height
+        ){
+
+      if( weight > boxWeights.get(boxPositions.get( xLocation )).peek().weight() ){
+        boxWeights.get( boxPositions.get( xLocation )).pop();
         return false;
       }
       if ( weight == 1 ) {
-        boxWeights.get(boxPositions.get(xLocation)).push(new CardBox(xLocation, yLocation, currentBoxSpeed));
+        boxWeights.get(boxPositions.get( xLocation )).push(
+            new CardBox( xLocation, boxWeights.get( boxPositions.get( xLocation )).peek().getyLocation()-40, currentBoxSpeed ));
       } else if ( weight == 2 ){
-        boxWeights.get( boxPositions.get(xLocation)).push(new WoodBox(xLocation, yLocation, currentBoxSpeed));
+        boxWeights.get( boxPositions.get( xLocation )).push(
+            new WoodBox( xLocation, boxWeights.get( boxPositions.get( xLocation )).peek().getyLocation()-40, currentBoxSpeed ));
       } else if ( weight == 3 ) {
-        boxWeights.get( boxPositions.get( xLocation )).push(new MetalBox(xLocation, yLocation, currentBoxSpeed));
+        boxWeights.get( boxPositions.get( xLocation )).push(
+            new MetalBox( xLocation, boxWeights.get( boxPositions.get( xLocation )).peek().getyLocation()-40, currentBoxSpeed ));
       }
       else if ( weight == 4){
-        boxWeights.get(boxPositions.get( xLocation )).push( new StoneBox( xLocation, yLocation, currentBoxSpeed ));
+        boxWeights.get(boxPositions.get(
+            xLocation )).push( new StoneBox( xLocation, boxWeights.get( boxPositions.get( xLocation )).peek().getyLocation()-40, currentBoxSpeed ));
       }
       return true;
     }
     return false;
   }
   public void move(){
-    if ( !collision() ){
       yLocation += ySpeed;
-    }
   }
 
   public int getxLocation(){
