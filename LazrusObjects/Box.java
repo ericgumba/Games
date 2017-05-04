@@ -32,6 +32,10 @@ public abstract class Box extends LazarusWorld implements Observer {
 
   }
 
+  public void setySpeed(int ySpeed) {
+    this.ySpeed = ySpeed;
+  }
+
   public boolean collision(){
     if ( boxWeights.get(boxPositions.get(xLocation)).peek().getyLocation() - 40 == yLocation ){
       if( weight > boxWeights.get(boxPositions.get(xLocation)).peek().weight()){
@@ -39,14 +43,14 @@ public abstract class Box extends LazarusWorld implements Observer {
         return false;
       }
       if ( weight == 1 ) {
-        boxWeights.get(boxPositions.get(xLocation)).push(new CardBox(xLocation, yLocation));
+        boxWeights.get(boxPositions.get(xLocation)).push(new CardBox(xLocation, yLocation, currentBoxSpeed));
       } else if ( weight == 2 ){
-        boxWeights.get( boxPositions.get(xLocation)).push(new WoodBox(xLocation, yLocation));
+        boxWeights.get( boxPositions.get(xLocation)).push(new WoodBox(xLocation, yLocation, currentBoxSpeed));
       } else if ( weight == 3 ) {
-        boxWeights.get( boxPositions.get( xLocation )).push(new MetalBox(xLocation, yLocation));
+        boxWeights.get( boxPositions.get( xLocation )).push(new MetalBox(xLocation, yLocation, currentBoxSpeed));
       }
       else if ( weight == 4){
-        boxWeights.get(boxPositions.get( xLocation )).push( new StoneBox( xLocation, yLocation ));
+        boxWeights.get(boxPositions.get( xLocation )).push( new StoneBox( xLocation, yLocation, currentBoxSpeed ));
       }
       return true;
     }

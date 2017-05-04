@@ -13,6 +13,7 @@ import java.util.*;
  */
 public class LazarusWorld extends JPanel implements Runnable {
 
+  final int MAX_LEVEL = 5; // starting from level 1
   static java.util.List<Stack<Box>> boxWeights;
   private BufferedImage bufferedImg, bufferedImg2;
   static ImageGenerator imgGen;
@@ -31,6 +32,7 @@ public class LazarusWorld extends JPanel implements Runnable {
   int timeCounter = 200;
   static Stack<Box> nextBox = new Stack<Box>();
   static HashMap<Integer, Box> boxTypes;
+  int currentBoxSpeed = 1;
 
   int boxDecider = (int)(Math.random() * ((4 - 1) + 1) + 1);
 
@@ -115,7 +117,7 @@ public class LazarusWorld extends JPanel implements Runnable {
       if (timeCounter >= 100) {
         System.out.println("generating box: " + boxDecider);
         timeCounter = 0;
-        boxGen.addBox(mc.getLazarusPosition() * 40, 0, boxDecider);
+        boxGen.addBox(mc.getLazarusPosition() * 40, 0, boxDecider, currentBoxSpeed);
         boxDecider = (int) (Math.random() * ((4 - 1) + 1) + 1);
         nextBox.push(boxTypes.get(boxDecider));
       }
@@ -127,6 +129,7 @@ public class LazarusWorld extends JPanel implements Runnable {
 
     } else{
 
+      currentBoxSpeed = currentBoxSpeed * 2;
       reset();
 
     }
@@ -149,6 +152,7 @@ public class LazarusWorld extends JPanel implements Runnable {
     boxGen = new BoxGenerator();
 
     mc.resetLazarusPosition();
+
 
 
 

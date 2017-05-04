@@ -17,10 +17,10 @@ public class BoxGenerator extends LazarusWorld {
   public BoxGenerator() {
 
 
-    boxTypes.put( 1, new CardBox( 0, GAMEBOARD_HEIGHT-63 ));
-    boxTypes.put( 2, new WoodBox( 0, GAMEBOARD_HEIGHT-63 ));
-    boxTypes.put( 3, new MetalBox( 0, GAMEBOARD_HEIGHT-63 ));
-    boxTypes.put( 4, new StoneBox( 0, GAMEBOARD_HEIGHT-63 ));
+    boxTypes.put( 1, new CardBox( 0, GAMEBOARD_HEIGHT-63, currentBoxSpeed ));
+    boxTypes.put( 2, new WoodBox( 0, GAMEBOARD_HEIGHT-63, currentBoxSpeed ));
+    boxTypes.put( 3, new MetalBox( 0, GAMEBOARD_HEIGHT-63, currentBoxSpeed ));
+    boxTypes.put( 4, new StoneBox( 0, GAMEBOARD_HEIGHT-63, currentBoxSpeed ));
 
 
     int wallHeight = 40;
@@ -46,16 +46,16 @@ public class BoxGenerator extends LazarusWorld {
 
   }
 
-  public void addBox(int x,int y, int boxNum){
+  public void addBox(int x,int y, int boxNum, int boxSpeed){
 
     if ( boxNum == 1 ) {
-      box.add( new CardBox( x, y ));
+      box.add( new CardBox( x, y, boxSpeed ));
     } else if ( boxNum == 2 ){
-      box.add( new WoodBox( x, y ));
+      box.add( new WoodBox( x, y, boxSpeed ));
     } else if ( boxNum == 3 ){
-      box.add( new MetalBox( x, y ));
+      box.add( new MetalBox( x, y, boxSpeed ));
     } else if ( boxNum == 4){
-      box.add( new StoneBox( x, y ));
+      box.add( new StoneBox( x, y, boxSpeed ));
     }
 
   }

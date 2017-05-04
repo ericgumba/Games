@@ -5,12 +5,12 @@ package LazrusObjects;
  */
 public class StoneBox extends Box {
 
-  public StoneBox(int x, int y){
+  public StoneBox(int x, int y, int boxSpeed){
     weight = 4;
     boxImage = imgGen.getImage("Lazarus/StoneBox.png");
     xLocation = x;
     yLocation = y;
-    ySpeed = 1;
+    ySpeed = boxSpeed;
   }
 
   @Override

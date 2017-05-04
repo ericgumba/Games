@@ -11,11 +11,12 @@ public class CardBox extends Box{
   final int BOX_WIDTH = 40;
   final int BOX_HEIGHT = 40;
 
-  public CardBox( int x, int y ){
+  public CardBox( int x, int y, int boxSpeed ){
     weight = 1;
     boxImage = imgGen.getImage("Lazarus/CardBox.png");
     xLocation = x;
     yLocation = y;
+    ySpeed = boxSpeed;
   }
 
   public int weight(){

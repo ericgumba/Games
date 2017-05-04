@@ -5,11 +5,12 @@ package LazrusObjects;
  */
 public class MetalBox extends Box {
 
-  public MetalBox(int x, int y){
+  public MetalBox(int x, int y, int boxSpeed){
     xLocation = x;
     yLocation = y;
     boxImage = imgGen.getImage( "Lazarus/MetalBox.png" );
     weight = 3;
+    ySpeed = boxSpeed;
   }
 
   @Override

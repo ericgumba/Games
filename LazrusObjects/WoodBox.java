@@ -5,11 +5,12 @@ package LazrusObjects;
  */
 public class WoodBox extends Box {
 
-  public  WoodBox( int x, int y ){
+  public  WoodBox( int x, int y, int boxSpeed ){
     weight = 2;
     xLocation = x;
     yLocation = y;
     boxImage = imgGen.getImage( "Lazarus/WoodBox.png" );
+    ySpeed = boxSpeed;
   }
   @Override
   public int weight() {
