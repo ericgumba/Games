@@ -27,7 +27,6 @@ public class LazarusWorld extends JPanel implements Runnable {
   static MainCharacter mc;
   static HashMap<Integer, String> controls;
   Thread thread;
-  final int BOX_SPAWN_TIMER = 100;
   static BoxGenerator boxGen;
   static HashMap<Integer, Integer> boxPositions;
   int timeCounter = 200;
@@ -92,7 +91,10 @@ public class LazarusWorld extends JPanel implements Runnable {
   }
   public void paint( Graphics g ){
 
-    if(mc.getLazarusPosition() != 0 && mc.getLazarusPosition() != 15) {
+    if(mc.getLazarusPosition() != 0
+        && mc.getLazarusPosition() != 15
+        && !mc.lazarusIsSquished
+        ) {
       Dimension d = getSize();
       updateAndDisplay();
       bufferedImg2 = (BufferedImage) createImage(GAMEBOARD_WIDTH, GAMEBOARD_HEIGHT);
@@ -122,12 +124,14 @@ public class LazarusWorld extends JPanel implements Runnable {
           nextBox.peek().getyLocation(),
           this);
 
-    } else{
+    } else if ( mc.lazarusIsSquished ){
+      reset();
+    }
 
+    else{
       currentBoxSpeed = currentBoxSpeed * 2;
       currentLevel += 1;
       reset();
-
     }
 
   }

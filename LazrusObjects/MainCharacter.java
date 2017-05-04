@@ -14,6 +14,7 @@ public class MainCharacter extends Box implements MainCharacterInterface {
   Image imageOfLazarus;
   int xMove, yMove;
   int lazarusPosition;
+  static boolean lazarusIsSquished = false;
   MainCharacter(){
     lazarusPosition = 5;
     xMove = 200;
@@ -22,11 +23,26 @@ public class MainCharacter extends Box implements MainCharacterInterface {
     yLocation = yMove;
     imageOfLazarus = imgGen.getImage( "Lazarus/Lazarus_stand.png" );
   }
+
+  public boolean collision(int xLocation, int y, int lazarusHeight){
+
+    if ( y + lazarusHeight > yLocation
+        && y < yLocation + lazarusHeight
+        && xLocation == this.xLocation
+        ){
+      return true;
+    }
+    return false;
+  }
   public void move(){
     xLocation = xMove;
     yLocation = yMove;
   }
 
+  public void setLazarusIsSquished(boolean lazarusIsSquished) {
+    this.lazarusIsSquished = lazarusIsSquished;
+    System.out.println("L is squished");
+  }
 
   public void resetLazarusPosition( ) {
     xMove = 200;
@@ -34,6 +50,7 @@ public class MainCharacter extends Box implements MainCharacterInterface {
     this.xLocation = 200;
     this.yLocation = GAMEBOARD_HEIGHT-145;
     this.lazarusPosition = 5;
+    lazarusIsSquished = false;
 
   }
 
@@ -53,6 +70,8 @@ public class MainCharacter extends Box implements MainCharacterInterface {
     return lazarusPosition;
   }
 
+
+
   @Override
   public int weight() {
     return 0;
@@ -60,6 +79,7 @@ public class MainCharacter extends Box implements MainCharacterInterface {
 
   // is called everytime an action happens.
   public void update( Observable obj, Object event ){
+
 
     LazarusEvents lazE = ( LazarusEvents ) event;
     if( lazE.eventType == 0 ){

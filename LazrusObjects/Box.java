@@ -29,17 +29,10 @@ public abstract class Box extends LazarusWorld implements Observer {
 
   @Override
   public void update(Observable o, Object arg) {
-
+    System.out.println("test");
   }
 
-  public void setySpeed(int ySpeed) {
-    this.ySpeed = ySpeed;
-  }
-
-  public boolean collision(int x, int y, int height){
-
-//    if( y + height > yLocation
-//        && y < yLocation + height )
+  public boolean collision( int y, int height){
 
     if (  y + height > yLocation
         && y < yLocation + height

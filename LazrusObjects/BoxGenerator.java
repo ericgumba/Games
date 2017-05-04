@@ -62,8 +62,12 @@ public class BoxGenerator extends LazarusWorld {
   public void draw (Graphics g, ImageObserver obs){
       for ( Box b : box ) {
         b.draw( g, obs );
+
+        if( mc.collision(b.getxLocation(), b.getyLocation(), 40)){
+          mc.setLazarusIsSquished(true);
+        }
+
         if (! b.collision(
-            boxWeights.get(boxPositions.get( b.xLocation )).peek().getxLocation(),
             boxWeights.get(boxPositions.get(b.xLocation )).peek().yLocation, 40)) {
           b.move();
         } else {
