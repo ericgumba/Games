@@ -1,17 +1,11 @@
 package LazrusObjects;
-
-
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.applet.AudioClip;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
-import java.io.File;
 import java.util.*;
-
 import static java.applet.Applet.newAudioClip;
 
 /**
@@ -19,7 +13,6 @@ import static java.applet.Applet.newAudioClip;
  */
 public class LazarusWorld extends JPanel implements Runnable {
 
-  final int MAX_LEVEL = 5; // starting from level 1
   static java.util.List<Stack<Box>> boxWeights;
   private BufferedImage bufferedImg, bufferedImg2;
   static ImageGenerator imgGen;
@@ -28,7 +21,7 @@ public class LazarusWorld extends JPanel implements Runnable {
   final int GAMEBOARD_WIDTH = 640, GAMEBOARD_HEIGHT = 480;
   LazarusEvents lazEvents;
   LazarusControls lazControls;
-  static AudioClip deathOfLazarus, lazarusMoved, boxCrushed, buttonPressed;
+  static AudioClip deathOfLazarus, lazarusMoved, boxCrushed, buttonPressed, music;
 
   static int currentLevel = 1;
   static MainCharacter mc;
@@ -40,10 +33,10 @@ public class LazarusWorld extends JPanel implements Runnable {
   static Stack<Box> nextBox = new Stack<Box>();
   static HashMap<Integer, Box> boxTypes;
   int currentBoxSpeed = 1;
-  BufferedImage leftJumpStrip, rightJumpStrip;
-  BufferedImage[] leftJumpFrame, rightJumpFrame;
+  BufferedImage leftJumpStrip, afraidStrip, squishedStrip;
+  BufferedImage[] leftJumpFrame, afraidFrame, squishedFrame;
 
-  int jumpTimer = 0;
+  int jumpTimer = 0, afraidTimer = 0, squishTimer = 0;
   int boxDecider = (int)(Math.random() * ((4 - 1) + 1) + 1);
 
   @Override
@@ -60,10 +53,15 @@ public class LazarusWorld extends JPanel implements Runnable {
   }
   public void init(){
 
+
+
+
     try {
       deathOfLazarus = newAudioClip(LazarusWorld.class.getResource( "Lazarus/Squished.wav" ));
       lazarusMoved = newAudioClip(LazarusWorld.class.getResource( "Lazarus/Move.wav" ));
       boxCrushed = newAudioClip(LazarusWorld.class.getResource("Lazarus/Crush.wav"));
+      buttonPressed = newAudioClip(LazarusWorld.class.getResource("Lazarus/Button.wav"));
+      music = newAudioClip(LazarusWorld.class.getResource("Lazarus/Music.mid"));
 
     } catch (Exception e){
       System.out.println("Cannot get audio.");
@@ -74,6 +72,7 @@ public class LazarusWorld extends JPanel implements Runnable {
     thread.setPriority(Thread.MIN_PRIORITY);
     thread.start();
 
+    music.play();
     // Create data structures
     boxPositions = new HashMap<>();
     controls = new HashMap<>();
@@ -94,10 +93,10 @@ public class LazarusWorld extends JPanel implements Runnable {
     imgGen = new ImageGenerator();
     boxGen = new BoxGenerator();
 
-/////////////////////////////////////////////////
     try {
       leftJumpStrip = imgGen.getBufferedImage("Lazarus/Lazarus_left_strip7.png");
-      rightJumpStrip = imgGen.getBufferedImage("Lazarus/Lazarus_right_strip7.png");
+      afraidStrip = imgGen.getBufferedImage("Lazarus/Lazarus_afraid_strip10.png");
+      squishedStrip = imgGen.getBufferedImage("Lazarus/Lazarus_squished_strip11.png");
     } catch ( Exception e){ System.out.println("?");}
 
     leftJumpFrame = new BufferedImage[] {
@@ -107,17 +106,33 @@ public class LazarusWorld extends JPanel implements Runnable {
         leftJumpStrip.getSubimage(220,0,70,80),
         leftJumpStrip.getSubimage(290,0,70,80),
         leftJumpStrip.getSubimage(370,0,70,80),
-        leftJumpStrip.getSubimage(450,0,70,80)
+        leftJumpStrip.getSubimage(450,0,70,80),
         };
 
-    rightJumpFrame = new BufferedImage[] {
-        rightJumpStrip.getSubimage(0,0,50,80),
-        rightJumpStrip.getSubimage(80,0,70,80),
-        rightJumpStrip.getSubimage(150,0,70,80),
-        rightJumpStrip.getSubimage(240,0,70,80),
-        rightJumpStrip.getSubimage(320,0,70,80),
-        rightJumpStrip.getSubimage(400,0,70,80),
-        rightJumpStrip.getSubimage(510,0,50,80)
+    afraidFrame = new BufferedImage[] {
+        afraidStrip.getSubimage(0,0,40,40),
+        afraidStrip.getSubimage(40,0,40,40),
+        afraidStrip.getSubimage(80,0,40,40),
+        afraidStrip.getSubimage(120,0,40,40),
+        afraidStrip.getSubimage(160,0,40,40),
+        afraidStrip.getSubimage(200,0,40,40),
+        afraidStrip.getSubimage(240,0,40,40),
+        afraidStrip.getSubimage(280,0,40,40),
+        afraidStrip.getSubimage(320,0,40,40),
+        afraidStrip.getSubimage(360,0,40,40),
+    };
+    squishedFrame = new BufferedImage[] {
+        squishedStrip.getSubimage(0,0,40,40),
+        squishedStrip.getSubimage(40,0,40,40),
+        squishedStrip.getSubimage(80,0,40,40),
+        squishedStrip.getSubimage(120,0,40,40),
+        squishedStrip.getSubimage(160,0,40,40),
+        squishedStrip.getSubimage(200,0,40,40),
+        squishedStrip.getSubimage(240,0,40,40),
+        squishedStrip.getSubimage(280,0,40,40),
+        squishedStrip.getSubimage(320,0,40,40),
+        squishedStrip.getSubimage(360,0,40,40),
+        squishedStrip.getSubimage(400,0,40,40),
     };
     mc = new MainCharacter();
 
@@ -153,18 +168,76 @@ public class LazarusWorld extends JPanel implements Runnable {
       g3.dispose();
       g.drawImage(bufferedImg2, 0, 0, this);
 
-      if ( !mc.lazarusIsMoving ) {
+      if ( !mc.lazarusIsMoving && mc.lazarusCanMove ) {
         g.drawImage(mc.getImageOfLazarus(), mc.getxLocation(), mc.getyLocation(), this);
 
-        // problem: Figure out what code to write, so that lazarus stops falling when it collides with...
-        // strategy: take a look at the box method and collision.
-
-        // problem
         if ( !mc.collision( mc.getxLocation(),
-            boxWeights.get(boxPositions.get( mc.xLocation )).peek().yLocation - 8, 40)) {
+            boxWeights.get(boxPositions.get( mc.xLocation )).peek().yLocation - 7, 40)) {
           fall();
         }
-      } else if ( mc.lazarusIsMovingLeft ) {
+         if ( mc.lazarusIsAfraid() ){
+          afraidTimer++;
+          switch ( afraidTimer ){
+            case 1:
+              g.drawImage(afraidFrame[afraidTimer-1], mc.getxLocation(), mc.getyLocation(), this);
+            case 2:
+              g.drawImage(afraidFrame[afraidTimer-1], mc.getxLocation(), mc.getyLocation(), this);
+            case 3:
+              g.drawImage(afraidFrame[afraidTimer-1], mc.getxLocation(), mc.getyLocation(), this);
+            case 4:
+              g.drawImage(afraidFrame[afraidTimer-1], mc.getxLocation(), mc.getyLocation(), this);
+            case 5:
+              g.drawImage(afraidFrame[afraidTimer-1], mc.getxLocation(), mc.getyLocation(), this);
+            case 6:
+              g.drawImage(afraidFrame[afraidTimer-1], mc.getxLocation(), mc.getyLocation(), this);
+            case 7:
+              g.drawImage(afraidFrame[afraidTimer-1], mc.getxLocation(), mc.getyLocation(), this);
+            case 8:
+              g.drawImage(afraidFrame[afraidTimer-1], mc.getxLocation(), mc.getyLocation(), this);
+            case 9:
+              g.drawImage(afraidFrame[afraidTimer-1], mc.getxLocation(), mc.getyLocation(), this);
+            case 10:
+              g.drawImage(afraidFrame[afraidTimer-1], mc.getxLocation(), mc.getyLocation(), this);
+          }
+          if ( afraidTimer >= 10 ){
+            afraidTimer = 0;
+          }
+        }
+
+
+      } else if(! mc.lazarusCanMove ) {
+
+        squishTimer++;
+        switch (squishTimer) {
+          case 1:
+            g.drawImage(squishedFrame[squishTimer - 1], mc.getxLocation(), mc.getyLocation(), this);
+          case 2:
+            g.drawImage(squishedFrame[squishTimer - 1], mc.getxLocation(), mc.getyLocation(), this);
+          case 3:
+            g.drawImage(squishedFrame[squishTimer - 1], mc.getxLocation(), mc.getyLocation(), this);
+          case 4:
+            g.drawImage(squishedFrame[squishTimer - 1], mc.getxLocation(), mc.getyLocation(), this);
+          case 5:
+            g.drawImage(squishedFrame[squishTimer - 1], mc.getxLocation(), mc.getyLocation(), this);
+          case 6:
+            g.drawImage(squishedFrame[squishTimer - 1], mc.getxLocation(), mc.getyLocation(), this);
+          case 7:
+            g.drawImage(squishedFrame[squishTimer - 1], mc.getxLocation(), mc.getyLocation(), this);
+          case 8:
+            g.drawImage(squishedFrame[squishTimer - 1], mc.getxLocation(), mc.getyLocation(), this);
+          case 9:
+            g.drawImage(squishedFrame[squishTimer - 1], mc.getxLocation(), mc.getyLocation(), this);
+          case 10:
+            g.drawImage(squishedFrame[squishTimer - 1], mc.getxLocation(), mc.getyLocation(), this);
+        }
+
+        if (squishTimer >= 10) {
+          squishTimer = 0;
+
+          deathOfLazarus.play();
+          reset();
+        }
+      }else if ( mc.lazarusIsMovingLeft ) {
         jumpTimer++;
         switch (jumpTimer){
           case 1:
@@ -230,12 +303,14 @@ public class LazarusWorld extends JPanel implements Runnable {
           nextBox.peek().getyLocation(),
           this );
 
+
     } else if ( mc.lazarusIsSquished ){
 
       reset();
     }
 
     else{
+      buttonPressed.play();
       currentBoxSpeed += 2;
       currentLevel += 1;
       reset();
@@ -249,12 +324,9 @@ public class LazarusWorld extends JPanel implements Runnable {
 
     boxPositions = new HashMap<>();
     boxWeights = new ArrayList<Stack<Box>>();
-
-
     for(int i = 0; i < 16; i++) {
       boxPositions.put(i*40, i);
     }
-
     for ( int i = 0; i < 16; i++){
       boxWeights.add( new Stack< Box >());
     }
@@ -271,13 +343,11 @@ public class LazarusWorld extends JPanel implements Runnable {
     gameGraphics.setRenderingHint( RenderingHints.KEY_RENDERING,
         RenderingHints.VALUE_RENDER_QUALITY );
     gameGraphics.clearRect(0,0,GAMEBOARD_WIDTH, GAMEBOARD_HEIGHT);
-
     lazBackground.draw(gameGraphics, this);
     try {
       boxGen.draw(gameGraphics, this);
     } catch (Exception e){boxGen.draw(gameGraphics, this);}
   }
-
   public void fall(){
     mc.setyLocation( mc.getyLocation() + 9 );
     mc.setyMove( mc.getyLocation() );

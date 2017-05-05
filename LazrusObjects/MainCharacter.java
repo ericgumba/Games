@@ -3,6 +3,7 @@ package LazrusObjects;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.ImageObserver;
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Random;
 
@@ -149,6 +150,19 @@ public class MainCharacter extends Box implements MainCharacterInterface {
         }
       }
     }
+  }
+
+  public boolean lazarusIsAfraid() {
+
+    ArrayList<Box> box = boxGen.getBox();
+    for (Box b : box) {
+      if (b.getxLocation() == mc.getxLocation()) {
+
+        return true;
+      }
+    }
+
+    return false;
   }
 }
 

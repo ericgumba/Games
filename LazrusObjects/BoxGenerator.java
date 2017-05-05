@@ -59,7 +59,7 @@ public class BoxGenerator extends LazarusWorld {
     return box;
   }
 
-  public void draw (Graphics g, ImageObserver obs){
+  public void draw ( Graphics g, ImageObserver obs ){
       for ( Box b : box ) {
         b.draw( g, obs );
 
