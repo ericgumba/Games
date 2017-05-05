@@ -8,7 +8,7 @@ import java.util.Observer;
 /**
  * Created by ericgumba on 4/27/17.
  */
-public abstract class Box extends LazarusWorld implements Observer {
+public abstract class Box extends LazarusWorld  {
 
   int weight;
   Image boxImage;
@@ -18,8 +18,6 @@ public abstract class Box extends LazarusWorld implements Observer {
 
   // useful information about the boxes
   final int BOX_WIDTH = 40;
-  final int BOX_HEIGHT = 40;
-
 
   public abstract int weight();
 
@@ -27,10 +25,6 @@ public abstract class Box extends LazarusWorld implements Observer {
     g.drawImage(boxImage, xLocation, yLocation, observer);
   }
 
-  @Override
-  public void update(Observable o, Object arg) {
-    System.out.println("test");
-  }
 
   public boolean collision( int y, int height){
 
