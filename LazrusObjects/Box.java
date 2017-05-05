@@ -39,6 +39,7 @@ public abstract class Box extends LazarusWorld implements Observer {
         ){
 
       if( weight > boxWeights.get(boxPositions.get( xLocation )).peek().weight() ){
+        boxCrushed.play();
         boxWeights.get( boxPositions.get( xLocation )).pop();
         return false;
       }

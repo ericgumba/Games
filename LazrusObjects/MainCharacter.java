@@ -14,7 +14,10 @@ public class MainCharacter extends Box implements MainCharacterInterface {
   Image imageOfLazarus;
   int xMove, yMove;
   int lazarusPosition;
-  static boolean lazarusIsSquished = false;
+  static boolean lazarusIsSquished = false; // needs to be static?
+  static boolean lazarusCanMove = true;
+  static boolean lazarusIsMoving = false;
+
   MainCharacter(){
     lazarusPosition = 5;
     xMove = 200;
@@ -31,17 +34,16 @@ public class MainCharacter extends Box implements MainCharacterInterface {
         && xLocation == this.xLocation
         ){
       return true;
+
     }
     return false;
   }
   public void move(){
+    lazarusIsMoving = true;
     xLocation = xMove;
     yLocation = yMove;
-  }
+    lazarusMoved.play();
 
-  public void setLazarusIsSquished(boolean lazarusIsSquished) {
-    this.lazarusIsSquished = lazarusIsSquished;
-    System.out.println("L is squished");
   }
 
   public void resetLazarusPosition( ) {
@@ -51,6 +53,7 @@ public class MainCharacter extends Box implements MainCharacterInterface {
     this.yLocation = GAMEBOARD_HEIGHT-145;
     this.lazarusPosition = 5;
     lazarusIsSquished = false;
+    lazarusCanMove = true;
 
   }
 
@@ -71,36 +74,48 @@ public class MainCharacter extends Box implements MainCharacterInterface {
   }
 
 
+  public void setLazarusIsSquished(boolean lazarusIsSquished) {
+    this.lazarusIsSquished = lazarusIsSquished;
+    deathOfLazarus.play();
+    System.out.println("L is squished");
+  }
+
+  public static void setLazarusCanMove(boolean lazarusCanMove) {
+    MainCharacter.lazarusCanMove = lazarusCanMove;
+  }
 
   @Override
   public int weight() {
     return 0;
   }
 
+
+
   // is called everytime an action happens.
   public void update( Observable obj, Object event ){
-
-
     LazarusEvents lazE = ( LazarusEvents ) event;
-    if( lazE.eventType == 0 ){
-      KeyEvent keyevnt = ( KeyEvent ) lazE.event;
-      String lazAction = controls.get( keyevnt.getKeyCode() );
-      if ( lazAction.equals( "left" ) ){
-        if (  boxWeights.get( lazarusPosition - 1 ).size() - boxWeights.get( lazarusPosition ).size() < 2) {
-          xMove -= 40;
-          yMove -= 40 * ( boxWeights.get( lazarusPosition - 1 ).size() - boxWeights.get( lazarusPosition ).size() );
-          lazarusPosition -= 1;
-          System.out.println( "laz pos: " + lazarusPosition );
-          move();
-        }
-      } else if ( lazAction.equals( "right" ) ){
-        if ( boxWeights.get( lazarusPosition + 1 ).size() - boxWeights.get( lazarusPosition ).size() < 2) {
-          xMove += 40;
-          yMove -= 40 * ( boxWeights.get( lazarusPosition + 1 ).size() - boxWeights.get( lazarusPosition ).size() );
-          lazarusPosition += 1;
+    if ( lazarusCanMove == true ) {
+      if (lazE.eventType == 0) {
+        KeyEvent keyevnt = (KeyEvent) lazE.event;
+        String lazAction = controls.get(keyevnt.getKeyCode());
+        if (lazAction.equals("left")) {
+          if (boxWeights.get(lazarusPosition - 1).size() - boxWeights.get(lazarusPosition).size() < 2) {
 
-          System.out.println("Laz pos: " + lazarusPosition);
-          move();
+            xMove -= 40;
+            yMove -= 40 * (boxWeights.get(lazarusPosition - 1).size() - boxWeights.get(lazarusPosition).size());
+            move();
+            lazarusPosition -= 1;
+            System.out.println("laz pos: " + lazarusPosition);
+          }
+        } else if (lazAction.equals("right")) {
+          if (boxWeights.get(lazarusPosition + 1).size() - boxWeights.get(lazarusPosition).size() < 2) {
+            xMove += 40;
+            yMove -= 40 * (boxWeights.get(lazarusPosition + 1).size() - boxWeights.get(lazarusPosition).size());
+            lazarusPosition += 1;
+
+            System.out.println("Laz pos: " + lazarusPosition);
+            move();
+          }
         }
       }
     }

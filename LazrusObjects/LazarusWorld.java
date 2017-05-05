@@ -1,12 +1,18 @@
 package LazrusObjects;
 
 
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.*;
+import java.applet.AudioClip;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
+import java.io.File;
 import java.util.*;
+
+import static java.applet.Applet.newAudioClip;
 
 /**
  * Created by ericgumba on 4/26/17.
@@ -22,6 +28,7 @@ public class LazarusWorld extends JPanel implements Runnable {
   final int GAMEBOARD_WIDTH = 640, GAMEBOARD_HEIGHT = 480;
   LazarusEvents lazEvents;
   LazarusControls lazControls;
+  static AudioClip deathOfLazarus, lazarusMoved, boxCrushed, buttonPressed;
 
   static int currentLevel = 1;
   static MainCharacter mc;
@@ -49,6 +56,15 @@ public class LazarusWorld extends JPanel implements Runnable {
     }
   }
   public void init(){
+
+    try {
+      deathOfLazarus = newAudioClip(LazarusWorld.class.getResource( "Lazarus/Squished.wav" ));
+      lazarusMoved = newAudioClip(LazarusWorld.class.getResource( "Lazarus/Move.wav" ));
+      boxCrushed = newAudioClip(LazarusWorld.class.getResource("Lazarus/Crush.wav"));
+
+    } catch (Exception e){
+      System.out.println("Cannot get audio.");
+    }
     // initialize thread.
     thread = new Thread(this);
     thread.setPriority(Thread.MIN_PRIORITY);
@@ -125,11 +141,12 @@ public class LazarusWorld extends JPanel implements Runnable {
           this);
 
     } else if ( mc.lazarusIsSquished ){
+
       reset();
     }
 
     else{
-      currentBoxSpeed = currentBoxSpeed * 2;
+      currentBoxSpeed += 2;
       currentLevel += 1;
       reset();
     }
@@ -169,6 +186,20 @@ public class LazarusWorld extends JPanel implements Runnable {
     try {
       boxGen.draw(gameGraphics, this);
     } catch (Exception e){boxGen.draw(gameGraphics, this);}
+  }
+
+  public static void playSound(String filename)
+  {
+    try
+    {
+      Clip clip = AudioSystem.getClip();
+      clip.open(AudioSystem.getAudioInputStream(new File(filename)));
+      clip.start();
+    }
+    catch (Exception exc)
+    {
+      exc.printStackTrace(System.out);
+    }
   }
 
 }
