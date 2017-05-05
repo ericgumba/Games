@@ -66,7 +66,7 @@ public class BoxGenerator extends LazarusWorld {
         if( mc.collision(b.getxLocation(), b.getyLocation(), 40 )){
           mc.setLazarusCanMove( false );
           if( mc.collision(b.getxLocation(), b.getyLocation(), 5 )) {
-            mc.setLazarusIsSquished( true );
+//            mc.setLazarusIsSquished( true );
           }
         }
 
