@@ -32,7 +32,7 @@ public class LazarusWorld extends JPanel implements Runnable {
   int timeCounter = 200;
   static Stack<Box> nextBox = new Stack<Box>();
   static HashMap<Integer, Box> boxTypes;
-  int currentBoxSpeed = 1;
+  int currentBoxSpeed = 9;
   BufferedImage leftJumpStrip, afraidStrip, squishedStrip;
   BufferedImage[] leftJumpFrame, afraidFrame, squishedFrame;
 
