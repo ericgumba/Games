@@ -45,7 +45,6 @@ public class MainCharacter extends Box implements MainCharacterInterface {
     xLocation = xMove;
     yLocation = yMove;
     lazarusMoved.play();
-
   }
 
   public static void setLazarusIsMoving(boolean lazarusIsMoving) {
@@ -79,6 +78,18 @@ public class MainCharacter extends Box implements MainCharacterInterface {
     return yLocation;
   }
 
+  public void setyLocation(int yLocation) {
+    this.yLocation = yLocation;
+  }
+
+  public int getyMove() {
+    return yMove;
+  }
+
+  public void setyMove(int yMove) {
+    this.yMove = yMove;
+  }
+
   public Image getImageOfLazarus() {
     return imageOfLazarus;
   }
@@ -91,7 +102,6 @@ public class MainCharacter extends Box implements MainCharacterInterface {
   public void setLazarusIsSquished(boolean lazarusIsSquished) {
     this.lazarusIsSquished = lazarusIsSquished;
     deathOfLazarus.play();
-    System.out.println("L is squished");
   }
 
   public static void setLazarusCanMove(boolean lazarusCanMove) {
@@ -115,7 +125,10 @@ public class MainCharacter extends Box implements MainCharacterInterface {
         if (lazAction.equals("left")) {
           if (boxWeights.get(lazarusPosition - 1).size() - boxWeights.get(lazarusPosition).size() < 2) {
             xMove -= 40;
-            yMove -= 40 * (boxWeights.get(lazarusPosition - 1).size() - boxWeights.get(lazarusPosition).size());
+
+            if (boxWeights.get(lazarusPosition - 1).size() - boxWeights.get(lazarusPosition).size() == 1) {
+              yMove -= 40;
+            }
             move();
             lazarusPosition -= 1;
             setLazarusIsMovingLeft(true);
@@ -123,9 +136,14 @@ public class MainCharacter extends Box implements MainCharacterInterface {
         } else if (lazAction.equals("right")) {
           if (boxWeights.get(lazarusPosition + 1).size() - boxWeights.get(lazarusPosition).size() < 2) {
             xMove += 40;
-            yMove -= 40 * (boxWeights.get(lazarusPosition + 1).size() - boxWeights.get(lazarusPosition).size());
+
+            if (boxWeights.get(lazarusPosition + 1).size() - boxWeights.get(lazarusPosition).size() == 1) {
+              yMove -= 40;
+            }
+
             lazarusPosition += 1;
             move();
+
             setLazarusIsMovingRight(true);
           }
         }

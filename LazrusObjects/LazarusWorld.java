@@ -69,8 +69,6 @@ public class LazarusWorld extends JPanel implements Runnable {
       System.out.println("Cannot get audio.");
     }
 
-
-
     // initialize thread.
     thread = new Thread(this);
     thread.setPriority(Thread.MIN_PRIORITY);
@@ -86,15 +84,13 @@ public class LazarusWorld extends JPanel implements Runnable {
     controls.put( KeyEvent.VK_LEFT, "left" );
     controls.put( KeyEvent.VK_RIGHT, "right" );
     controls.put( KeyEvent.VK_SPACE, "space" );
+
     for(int i = 0; i < 16; i++) {
       boxPositions.put(i*40, i);
     }
-
     for ( int i = 0; i < 16; i++){
       boxWeights.add( new Stack< Box >());
     }
-
-
     imgGen = new ImageGenerator();
     boxGen = new BoxGenerator();
 
@@ -138,12 +134,15 @@ public class LazarusWorld extends JPanel implements Runnable {
   }
   public void paint( Graphics g ){
 
+
+
     if(mc.getLazarusPosition() != 0
         && mc.getLazarusPosition() != 15
         && !mc.lazarusIsSquished
         ) {
-      Dimension d = getSize();
       updateAndDisplay();
+
+
       bufferedImg2 = (BufferedImage) createImage(GAMEBOARD_WIDTH, GAMEBOARD_HEIGHT);
       Graphics2D g3 = bufferedImg2.createGraphics();
       g3.setBackground(getBackground());
@@ -156,6 +155,15 @@ public class LazarusWorld extends JPanel implements Runnable {
 
       if ( !mc.lazarusIsMoving ) {
         g.drawImage(mc.getImageOfLazarus(), mc.getxLocation(), mc.getyLocation(), this);
+
+        // problem: Figure out what code to write, so that lazarus stops falling when it collides with...
+        // strategy: take a look at the box method and collision.
+
+        // problem
+        if ( !mc.collision( mc.getxLocation(),
+            boxWeights.get(boxPositions.get( mc.xLocation )).peek().yLocation - 8, 40)) {
+          fall();
+        }
       } else if ( mc.lazarusIsMovingLeft ) {
         jumpTimer++;
         switch (jumpTimer){
@@ -174,18 +182,15 @@ public class LazarusWorld extends JPanel implements Runnable {
           case 7:
             g.drawImage(leftJumpFrame[jumpTimer-1], mc.getxLocation()-5*(jumpTimer), mc.getyLocation() - 40, this);
         }
+
         if ( jumpTimer >= 7 ) {
           mc.setLazarusIsMoving(false);
           mc.setLazarusIsMovingLeft(false);
           jumpTimer = 0;
         }
+
       } else if ( mc.lazarusIsMovingRight ) {
         jumpTimer++;
-
-//        for(int i = 0; i < 7; i++){
-//          g.drawImage(leftJumpFrame[i], (mc.getxLocation()-60)+5*i, mc.getyLocation() - 40, this);
-//        }
-
         switch (jumpTimer){
           case 1:
             g.drawImage(leftJumpFrame[jumpTimer-1], (mc.getxLocation()-70)+5*(jumpTimer), mc.getyLocation() - 40, this);
@@ -207,23 +212,23 @@ public class LazarusWorld extends JPanel implements Runnable {
           mc.setLazarusIsMovingRight(false);
           jumpTimer = 0;
         }
-
       }
 
       timeCounter++;
+
       // problem: figure out how to pop from the stack to save memory
-      if (timeCounter >= 100) {
-        System.out.println("generating box: " + boxDecider);
+      if ( timeCounter >= 100 ) {
+        System.out.println( "generating box: " + boxDecider );
         timeCounter = 0;
-        boxGen.addBox(mc.getLazarusPosition() * 40, 0, boxDecider, currentBoxSpeed);
+        boxGen.addBox( mc.getLazarusPosition() * 40, 0, boxDecider, currentBoxSpeed );
         boxDecider = (int) (Math.random() * ((4 - 1) + 1) + 1);
-        nextBox.push(boxTypes.get(boxDecider));
+        nextBox.push(boxTypes.get( boxDecider ));
       }
 
-      g.drawImage(nextBox.peek().getBoxImage(),
+      g.drawImage( nextBox.peek().getBoxImage(),
           nextBox.peek().getxLocation(),
           nextBox.peek().getyLocation(),
-          this);
+          this );
 
     } else if ( mc.lazarusIsSquished ){
 
@@ -273,5 +278,9 @@ public class LazarusWorld extends JPanel implements Runnable {
     } catch (Exception e){boxGen.draw(gameGraphics, this);}
   }
 
+  public void fall(){
+    mc.setyLocation( mc.getyLocation() + 9 );
+    mc.setyMove( mc.getyLocation() );
+  }
 
 }
