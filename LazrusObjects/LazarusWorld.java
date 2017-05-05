@@ -40,7 +40,10 @@ public class LazarusWorld extends JPanel implements Runnable {
   static Stack<Box> nextBox = new Stack<Box>();
   static HashMap<Integer, Box> boxTypes;
   int currentBoxSpeed = 1;
+  BufferedImage leftJumpStrip, rightJumpStrip;
+  BufferedImage[] leftJumpFrame, rightJumpFrame;
 
+  int jumpTimer = 0;
   int boxDecider = (int)(Math.random() * ((4 - 1) + 1) + 1);
 
   @Override
@@ -65,6 +68,9 @@ public class LazarusWorld extends JPanel implements Runnable {
     } catch (Exception e){
       System.out.println("Cannot get audio.");
     }
+
+
+
     // initialize thread.
     thread = new Thread(this);
     thread.setPriority(Thread.MIN_PRIORITY);
@@ -92,6 +98,31 @@ public class LazarusWorld extends JPanel implements Runnable {
     imgGen = new ImageGenerator();
     boxGen = new BoxGenerator();
 
+/////////////////////////////////////////////////
+    try {
+      leftJumpStrip = imgGen.getBufferedImage("Lazarus/Lazarus_left_strip7.png");
+      rightJumpStrip = imgGen.getBufferedImage("Lazarus/Lazarus_right_strip7.png");
+    } catch ( Exception e){ System.out.println("?");}
+
+    leftJumpFrame = new BufferedImage[] {
+        leftJumpStrip.getSubimage(10,0,70,80),
+        leftJumpStrip.getSubimage(80,0,70,80),
+        leftJumpStrip.getSubimage(150,0,70,80),
+        leftJumpStrip.getSubimage(220,0,70,80),
+        leftJumpStrip.getSubimage(290,0,70,80),
+        leftJumpStrip.getSubimage(370,0,70,80),
+        leftJumpStrip.getSubimage(450,0,70,80)
+        };
+
+    rightJumpFrame = new BufferedImage[] {
+        rightJumpStrip.getSubimage(0,0,50,80),
+        rightJumpStrip.getSubimage(80,0,70,80),
+        rightJumpStrip.getSubimage(150,0,70,80),
+        rightJumpStrip.getSubimage(240,0,70,80),
+        rightJumpStrip.getSubimage(320,0,70,80),
+        rightJumpStrip.getSubimage(400,0,70,80),
+        rightJumpStrip.getSubimage(510,0,50,80)
+    };
     mc = new MainCharacter();
 
     lazBackground = new LazarusBackground();
@@ -123,7 +154,61 @@ public class LazarusWorld extends JPanel implements Runnable {
       g3.dispose();
       g.drawImage(bufferedImg2, 0, 0, this);
 
-      g.drawImage(mc.getImageOfLazarus(), mc.getxLocation(), mc.getyLocation(), this);
+      if ( !mc.lazarusIsMoving ) {
+        g.drawImage(mc.getImageOfLazarus(), mc.getxLocation(), mc.getyLocation(), this);
+      } else if ( mc.lazarusIsMovingLeft ) {
+        jumpTimer++;
+        switch (jumpTimer){
+          case 1:
+            g.drawImage(leftJumpFrame[jumpTimer-1], mc.getxLocation()-5*(jumpTimer), mc.getyLocation() - 40, this);
+          case 2:
+            g.drawImage(leftJumpFrame[jumpTimer-1], mc.getxLocation()-5*(jumpTimer), mc.getyLocation() - 40, this);
+          case 3:
+            g.drawImage(leftJumpFrame[jumpTimer-1], mc.getxLocation()-5*(jumpTimer), mc.getyLocation() - 40, this);
+          case 4:
+            g.drawImage(leftJumpFrame[jumpTimer-1], mc.getxLocation()-5*(jumpTimer), mc.getyLocation() - 40, this);
+          case 5:
+            g.drawImage(leftJumpFrame[jumpTimer-1], mc.getxLocation()-5*(jumpTimer), mc.getyLocation() - 40, this);
+          case 6:
+            g.drawImage(leftJumpFrame[jumpTimer-1], mc.getxLocation()-5*(jumpTimer), mc.getyLocation() - 40, this);
+          case 7:
+            g.drawImage(leftJumpFrame[jumpTimer-1], mc.getxLocation()-5*(jumpTimer), mc.getyLocation() - 40, this);
+        }
+        if ( jumpTimer >= 7 ) {
+          mc.setLazarusIsMoving(false);
+          mc.setLazarusIsMovingLeft(false);
+          jumpTimer = 0;
+        }
+      } else if ( mc.lazarusIsMovingRight ) {
+        jumpTimer++;
+
+//        for(int i = 0; i < 7; i++){
+//          g.drawImage(leftJumpFrame[i], (mc.getxLocation()-60)+5*i, mc.getyLocation() - 40, this);
+//        }
+
+        switch (jumpTimer){
+          case 1:
+            g.drawImage(leftJumpFrame[jumpTimer-1], (mc.getxLocation()-70)+5*(jumpTimer), mc.getyLocation() - 40, this);
+          case 2:
+            g.drawImage(leftJumpFrame[jumpTimer-1], (mc.getxLocation()-70)+5*(jumpTimer), mc.getyLocation() - 40, this);
+          case 3:
+            g.drawImage(leftJumpFrame[jumpTimer-1], (mc.getxLocation()-70)+5*(jumpTimer), mc.getyLocation() - 40, this);
+          case 4:
+            g.drawImage(leftJumpFrame[jumpTimer-1], (mc.getxLocation()-70)+5*(jumpTimer), mc.getyLocation() - 40, this);
+          case 5:
+            g.drawImage(leftJumpFrame[jumpTimer-1], (mc.getxLocation()-70)+5*(jumpTimer), mc.getyLocation() - 40, this);
+          case 6:
+            g.drawImage(leftJumpFrame[jumpTimer-1], (mc.getxLocation()-70)+5*(jumpTimer), mc.getyLocation() - 40, this);
+          case 7:
+            g.drawImage(leftJumpFrame[jumpTimer-1], (mc.getxLocation()-70)+5*(jumpTimer), mc.getyLocation() - 40, this);
+        }
+        if ( jumpTimer >= 7 ) {
+          mc.setLazarusIsMoving(false);
+          mc.setLazarusIsMovingRight(false);
+          jumpTimer = 0;
+        }
+
+      }
 
       timeCounter++;
       // problem: figure out how to pop from the stack to save memory
@@ -188,18 +273,5 @@ public class LazarusWorld extends JPanel implements Runnable {
     } catch (Exception e){boxGen.draw(gameGraphics, this);}
   }
 
-  public static void playSound(String filename)
-  {
-    try
-    {
-      Clip clip = AudioSystem.getClip();
-      clip.open(AudioSystem.getAudioInputStream(new File(filename)));
-      clip.start();
-    }
-    catch (Exception exc)
-    {
-      exc.printStackTrace(System.out);
-    }
-  }
 
 }

@@ -17,6 +17,8 @@ public class MainCharacter extends Box implements MainCharacterInterface {
   static boolean lazarusIsSquished = false; // needs to be static?
   static boolean lazarusCanMove = true;
   static boolean lazarusIsMoving = false;
+  static boolean lazarusIsMovingLeft = false;
+  static boolean lazarusIsMovingRight = false;
 
   MainCharacter(){
     lazarusPosition = 5;
@@ -44,6 +46,18 @@ public class MainCharacter extends Box implements MainCharacterInterface {
     yLocation = yMove;
     lazarusMoved.play();
 
+  }
+
+  public static void setLazarusIsMoving(boolean lazarusIsMoving) {
+    MainCharacter.lazarusIsMoving = lazarusIsMoving;
+  }
+
+  public static void setLazarusIsMovingLeft(boolean lazarusIsMovingLeft) {
+    MainCharacter.lazarusIsMovingLeft = lazarusIsMovingLeft;
+  }
+
+  public static void setLazarusIsMovingRight(boolean lazarusIsMovingRight) {
+    MainCharacter.lazarusIsMovingRight = lazarusIsMovingRight;
   }
 
   public void resetLazarusPosition( ) {
@@ -100,21 +114,19 @@ public class MainCharacter extends Box implements MainCharacterInterface {
         String lazAction = controls.get(keyevnt.getKeyCode());
         if (lazAction.equals("left")) {
           if (boxWeights.get(lazarusPosition - 1).size() - boxWeights.get(lazarusPosition).size() < 2) {
-
             xMove -= 40;
             yMove -= 40 * (boxWeights.get(lazarusPosition - 1).size() - boxWeights.get(lazarusPosition).size());
             move();
             lazarusPosition -= 1;
-            System.out.println("laz pos: " + lazarusPosition);
+            setLazarusIsMovingLeft(true);
           }
         } else if (lazAction.equals("right")) {
           if (boxWeights.get(lazarusPosition + 1).size() - boxWeights.get(lazarusPosition).size() < 2) {
             xMove += 40;
             yMove -= 40 * (boxWeights.get(lazarusPosition + 1).size() - boxWeights.get(lazarusPosition).size());
             lazarusPosition += 1;
-
-            System.out.println("Laz pos: " + lazarusPosition);
             move();
+            setLazarusIsMovingRight(true);
           }
         }
       }
