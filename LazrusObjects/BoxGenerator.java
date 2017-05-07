@@ -13,6 +13,7 @@ import java.util.List;
 public class BoxGenerator extends LazarusWorld {
 
 
+  static boolean boxHasLanded = true;
   ArrayList<Box> box = new ArrayList();
   public BoxGenerator() {
 
@@ -20,6 +21,7 @@ public class BoxGenerator extends LazarusWorld {
     boxTypes.put( 2, new WoodBox( 0, GAMEBOARD_HEIGHT-63, currentBoxSpeed ));
     boxTypes.put( 3, new MetalBox( 0, GAMEBOARD_HEIGHT-63, currentBoxSpeed ));
     boxTypes.put( 4, new StoneBox( 0, GAMEBOARD_HEIGHT-63, currentBoxSpeed ));
+
 
 
     int wallHeight = 40;
@@ -70,11 +72,34 @@ public class BoxGenerator extends LazarusWorld {
           }
         }
 
+
+        if ( mc.getxLocation() + 40 == b.getxLocation()
+            && b.getyLocation() + 90 > mc.getyLocation()
+            ) {
+          mc.setLazarusCanMoveRight(false);
+        } else {
+          mc.setLazarusCanMoveRight(true);
+        }
+
+
+        if ( mc.getxLocation() - 40 == b.getxLocation()
+            && b.getyLocation() + 90 > mc.getyLocation()
+            ) {
+          mc.setLazarusCanMoveLeft(false);
+        } else {
+          mc.setLazarusCanMoveLeft(true);
+        }
+
+
         if (! b.collision(
             boxWeights.get(boxPositions.get(b.xLocation )).peek().yLocation, 40)) {
           b.move();
         } else {
           box.remove(b);
+          addBox(mc.getxLocation(), 0, boxDecider, currentBoxSpeed);
+
+          boxDecider = (int) (Math.random() * ((4 - 1) + 1) + 1);
+          nextBox.push(boxTypes.get( boxDecider ));
         }
       }
       for ( int i = 0 ; i < boxWeights.size(); i++ ){

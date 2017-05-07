@@ -29,15 +29,15 @@ public class LazarusWorld extends JPanel implements Runnable {
   Thread thread;
   static BoxGenerator boxGen;
   static HashMap<Integer, Integer> boxPositions;
-  int timeCounter = 200;
+  int timeCounter = 100;
   static Stack<Box> nextBox = new Stack<Box>();
   static HashMap<Integer, Box> boxTypes;
-  int currentBoxSpeed = 1;
+  static int currentBoxSpeed = 2;
   BufferedImage leftJumpStrip, afraidStrip, squishedStrip;
   BufferedImage[] leftJumpFrame, afraidFrame, squishedFrame;
 
   int jumpTimer = 0, afraidTimer = 0, squishTimer = 0;
-  int boxDecider = (int)(Math.random() * ((4 - 1) + 1) + 1);
+  static int boxDecider = (int)(Math.random() * ((4 - 1) + 1) + 1);
 
   @Override
   public void run() {
@@ -287,8 +287,6 @@ public class LazarusWorld extends JPanel implements Runnable {
         }
       }
 
-      timeCounter++;
-
       // problem: figure out how to pop from the stack to save memory
       if ( timeCounter >= 100 ) {
         System.out.println( "generating box: " + boxDecider );
@@ -332,6 +330,7 @@ public class LazarusWorld extends JPanel implements Runnable {
     }
     boxGen = new BoxGenerator();
 
+    timeCounter = 100;
     mc.resetLazarusPosition();
 
   }

@@ -20,6 +20,8 @@ public class MainCharacter extends Box implements MainCharacterInterface {
   static boolean lazarusIsMoving = false;
   static boolean lazarusIsMovingLeft = false;
   static boolean lazarusIsMovingRight = false;
+  static boolean lazarusCanMoveLeft = true;
+  static boolean lazarusCanMoveRight = true;
 
   MainCharacter(){
     lazarusPosition = 5;
@@ -105,6 +107,14 @@ public class MainCharacter extends Box implements MainCharacterInterface {
     deathOfLazarus.play();
   }
 
+  public static void setLazarusCanMoveRight(boolean lazarusCanMoveRight) {
+    MainCharacter.lazarusCanMoveRight = lazarusCanMoveRight;
+  }
+
+  public static void setLazarusCanMoveLeft(boolean lazarusCanMoveLeft) {
+    MainCharacter.lazarusCanMoveLeft = lazarusCanMoveLeft;
+  }
+
   public static void setLazarusCanMove(boolean lazarusCanMove) {
     MainCharacter.lazarusCanMove = lazarusCanMove;
   }
@@ -123,29 +133,38 @@ public class MainCharacter extends Box implements MainCharacterInterface {
       if (lazE.eventType == 0) {
         KeyEvent keyevnt = (KeyEvent) lazE.event;
         String lazAction = controls.get(keyevnt.getKeyCode());
-        if (lazAction.equals("left")) {
-          if (boxWeights.get(lazarusPosition - 1).size() - boxWeights.get(lazarusPosition).size() < 2) {
-            xMove -= 40;
 
-            if (boxWeights.get(lazarusPosition - 1).size() - boxWeights.get(lazarusPosition).size() == 1) {
-              yMove -= 40;
+
+        if (lazarusCanMoveLeft ) {
+          if (lazAction.equals("left")) {
+            if (boxWeights.get(lazarusPosition - 1).size() - boxWeights.get(lazarusPosition).size() < 2) {
+              xMove -= 40;
+
+              if (boxWeights.get(lazarusPosition - 1).size() - boxWeights.get(lazarusPosition).size() == 1) {
+                yMove -= 40;
+              }
+              move();
+              lazarusPosition -= 1;
+              setLazarusIsMovingLeft(true);
             }
-            move();
-            lazarusPosition -= 1;
-            setLazarusIsMovingLeft(true);
           }
-        } else if (lazAction.equals("right")) {
-          if (boxWeights.get(lazarusPosition + 1).size() - boxWeights.get(lazarusPosition).size() < 2) {
-            xMove += 40;
+        }
 
-            if (boxWeights.get(lazarusPosition + 1).size() - boxWeights.get(lazarusPosition).size() == 1) {
-              yMove -= 40;
+
+        if (lazarusCanMoveRight ) {
+          if (lazAction.equals("right")) {
+            if (boxWeights.get(lazarusPosition + 1).size() - boxWeights.get(lazarusPosition).size() < 2) {
+              xMove += 40;
+
+              if (boxWeights.get(lazarusPosition + 1).size() - boxWeights.get(lazarusPosition).size() == 1) {
+                yMove -= 40;
+              }
+
+              lazarusPosition += 1;
+              move();
+
+              setLazarusIsMovingRight(true);
             }
-
-            lazarusPosition += 1;
-            move();
-
-            setLazarusIsMovingRight(true);
           }
         }
       }
