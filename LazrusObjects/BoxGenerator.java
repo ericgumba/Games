@@ -74,7 +74,7 @@ public class BoxGenerator extends LazarusWorld {
 
 
         if ( mc.getxLocation() + 40 == b.getxLocation()
-            && b.getyLocation() + 90 > mc.getyLocation()
+            && b.getyLocation() + 50 > mc.getyLocation()
             ) {
           mc.setLazarusCanMoveRight(false);
         } else {
@@ -83,7 +83,7 @@ public class BoxGenerator extends LazarusWorld {
 
 
         if ( mc.getxLocation() - 40 == b.getxLocation()
-            && b.getyLocation() + 90 > mc.getyLocation()
+            && b.getyLocation() + 50 > mc.getyLocation()
             ) {
           mc.setLazarusCanMoveLeft(false);
         } else {
