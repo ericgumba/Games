@@ -1,15 +1,18 @@
 # Tank Wars and Lazarus
-To compile and run Tank Wars, clone this repository. 
-cd into the Games and type, 
+To compile and run Tank Wars and Lazarus:
+
+git clone https://github.com/okmanl/Games.git
+
+cd Games/
 
 javac RunGame.java
 javac RunLazarus.java
 
 
-to play Tank Wars type, 
+to play Tank Wars:
 
 java RunGame
 
-To play Lazarus type, 
+To play Lazarus:
 
-java RunLazarus.
+java RunLazarus
